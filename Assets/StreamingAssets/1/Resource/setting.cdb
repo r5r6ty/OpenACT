@@ -1,0 +1,158 @@
+{
+	"sheets": [
+		{
+			"name": "setting",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "x"
+				},
+				{
+					"typeStr": "3",
+					"name": "y"
+				},
+				{
+					"typeStr": "3",
+					"name": "w"
+				},
+				{
+					"typeStr": "3",
+					"name": "h"
+				},
+				{
+					"typeStr": "8",
+					"name": "buttons",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"id": "ToolsBar",
+					"x": 200,
+					"y": 90,
+					"w": 560,
+					"h": 45,
+					"buttons": [
+						{
+							"w": 40,
+							"h": 40,
+							"name": "button01"
+						}
+					]
+				},
+				{
+					"x": 0,
+					"y": 0,
+					"w": 100,
+					"h": 540,
+					"id": "Characters",
+					"buttons": [
+						{
+							"w": 80,
+							"h": 20,
+							"name": "button01"
+						}
+					]
+				},
+				{
+					"id": "CharacterInfo",
+					"x": 760,
+					"y": 90,
+					"w": 200,
+					"h": 235,
+					"buttons": [
+						{
+							"w": 80,
+							"h": 20,
+							"name": "button01"
+						}
+					]
+				},
+				{
+					"id": "Actions",
+					"x": 100,
+					"y": 90,
+					"w": 100,
+					"h": 450,
+					"buttons": [
+						{
+							"w": 80,
+							"h": 20,
+							"name": "button01"
+						}
+					]
+				},
+				{
+					"id": "FrameInfo",
+					"x": 560,
+					"y": 325,
+					"w": 400,
+					"h": 215,
+					"buttons": [
+						{
+							"w": 80,
+							"h": 20,
+							"name": "button01"
+						}
+					]
+				},
+				{
+					"id": "Frames",
+					"x": 100,
+					"y": 0,
+					"w": 860,
+					"h": 90,
+					"buttons": [
+						{
+							"w": 80,
+							"h": 80,
+							"name": "button01"
+						}
+					]
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "setting@buttons",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "x",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "y",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "w"
+				},
+				{
+					"typeStr": "3",
+					"name": "h"
+				}
+			]
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}

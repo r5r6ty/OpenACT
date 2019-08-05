@@ -45,7 +45,7 @@ namespace XLuaTest
         {
             // 找到指定文件
 #if UNITY_EDITOR
-            fileName = Application.dataPath + "/StreamingAssets/2/Lua/" + fileName.Replace('.', '/') + ".lua";
+            fileName = GameLoader.Getluapath() + fileName.Replace('.', '/') + ".lua";
 #endif
             print(fileName);
             if (File.Exists(fileName))

@@ -4,7 +4,8 @@ Open source act game(lua)
 unity version: 2019.1.2f1
 
 WIP:
-tool2.unity
+tool1.unity --- character editor
+tool2.unity --- random map generator 
 
 tools:
 [unity3D](https://www.unity3d.com)(to open this repo)

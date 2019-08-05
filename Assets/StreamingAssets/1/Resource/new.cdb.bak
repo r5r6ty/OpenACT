@@ -1,0 +1,466 @@
+{
+	"sheets": [
+		{
+			"name": "characters",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "name"
+				},
+				{
+					"typeStr": "8",
+					"name": "actions"
+				}
+			],
+			"lines": [
+				{
+					"id": "ljokp",
+					"actions": [
+						{
+							"frames": [
+								{
+									"pic": "bfa8a42e75bd4f72414444c3a4f89481",
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128
+								},
+								{
+									"pic": "89408ecd0150bb317522f661d72c0da9",
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128
+								},
+								{
+									"pic": "7368a1a5d5805e8b2eb6c21c84d2626d",
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128
+								},
+								{
+									"pic": "f29c6a78dd5c7e2c14b279fa96dc5b0d",
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128
+								},
+								{
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128,
+									"pic": "1b08ceafa12cefe05b7e93e10099b9e9"
+								},
+								{
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128,
+									"pic": "c55bc0e26b7c56b9506dd23534717f1b"
+								},
+								{
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128,
+									"pic": "3520694b8d14ee32eea331996ace1bea"
+								},
+								{
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128,
+									"pic": "c0446cb2598cc2963ae679e282d9d5e9"
+								},
+								{
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128,
+									"pic": "d672fe0eec66ff082f0a92534091ed5c"
+								},
+								{
+									"wait": 6,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128,
+									"nextAction": "walking",
+									"nextFrame": 0,
+									"pic": "10d0808021dcd330731057272431296a"
+								}
+							],
+							"action": "walking"
+						},
+						{
+							"action": "running",
+							"frames": [
+								{
+									"pic": "10d0808021dcd330731057272431296a",
+									"centerX": 0,
+									"centerY": 0,
+									"wait": 0,
+									"itrs": [],
+									"bdys": []
+								}
+							]
+						}
+					],
+					"name": "ljokp"
+				},
+				{
+					"id": "songrunhe",
+					"actions": [
+						{
+							"action": "walking",
+							"frames": [
+								{
+									"pic": "10d0808021dcd330731057272431296a",
+									"wait": 11,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": -64,
+									"centerY": -128,
+									"nextAction": "jumping",
+									"nextFrame": 0
+								}
+							]
+						}
+					],
+					"name": "songrunhe"
+				},
+				{
+					"id": "yuiffy",
+					"name": "yuiffy",
+					"actions": [
+						{
+							"action": "eating",
+							"frames": [
+								{
+									"pic": "c55bc0e26b7c56b9506dd23534717f1b",
+									"wait": 11,
+									"itrs": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"bdys": [
+										{
+											"x": 0,
+											"y": 0,
+											"w": 128,
+											"h": 128
+										}
+									],
+									"centerX": 0,
+									"centerY": 0,
+									"nextAction": "eating",
+									"nextFrame": 0
+								}
+							]
+						}
+					]
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "characters@actions",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "action"
+				},
+				{
+					"typeStr": "8",
+					"name": "frames",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "characters@actions@frames",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "7",
+					"name": "pic",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "centerX"
+				},
+				{
+					"typeStr": "3",
+					"name": "centerY",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "wait"
+				},
+				{
+					"typeStr": "8",
+					"name": "itrs"
+				},
+				{
+					"typeStr": "8",
+					"name": "bdys",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "nextAction",
+					"opt": true,
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "nextFrame",
+					"opt": true
+				}
+			]
+		},
+		{
+			"name": "characters@actions@frames@itrs",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "3",
+					"name": "x"
+				},
+				{
+					"typeStr": "3",
+					"name": "y"
+				},
+				{
+					"typeStr": "3",
+					"name": "w"
+				},
+				{
+					"typeStr": "3",
+					"name": "h"
+				}
+			]
+		},
+		{
+			"name": "characters@actions@frames@bdys",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "3",
+					"name": "x",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "y"
+				},
+				{
+					"typeStr": "3",
+					"name": "w",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "h",
+					"display": null
+				}
+			]
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}

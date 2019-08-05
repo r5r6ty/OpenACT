@@ -281,6 +281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   init: {fileID: 131670013}
+  folder: StreamingAssets/2/Lua
   scripts:
   - tool2_main
   prefabs: []

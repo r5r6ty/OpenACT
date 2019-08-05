@@ -7,7 +7,10 @@ using UnityEngine.Networking;
 public class GameLoader : MonoBehaviour
 {
     public GameObject init;
-    string luapath;
+    public string folder;
+
+    // 静态使路径只有一个
+    static string luapath;
 
     public string[] scripts;
     public Object[] prefabs;
@@ -15,10 +18,15 @@ public class GameLoader : MonoBehaviour
     int count = 0;
     int total = 0;
 
+    static public string Getluapath()
+    {
+        return luapath;
+    }
+
     void Awake()
     {
 #if UNITY_EDITOR
-        luapath = Application.dataPath + "/StreamingAssets/2/Lua/";
+        luapath = Application.dataPath + "/" + folder + "/";
 #endif
 
         foreach (Object s in prefabs)
@@ -45,6 +53,7 @@ public class GameLoader : MonoBehaviour
         string scripts = www.downloadHandler.text;
         string methodName = path.Replace(".lua", "");
         methodName = methodName.Substring(methodName.LastIndexOf(@"/") + 1); // 获得名称
+        print(methodName);
         LuaManager.Instance.SetScripts(methodName, scripts); // 下面有介绍
 
         count++;
@@ -71,7 +80,7 @@ public class GameLoader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     //public string Base64Decode(string str)
