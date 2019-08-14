@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.RemoteConfigSettings);
-			Utils.BeginObjectRegister(type, L, translator, 0, 12, 0, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 14, 0, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Dispose", _m_Dispose);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ForceUpdate", _m_ForceUpdate);
@@ -34,6 +34,8 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HasKey", _m_HasKey);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetCount", _m_GetCount);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetKeys", _m_GetKeys);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetObject", _m_GetObject);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetDictionary", _m_GetDictionary);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Updated", _e_Updated);
 			
@@ -583,6 +585,106 @@ namespace XLua.CSObjectWrap
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetObject(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                UnityEngine.RemoteConfigSettings gen_to_be_invoked = (UnityEngine.RemoteConfigSettings)translator.FastGetCSObj(L, 1);
+            
+            
+			    int gen_param_count = LuaAPI.lua_gettop(L);
+            
+                if(gen_param_count == 3&& translator.Assignable<System.Type>(L, 2)&& (LuaAPI.lua_isnil(L, 3) || LuaAPI.lua_type(L, 3) == LuaTypes.LUA_TSTRING)) 
+                {
+                    System.Type _type = (System.Type)translator.GetObject(L, 2, typeof(System.Type));
+                    string _key = LuaAPI.lua_tostring(L, 3);
+                    
+                        object gen_ret = gen_to_be_invoked.GetObject( _type, _key );
+                        translator.PushAny(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                if(gen_param_count == 2&& translator.Assignable<System.Type>(L, 2)) 
+                {
+                    System.Type _type = (System.Type)translator.GetObject(L, 2, typeof(System.Type));
+                    
+                        object gen_ret = gen_to_be_invoked.GetObject( _type );
+                        translator.PushAny(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                if(gen_param_count == 3&& (LuaAPI.lua_isnil(L, 2) || LuaAPI.lua_type(L, 2) == LuaTypes.LUA_TSTRING)&& translator.Assignable<object>(L, 3)) 
+                {
+                    string _key = LuaAPI.lua_tostring(L, 2);
+                    object _defaultValue = translator.GetObject(L, 3, typeof(object));
+                    
+                        object gen_ret = gen_to_be_invoked.GetObject( _key, _defaultValue );
+                        translator.PushAny(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+            return LuaAPI.luaL_error(L, "invalid arguments to UnityEngine.RemoteConfigSettings.GetObject!");
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetDictionary(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                UnityEngine.RemoteConfigSettings gen_to_be_invoked = (UnityEngine.RemoteConfigSettings)translator.FastGetCSObj(L, 1);
+            
+            
+			    int gen_param_count = LuaAPI.lua_gettop(L);
+            
+                if(gen_param_count == 2&& (LuaAPI.lua_isnil(L, 2) || LuaAPI.lua_type(L, 2) == LuaTypes.LUA_TSTRING)) 
+                {
+                    string _key = LuaAPI.lua_tostring(L, 2);
+                    
+                        System.Collections.Generic.IDictionary<string, object> gen_ret = gen_to_be_invoked.GetDictionary( _key );
+                        translator.PushAny(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                if(gen_param_count == 1) 
+                {
+                    
+                        System.Collections.Generic.IDictionary<string, object> gen_ret = gen_to_be_invoked.GetDictionary(  );
+                        translator.PushAny(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+            return LuaAPI.luaL_error(L, "invalid arguments to UnityEngine.RemoteConfigSettings.GetDictionary!");
             
         }
         

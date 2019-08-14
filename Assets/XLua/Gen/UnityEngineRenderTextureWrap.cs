@@ -141,6 +141,19 @@ namespace XLua.CSObjectWrap
                     
 					return 1;
 				}
+				if(LuaAPI.lua_gettop(L) == 6 && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 2) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 3) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 4) && translator.Assignable<UnityEngine.Experimental.Rendering.GraphicsFormat>(L, 5) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 6))
+				{
+					int _width = LuaAPI.xlua_tointeger(L, 2);
+					int _height = LuaAPI.xlua_tointeger(L, 3);
+					int _depth = LuaAPI.xlua_tointeger(L, 4);
+					UnityEngine.Experimental.Rendering.GraphicsFormat _format;translator.Get(L, 5, out _format);
+					int _mipCount = LuaAPI.xlua_tointeger(L, 6);
+					
+					UnityEngine.RenderTexture gen_ret = new UnityEngine.RenderTexture(_width, _height, _depth, _format, _mipCount);
+					translator.Push(L, gen_ret);
+                    
+					return 1;
+				}
 				if(LuaAPI.lua_gettop(L) == 6 && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 2) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 3) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 4) && translator.Assignable<UnityEngine.RenderTextureFormat>(L, 5) && translator.Assignable<UnityEngine.RenderTextureReadWrite>(L, 6))
 				{
 					int _width = LuaAPI.xlua_tointeger(L, 2);
@@ -173,6 +186,19 @@ namespace XLua.CSObjectWrap
 					int _depth = LuaAPI.xlua_tointeger(L, 4);
 					
 					UnityEngine.RenderTexture gen_ret = new UnityEngine.RenderTexture(_width, _height, _depth);
+					translator.Push(L, gen_ret);
+                    
+					return 1;
+				}
+				if(LuaAPI.lua_gettop(L) == 6 && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 2) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 3) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 4) && translator.Assignable<UnityEngine.RenderTextureFormat>(L, 5) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 6))
+				{
+					int _width = LuaAPI.xlua_tointeger(L, 2);
+					int _height = LuaAPI.xlua_tointeger(L, 3);
+					int _depth = LuaAPI.xlua_tointeger(L, 4);
+					UnityEngine.RenderTextureFormat _format;translator.Get(L, 5, out _format);
+					int _mipCount = LuaAPI.xlua_tointeger(L, 6);
+					
+					UnityEngine.RenderTexture gen_ret = new UnityEngine.RenderTexture(_width, _height, _depth, _format, _mipCount);
 					translator.Push(L, gen_ret);
                     
 					return 1;

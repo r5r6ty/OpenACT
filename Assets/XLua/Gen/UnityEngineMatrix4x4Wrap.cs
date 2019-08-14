@@ -85,9 +85,10 @@ namespace XLua.CSObjectWrap
 			Utils.EndObjectRegister(type, L, translator, __CSIndexer, __NewIndexer,
 			    null, null, null);
 
-		    Utils.BeginClassRegister(type, L, __CreateInstance, 12, 2, 0);
+		    Utils.BeginClassRegister(type, L, __CreateInstance, 13, 2, 0);
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "Determinant", _m_Determinant_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "TRS", _m_TRS_xlua_st_);
+            Utils.RegisterFunc(L, Utils.CLS_IDX, "Inverse3DAffine", _m_Inverse3DAffine_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "Inverse", _m_Inverse_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "Transpose", _m_Transpose_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "Ortho", _m_Ortho_xlua_st_);
@@ -372,6 +373,37 @@ namespace XLua.CSObjectWrap
                     
                     
                     return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_Inverse3DAffine_xlua_st_(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+            
+                
+                {
+                    UnityEngine.Matrix4x4 _input;translator.Get(L, 1, out _input);
+                    UnityEngine.Matrix4x4 _result;translator.Get(L, 2, out _result);
+                    
+                        bool gen_ret = UnityEngine.Matrix4x4.Inverse3DAffine( _input, ref _result );
+                        LuaAPI.lua_pushboolean(L, gen_ret);
+                    translator.Push(L, _result);
+                        translator.Update(L, 2, _result);
+                        
+                    
+                    
+                    
+                    return 2;
                 }
                 
             } catch(System.Exception gen_e) {

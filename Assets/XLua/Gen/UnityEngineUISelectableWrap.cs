@@ -101,14 +101,12 @@ namespace XLua.CSObjectWrap
                 {
                     UnityEngine.UI.Selectable[] _selectables = (UnityEngine.UI.Selectable[])translator.GetObject(L, 1, typeof(UnityEngine.UI.Selectable[]));
                     
-                        int gen_ret = UnityEngine.UI.Selectable.AllSelectablesNoAlloc( ref _selectables );
+                        int gen_ret = UnityEngine.UI.Selectable.AllSelectablesNoAlloc( _selectables );
                         LuaAPI.xlua_pushinteger(L, gen_ret);
-                    translator.Push(L, _selectables);
-                        
                     
                     
                     
-                    return 2;
+                    return 1;
                 }
                 
             } catch(System.Exception gen_e) {

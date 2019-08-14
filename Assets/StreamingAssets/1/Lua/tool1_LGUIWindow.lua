@@ -5,7 +5,7 @@
 -- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 -- 类的声明，这里声明了类名还有属性，并且给出了属性的初始值
-LGUIWindow = {id = nil, title = nil, x = nil, y = nil, w = nil, h = nil, guiParts = nil, canDraw = nil, t = nil, event = nil}
+LGUIWindow = {id = nil, title = nil, x = nil, y = nil, w = nil, h = nil, guiParts = nil, canDrag = nil, t = nil, event = nil}
 -- 设置元表的索引，想模拟类的话，这步操作很关键
 LGUIWindow.__index = LGUIWindow
 -- 构造方法new
@@ -19,7 +19,7 @@ function LGUIWindow:new(id, title, x, y, w, h, cd, e)
 	self.w = w
 	self.h = h
 	self.guiParts = {}
-	self.canDraw = cd
+	self.canDrag = cd
 	self.t = nil
 	self.event = e
 
@@ -57,7 +57,7 @@ function LGUIWindow:show()
 			end
 		end
 		-- 能否拖拽
-		if self.canDraw then
+		if self.canDrag then
 			CS.UnityEngine.GUI.DragWindow(CS.UnityEngine.Rect(0, 0, self.w, self.h))
 		end
 	end, self.title)
@@ -81,6 +81,7 @@ end
 -- 添加parts
 function LGUIWindow:addGUIpart(p)
 	self.guiParts[p.id] = p
+	p.parent = self
 end
 
 

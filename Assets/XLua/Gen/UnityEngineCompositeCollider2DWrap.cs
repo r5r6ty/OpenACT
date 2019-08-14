@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.CompositeCollider2D);
-			Utils.BeginObjectRegister(type, L, translator, 0, 3, 6, 4);
+			Utils.BeginObjectRegister(type, L, translator, 0, 3, 7, 5);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GenerateGeometry", _m_GenerateGeometry);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetPathPointCount", _m_GetPathPointCount);
@@ -32,6 +32,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "generationType", _g_get_generationType);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "vertexDistance", _g_get_vertexDistance);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "edgeRadius", _g_get_edgeRadius);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "offsetDistance", _g_get_offsetDistance);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "pathCount", _g_get_pathCount);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "pointCount", _g_get_pointCount);
             
@@ -39,6 +40,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "generationType", _s_set_generationType);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "vertexDistance", _s_set_vertexDistance);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "edgeRadius", _s_set_edgeRadius);
+            Utils.RegisterFunc(L, Utils.SETTER_IDX, "offsetDistance", _s_set_offsetDistance);
             
 			
 			Utils.EndObjectRegister(type, L, translator, null, null,
@@ -246,6 +248,20 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_offsetDistance(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                UnityEngine.CompositeCollider2D gen_to_be_invoked = (UnityEngine.CompositeCollider2D)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushnumber(L, gen_to_be_invoked.offsetDistance);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_pathCount(RealStatePtr L)
         {
 		    try {
@@ -330,6 +346,21 @@ namespace XLua.CSObjectWrap
 			
                 UnityEngine.CompositeCollider2D gen_to_be_invoked = (UnityEngine.CompositeCollider2D)translator.FastGetCSObj(L, 1);
                 gen_to_be_invoked.edgeRadius = (float)LuaAPI.lua_tonumber(L, 2);
+            
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 0;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _s_set_offsetDistance(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                UnityEngine.CompositeCollider2D gen_to_be_invoked = (UnityEngine.CompositeCollider2D)translator.FastGetCSObj(L, 1);
+                gen_to_be_invoked.offsetDistance = (float)LuaAPI.lua_tonumber(L, 2);
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);

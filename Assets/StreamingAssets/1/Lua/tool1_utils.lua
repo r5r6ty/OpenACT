@@ -50,12 +50,35 @@ function utils.getObject(id, s)
 	return nil
 end
 
-function utils.split(str,reps)
-    local resultStrList = {}
-    string.gsub(str,'[^'..reps..']+',function (w)
-        table.insert(resultStrList,w)
-    end)
-    return resultStrList
+-- 字符串分割
+function utils.split(str, delimiter)
+    if str==nil or str=='' or delimiter==nil then
+        return nil
+    end
+
+    local result = {}
+    for match in (str..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match)
+    end
+    return result
+end
+
+-- 比较字符串a是否包含在b里面（长度要相等）
+function utils.isStringAContainB(a, b)
+	if #a ~= #b then
+		return false
+	end
+	local c = 0
+	for i = 1, #a, 1 do
+		local f = string.find(b, string.sub(a, i, i))
+		if f ~= nil then
+			c = c + 1
+		end
+	end
+	if c == #b then
+		return true
+	end
+	return false
 end
 
 function utils.intNumberToString(num)
@@ -74,24 +97,46 @@ function utils.stringToIntNumber(str)
 	return a
 end
 
+-- 从.img加载图片做成texture2D
+function utils.loadImageToTexture2D(b64str)
+	local temp = utils.split(b64str, ",")
+	temp = temp[#temp]
+	local mod4 = #temp % 4
+	if mod4 > 0 then
+		for i = 1, 4 - mod4, 1 do
+			temp = temp .. "="
+		end
+	end
+
+	local bytes = CS.System.Convert.FromBase64String(temp)
+
+	-- 加载图片
+	local texture = CS.UnityEngine.Texture2D(0, 0, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+	texture.filterMode = CS.UnityEngine.FilterMode.Point
+--~ 	CS.UnityEngine.ImageConversion.LoadImage(texture, bytes) -- 这个怎么不行了？
+	texture:LoadImage(bytes) --- Texture2d  成员方法无法使用，为什么？为什么又能使用了？
+
+	return texture
+end
+
 function utils.drawField(cx, cy, cw, ch, subColor)
 --~ 	local subColor = mainColor
 --~ 	subColor.a = subColor.a - 0.5
-
-	local x = cx / 100
-	local y = cy / 100
-	local w = cw / 100
-	local h = ch / 100
---~ 	CS.UnityEngine.GL.PushMatrix()
+	local scale = 100
+	local x = cx / scale
+	local y = cy / scale
+	local w = cw / scale
+	local h = ch / scale
+	CS.UnityEngine.GL.PushMatrix()
 --~ 	CS.UnityEngine.GL.LoadOrtho()
 
 	CS.UnityEngine.GL.Begin(CS.UnityEngine.GL.QUADS)
 	CS.UnityEngine.GL.Color(subColor)
 
-	CS.UnityEngine.GL.Vertex3(x, y, 0)
-	CS.UnityEngine.GL.Vertex3(x + w, y, 0)
-	CS.UnityEngine.GL.Vertex3(x + w, y - h, 0)
-	CS.UnityEngine.GL.Vertex3(x, y - h, 0)
+	CS.UnityEngine.GL.Vertex3(x, -y, 0)
+	CS.UnityEngine.GL.Vertex3(x + w, -y, 0)
+	CS.UnityEngine.GL.Vertex3(x + w, -(y + h), 0)
+	CS.UnityEngine.GL.Vertex3(x, -(y + h), 0)
 --~ 	CS.UnityEngine.GL.End()
 
 --~ 	CS.UnityEngine.GL.Begin(CS.UnityEngine.GL.LINES)
@@ -110,7 +155,16 @@ function utils.drawField(cx, cy, cw, ch, subColor)
 --~ 	CS.UnityEngine.GL.Vertex3(x, y, 0)
 
 	CS.UnityEngine.GL.End()
---~ 	CS.UnityEngine.GL.PopMatrix()
+	CS.UnityEngine.GL.PopMatrix()
+end
+
+-- 求相交bounds面积
+function utils.getBoundsIntersectsArea(lhs, rhs)
+	local c = lhs.center - rhs.center
+	local r = lhs.extents + rhs.extents
+
+	local xxx = r - CS.UnityEngine.Vector3(math.abs(c.x), math.abs(c.y), math.abs(c.z))
+	return xxx
 end
 
 return utils

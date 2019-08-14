@@ -4,7 +4,20 @@
 -- http://opensource.org/licenses/MIT
 -- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-LGUIPart = {LGUIType = nil, id = nil, parent = nil, title = nil, context = nil, x = nil, y = nil, w = nil, h = nil, guiParts = nil, event1 = nil, eventFunc = nil, temp = nil}
+LGUIPart = {LGUIType = nil,
+			id = nil,
+			parent = nil,
+			title = nil,
+			context = nil,
+			x = nil,
+			y = nil,
+			w = nil,
+			h = nil,
+			guiParts = nil,
+			event1 = nil,
+			eventFunc = nil,
+			style = nil,
+			temp = nil}
 LGUIPart.__index = LGUIPart
 function LGUIPart:new(id, p, title, c, x, y, w, h)
 	local self = {}  --初始化self，如果没有这句，那么类所建立的对象如果有一个改变，其他对象都会改变
@@ -22,6 +35,7 @@ function LGUIPart:new(id, p, title, c, x, y, w, h)
 	self.parent = p
 	self.event1 = {}
 	self.eventFunc = {}
+	self.style = nil
 
 	self.temp = nil
 
@@ -34,4 +48,5 @@ end
 -- 添加parts
 function LGUIPart:addGUIpart(p)
 	self.guiParts[p.id] = p
+	p.parent = self
 end

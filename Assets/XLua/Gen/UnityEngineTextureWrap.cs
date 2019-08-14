@@ -21,13 +21,14 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.Texture);
-			Utils.BeginObjectRegister(type, L, translator, 0, 2, 15, 11);
+			Utils.BeginObjectRegister(type, L, translator, 0, 2, 16, 11);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetNativeTexturePtr", _m_GetNativeTexturePtr);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "IncrementUpdateCount", _m_IncrementUpdateCount);
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "graphicsFormat", _g_get_graphicsFormat);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "mipmapCount", _g_get_mipmapCount);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "graphicsFormat", _g_get_graphicsFormat);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "width", _g_get_width);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "height", _g_get_height);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "dimension", _g_get_dimension);
@@ -59,11 +60,12 @@ namespace XLua.CSObjectWrap
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
 
-		    Utils.BeginClassRegister(type, L, __CreateInstance, 3, 16, 5);
+		    Utils.BeginClassRegister(type, L, __CreateInstance, 4, 16, 5);
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "SetGlobalAnisotropicFilteringLimits", _m_SetGlobalAnisotropicFilteringLimits_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "SetStreamingTextureMaterialDebugProperties", _m_SetStreamingTextureMaterialDebugProperties_xlua_st_);
             
 			
+            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "GenerateAllMips", UnityEngine.Texture.GenerateAllMips);
             
 			Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "masterTextureLimit", _g_get_masterTextureLimit);
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "anisotropicFiltering", _g_get_anisotropicFiltering);
@@ -217,6 +219,20 @@ namespace XLua.CSObjectWrap
 		    try {
             
 			    LuaAPI.xlua_pushinteger(L, UnityEngine.Texture.masterTextureLimit);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_mipmapCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                UnityEngine.Texture gen_to_be_invoked = (UnityEngine.Texture)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.mipmapCount);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

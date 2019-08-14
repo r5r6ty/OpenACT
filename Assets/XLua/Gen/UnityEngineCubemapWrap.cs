@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.Cubemap);
-			Utils.BeginObjectRegister(type, L, translator, 0, 7, 3, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 7, 2, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "UpdateExternalTexture", _m_UpdateExternalTexture);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SmoothEdges", _m_SmoothEdges);
@@ -32,8 +32,7 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Apply", _m_Apply);
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "mipmapCount", _g_get_mipmapCount);
-            Utils.RegisterFunc(L, Utils.GETTER_IDX, "format", _g_get_format);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "format", _g_get_format);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "isReadable", _g_get_isReadable);
             
 			
@@ -76,6 +75,29 @@ namespace XLua.CSObjectWrap
 					UnityEngine.Experimental.Rendering.TextureCreationFlags _flags;translator.Get(L, 4, out _flags);
 					
 					UnityEngine.Cubemap gen_ret = new UnityEngine.Cubemap(_width, _format, _flags);
+					translator.Push(L, gen_ret);
+                    
+					return 1;
+				}
+				if(LuaAPI.lua_gettop(L) == 4 && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 2) && translator.Assignable<UnityEngine.TextureFormat>(L, 3) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 4))
+				{
+					int _width = LuaAPI.xlua_tointeger(L, 2);
+					UnityEngine.TextureFormat _format;translator.Get(L, 3, out _format);
+					int _mipCount = LuaAPI.xlua_tointeger(L, 4);
+					
+					UnityEngine.Cubemap gen_ret = new UnityEngine.Cubemap(_width, _format, _mipCount);
+					translator.Push(L, gen_ret);
+                    
+					return 1;
+				}
+				if(LuaAPI.lua_gettop(L) == 5 && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 2) && translator.Assignable<UnityEngine.Experimental.Rendering.GraphicsFormat>(L, 3) && translator.Assignable<UnityEngine.Experimental.Rendering.TextureCreationFlags>(L, 4) && LuaTypes.LUA_TNUMBER == LuaAPI.lua_type(L, 5))
+				{
+					int _width = LuaAPI.xlua_tointeger(L, 2);
+					UnityEngine.Experimental.Rendering.GraphicsFormat _format;translator.Get(L, 3, out _format);
+					UnityEngine.Experimental.Rendering.TextureCreationFlags _flags;translator.Get(L, 4, out _flags);
+					int _mipCount = LuaAPI.xlua_tointeger(L, 5);
+					
+					UnityEngine.Cubemap gen_ret = new UnityEngine.Cubemap(_width, _format, _flags, _mipCount);
 					translator.Push(L, gen_ret);
                     
 					return 1;
@@ -412,20 +434,6 @@ namespace XLua.CSObjectWrap
         
         
         
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _g_get_mipmapCount(RealStatePtr L)
-        {
-		    try {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			
-                UnityEngine.Cubemap gen_to_be_invoked = (UnityEngine.Cubemap)translator.FastGetCSObj(L, 1);
-                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.mipmapCount);
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 1;
-        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_format(RealStatePtr L)

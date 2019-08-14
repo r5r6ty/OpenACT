@@ -1,7 +1,7 @@
 {
 	"sheets": [
 		{
-			"name": "setting",
+			"name": "settings",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -114,13 +114,21 @@
 							"name": "button01"
 						}
 					]
+				},
+				{
+					"id": "Preview",
+					"x": 0,
+					"y": 240,
+					"w": 300,
+					"h": 300,
+					"buttons": []
 				}
 			],
 			"separators": [],
 			"props": {}
 		},
 		{
-			"name": "setting@buttons",
+			"name": "settings@buttons",
 			"props": {
 				"hide": true
 			},

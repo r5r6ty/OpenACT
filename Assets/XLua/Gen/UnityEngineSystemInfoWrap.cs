@@ -31,7 +31,7 @@ namespace XLua.CSObjectWrap
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
 
-		    Utils.BeginClassRegister(type, L, __CreateInstance, 8, 57, 0);
+		    Utils.BeginClassRegister(type, L, __CreateInstance, 8, 58, 0);
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "SupportsRenderTextureFormat", _m_SupportsRenderTextureFormat_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "SupportsBlendingOnRenderTextureFormat", _m_SupportsBlendingOnRenderTextureFormat_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "SupportsTextureFormat", _m_SupportsTextureFormat_xlua_st_);
@@ -98,6 +98,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "supportsAsyncGPUReadback", _g_get_supportsAsyncGPUReadback);
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "supportsSetConstantBuffer", _g_get_supportsSetConstantBuffer);
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "minConstantBufferOffsetAlignment", _g_get_minConstantBufferOffsetAlignment);
+            Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "hasMipMaxLevel", _g_get_hasMipMaxLevel);
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "supportsMipStreaming", _g_get_supportsMipStreaming);
             
 			
@@ -968,6 +969,18 @@ namespace XLua.CSObjectWrap
 		    try {
             
 			    LuaAPI.lua_pushboolean(L, UnityEngine.SystemInfo.minConstantBufferOffsetAlignment);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_hasMipMaxLevel(RealStatePtr L)
+        {
+		    try {
+            
+			    LuaAPI.lua_pushboolean(L, UnityEngine.SystemInfo.hasMipMaxLevel);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

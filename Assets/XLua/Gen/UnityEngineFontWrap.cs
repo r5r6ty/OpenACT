@@ -44,10 +44,11 @@ namespace XLua.CSObjectWrap
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
 
-		    Utils.BeginClassRegister(type, L, __CreateInstance, 5, 0, 0);
+		    Utils.BeginClassRegister(type, L, __CreateInstance, 6, 0, 0);
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "CreateDynamicFontFromOSFont", _m_CreateDynamicFontFromOSFont_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetMaxVertsForString", _m_GetMaxVertsForString_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetOSInstalledFontNames", _m_GetOSInstalledFontNames_xlua_st_);
+            Utils.RegisterFunc(L, Utils.CLS_IDX, "GetPathsToOSFonts", _m_GetPathsToOSFonts_xlua_st_);
             
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "textureRebuilt", _e_textureRebuilt);
 			
@@ -208,6 +209,32 @@ namespace XLua.CSObjectWrap
                 {
                     
                         string[] gen_ret = UnityEngine.Font.GetOSInstalledFontNames(  );
+                        translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetPathsToOSFonts_xlua_st_(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+            
+                
+                {
+                    
+                        string[] gen_ret = UnityEngine.Font.GetPathsToOSFonts(  );
                         translator.Push(L, gen_ret);
                     
                     

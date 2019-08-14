@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.UI.Image);
-			Utils.BeginObjectRegister(type, L, translator, 0, 7, 22, 12);
+			Utils.BeginObjectRegister(type, L, translator, 0, 7, 23, 13);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "DisableSpriteOptimizations", _m_DisableSpriteOptimizations);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OnBeforeSerialize", _m_OnBeforeSerialize);
@@ -45,6 +45,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "useSpriteMesh", _g_get_useSpriteMesh);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "mainTexture", _g_get_mainTexture);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "hasBorder", _g_get_hasBorder);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "pixelsPerUnitMultiplier", _g_get_pixelsPerUnitMultiplier);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "pixelsPerUnit", _g_get_pixelsPerUnit);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "material", _g_get_material);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "minWidth", _g_get_minWidth);
@@ -66,6 +67,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "fillOrigin", _s_set_fillOrigin);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "alphaHitTestMinimumThreshold", _s_set_alphaHitTestMinimumThreshold);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "useSpriteMesh", _s_set_useSpriteMesh);
+            Utils.RegisterFunc(L, Utils.SETTER_IDX, "pixelsPerUnitMultiplier", _s_set_pixelsPerUnitMultiplier);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "material", _s_set_material);
             
 			
@@ -486,6 +488,20 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_pixelsPerUnitMultiplier(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                UnityEngine.UI.Image gen_to_be_invoked = (UnityEngine.UI.Image)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushnumber(L, gen_to_be_invoked.pixelsPerUnitMultiplier);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_pixelsPerUnit(RealStatePtr L)
         {
 		    try {
@@ -773,6 +789,21 @@ namespace XLua.CSObjectWrap
 			
                 UnityEngine.UI.Image gen_to_be_invoked = (UnityEngine.UI.Image)translator.FastGetCSObj(L, 1);
                 gen_to_be_invoked.useSpriteMesh = LuaAPI.lua_toboolean(L, 2);
+            
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 0;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _s_set_pixelsPerUnitMultiplier(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                UnityEngine.UI.Image gen_to_be_invoked = (UnityEngine.UI.Image)translator.FastGetCSObj(L, 1);
+                gen_to_be_invoked.pixelsPerUnitMultiplier = (float)LuaAPI.lua_tonumber(L, 2);
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);

@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.ParticleSystem.EmitParams);
-			Utils.BeginObjectRegister(type, L, translator, 0, 10, 13, 14);
+			Utils.BeginObjectRegister(type, L, translator, 0, 10, 14, 15);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ResetPosition", _m_ResetPosition);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ResetVelocity", _m_ResetVelocity);
@@ -35,7 +35,8 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ResetMeshIndex", _m_ResetMeshIndex);
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "position", _g_get_position);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "particle", _g_get_particle);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "position", _g_get_position);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "applyShapeToPosition", _g_get_applyShapeToPosition);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "velocity", _g_get_velocity);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "startLifetime", _g_get_startLifetime);
@@ -49,7 +50,8 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "startColor", _g_get_startColor);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "randomSeed", _g_get_randomSeed);
             
-			Utils.RegisterFunc(L, Utils.SETTER_IDX, "position", _s_set_position);
+			Utils.RegisterFunc(L, Utils.SETTER_IDX, "particle", _s_set_particle);
+            Utils.RegisterFunc(L, Utils.SETTER_IDX, "position", _s_set_position);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "applyShapeToPosition", _s_set_applyShapeToPosition);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "velocity", _s_set_velocity);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "startLifetime", _s_set_startLifetime);
@@ -400,6 +402,20 @@ namespace XLua.CSObjectWrap
         
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_particle(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                UnityEngine.ParticleSystem.EmitParams gen_to_be_invoked;translator.Get(L, 1, out gen_to_be_invoked);
+                translator.Push(L, gen_to_be_invoked.particle);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_position(RealStatePtr L)
         {
 		    try {
@@ -582,6 +598,24 @@ namespace XLua.CSObjectWrap
         }
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _s_set_particle(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                UnityEngine.ParticleSystem.EmitParams gen_to_be_invoked;translator.Get(L, 1, out gen_to_be_invoked);
+                UnityEngine.ParticleSystem.Particle gen_value;translator.Get(L, 2, out gen_value);
+				gen_to_be_invoked.particle = gen_value;
+            
+                translator.Update(L, 1, gen_to_be_invoked);
+            
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 0;
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _s_set_position(RealStatePtr L)

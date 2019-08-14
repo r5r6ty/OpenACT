@@ -32,7 +32,9 @@ namespace XLua.CSObjectWrap
 			    null, null, null);
 
 		    Utils.BeginClassRegister(type, L, __CreateInstance, 11, 0, 0);
-			Utils.RegisterFunc(L, Utils.CLS_IDX, "RectangleContainsScreenPoint", _m_RectangleContainsScreenPoint_xlua_st_);
+			Utils.RegisterFunc(L, Utils.CLS_IDX, "PixelAdjustPoint", _m_PixelAdjustPoint_xlua_st_);
+            Utils.RegisterFunc(L, Utils.CLS_IDX, "PixelAdjustRect", _m_PixelAdjustRect_xlua_st_);
+            Utils.RegisterFunc(L, Utils.CLS_IDX, "RectangleContainsScreenPoint", _m_RectangleContainsScreenPoint_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "ScreenPointToWorldPointInRectangle", _m_ScreenPointToWorldPointInRectangle_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "ScreenPointToLocalPointInRectangle", _m_ScreenPointToLocalPointInRectangle_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "ScreenPointToRay", _m_ScreenPointToRay_xlua_st_);
@@ -40,8 +42,6 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.CLS_IDX, "CalculateRelativeRectTransformBounds", _m_CalculateRelativeRectTransformBounds_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "FlipLayoutOnAxis", _m_FlipLayoutOnAxis_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "FlipLayoutAxes", _m_FlipLayoutAxes_xlua_st_);
-            Utils.RegisterFunc(L, Utils.CLS_IDX, "PixelAdjustPoint", _m_PixelAdjustPoint_xlua_st_);
-            Utils.RegisterFunc(L, Utils.CLS_IDX, "PixelAdjustRect", _m_PixelAdjustRect_xlua_st_);
             
 			
             
@@ -63,6 +63,63 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_PixelAdjustPoint_xlua_st_(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+            
+                
+                {
+                    UnityEngine.Vector2 _point;translator.Get(L, 1, out _point);
+                    UnityEngine.Transform _elementTransform = (UnityEngine.Transform)translator.GetObject(L, 2, typeof(UnityEngine.Transform));
+                    UnityEngine.Canvas _canvas = (UnityEngine.Canvas)translator.GetObject(L, 3, typeof(UnityEngine.Canvas));
+                    
+                        UnityEngine.Vector2 gen_ret = UnityEngine.RectTransformUtility.PixelAdjustPoint( _point, _elementTransform, _canvas );
+                        translator.PushUnityEngineVector2(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_PixelAdjustRect_xlua_st_(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+            
+                
+                {
+                    UnityEngine.RectTransform _rectTransform = (UnityEngine.RectTransform)translator.GetObject(L, 1, typeof(UnityEngine.RectTransform));
+                    UnityEngine.Canvas _canvas = (UnityEngine.Canvas)translator.GetObject(L, 2, typeof(UnityEngine.Canvas));
+                    
+                        UnityEngine.Rect gen_ret = UnityEngine.RectTransformUtility.PixelAdjustRect( _rectTransform, _canvas );
+                        translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_RectangleContainsScreenPoint_xlua_st_(RealStatePtr L)
@@ -321,63 +378,6 @@ namespace XLua.CSObjectWrap
                     
                     
                     return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_PixelAdjustPoint_xlua_st_(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-            
-                
-                {
-                    UnityEngine.Vector2 _point;translator.Get(L, 1, out _point);
-                    UnityEngine.Transform _elementTransform = (UnityEngine.Transform)translator.GetObject(L, 2, typeof(UnityEngine.Transform));
-                    UnityEngine.Canvas _canvas = (UnityEngine.Canvas)translator.GetObject(L, 3, typeof(UnityEngine.Canvas));
-                    
-                        UnityEngine.Vector2 gen_ret = UnityEngine.RectTransformUtility.PixelAdjustPoint( _point, _elementTransform, _canvas );
-                        translator.PushUnityEngineVector2(L, gen_ret);
-                    
-                    
-                    
-                    return 1;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_PixelAdjustRect_xlua_st_(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-            
-                
-                {
-                    UnityEngine.RectTransform _rectTransform = (UnityEngine.RectTransform)translator.GetObject(L, 1, typeof(UnityEngine.RectTransform));
-                    UnityEngine.Canvas _canvas = (UnityEngine.Canvas)translator.GetObject(L, 2, typeof(UnityEngine.Canvas));
-                    
-                        UnityEngine.Rect gen_ret = UnityEngine.RectTransformUtility.PixelAdjustRect( _rectTransform, _canvas );
-                        translator.Push(L, gen_ret);
-                    
-                    
-                    
-                    return 1;
                 }
                 
             } catch(System.Exception gen_e) {

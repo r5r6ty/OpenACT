@@ -1,263 +1,266 @@
 {
+	"compress": false,
+	"customTypes": [],
 	"sheets": [
 		{
-			"name": "characters",
 			"columns": [
 				{
-					"typeStr": "0",
 					"name": "id",
-					"display": null
+					"typeStr": "0"
 				},
 				{
-					"typeStr": "1",
-					"name": "name"
+					"name": "name",
+					"typeStr": "1"
 				},
 				{
-					"typeStr": "8",
-					"name": "actions"
+					"name": "actions",
+					"typeStr": "8"
 				}
 			],
+			"name": "characters",
+			"separators": [],
+			"props": [],
 			"lines": [
 				{
 					"id": "ljokp",
 					"actions": [
 						{
+							"action": "standing",
 							"frames": [
 								{
-									"pic": "bfa8a42e75bd4f72414444c3a4f89481",
-									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128
+									"y": -80,
+									"x": -9,
+									"flags": 7,
+									"height": 80,
+									"width": 18,
+									"category": "Body"
 								},
 								{
-									"pic": "89408ecd0150bb317522f661d72c0da9",
+									"y": -84,
+									"x": -30,
+									"pic": "10576598204c22285531c7ce4e8c0545",
 									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128
+									"category": "Sprite"
 								},
 								{
-									"pic": "7368a1a5d5805e8b2eb6c21c84d2626d",
-									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128
-								},
-								{
-									"pic": "f29c6a78dd5c7e2c14b279fa96dc5b0d",
-									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128
-								},
-								{
-									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128,
-									"pic": "1b08ceafa12cefe05b7e93e10099b9e9"
-								},
-								{
-									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128,
-									"pic": "c55bc0e26b7c56b9506dd23534717f1b"
-								},
-								{
-									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128,
-									"pic": "3520694b8d14ee32eea331996ace1bea"
-								},
-								{
-									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128,
-									"pic": "c0446cb2598cc2963ae679e282d9d5e9"
-								},
-								{
-									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128,
-									"pic": "d672fe0eec66ff082f0a92534091ed5c"
-								},
-								{
-									"wait": 6,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128,
-									"nextAction": "walking",
 									"nextFrame": 0,
-									"pic": "10d0808021dcd330731057272431296a"
+									"nextAction": "standing",
+									"category": "Warp"
 								}
-							],
-							"action": "walking"
+							]
 						},
 						{
-							"action": "running",
+							"action": "shooting",
 							"frames": [
 								{
-									"pic": "10d0808021dcd330731057272431296a",
-									"centerX": 0,
-									"centerY": 0,
-									"wait": 0,
-									"itrs": [],
-									"bdys": []
+									"y": -60,
+									"x": -9,
+									"flags": 7,
+									"height": 59,
+									"width": 18,
+									"category": "Body"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "bc0e9d2bae642fba77e55137b8d4f05b",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"x": -9,
+									"y": -60,
+									"width": 18,
+									"height": 59,
+									"flags": 7
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "330bbb35a6f44c9a16fd84977ac2ec3b",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "369cd7ba79caf2a5b3042a718c216ccb",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "4b95dbd9266a97c1438b3ad8303fd476",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "1e7612b8d5b49cba98dc33bf5b4086d7",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"frequency": 0,
+									"y": -69,
+									"x": 16,
+									"damage": 100,
+									"height": 59,
+									"width": 100,
+									"category": "Attack"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "95c5539b8a3259542e88f393687131cb",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"frequency": 0,
+									"y": 0,
+									"x": 0,
+									"damage": 0,
+									"height": 0,
+									"width": 0,
+									"category": "Attack"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "c8f1878bfcff0f8e0991f77e31e1f742",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "0059231a34cd442d268b39e51575fb51",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "766d8ec78103d1548304fb0ae9b177c7",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "1de8cc17d9c82e09f30f476476702a2f",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "1e7612b8d5b49cba98dc33bf5b4086d7",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "fb54cfc715369c77867d4b74af998e0e",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"x": -9,
+									"y": -60,
+									"width": 18,
+									"height": 59,
+									"flags": 7
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "173179276b4688400f346e9cc981b640",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "fb2aa10a6700449b7fd555a69e3ad127",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "f145a115d844d796e7ae0ee32f313937",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"x": -9,
+									"y": -60,
+									"width": 18,
+									"height": 59,
+									"flags": 7
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "fc445615e65ff1aee0bd942defce3f39",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"x": -9,
+									"y": -60,
+									"width": 18,
+									"height": 59,
+									"flags": 7
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "184cc24940c000be11541069ac35b302",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "7233f93352b741b6c9724f200ca16ed7",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "e637ebe560f83c25bd2108df536b3a3a",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "2409bdd2a80df17b6f4ccfcee7d9fe90",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"y": -84,
+									"x": -30,
+									"pic": "6029e261f6a3e85dffc96bc4a008761c",
+									"wait": 5,
+									"category": "Sprite"
+								},
+								{
+									"nextFrame": 0,
+									"nextAction": "standing",
+									"category": "Warp"
 								}
 							]
 						}
@@ -271,28 +274,11 @@
 							"action": "walking",
 							"frames": [
 								{
+									"y": -128,
+									"x": -64,
 									"pic": "10d0808021dcd330731057272431296a",
 									"wait": 11,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": -64,
-									"centerY": -128,
-									"nextAction": "jumping",
-									"nextFrame": 0
+									"category": "Sprite"
 								}
 							]
 						}
@@ -301,166 +287,308 @@
 				},
 				{
 					"id": "yuiffy",
-					"name": "yuiffy",
 					"actions": [
 						{
 							"action": "eating",
 							"frames": [
 								{
+									"y": 0,
+									"x": 0,
 									"pic": "c55bc0e26b7c56b9506dd23534717f1b",
 									"wait": 11,
-									"itrs": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"bdys": [
-										{
-											"x": 0,
-											"y": 0,
-											"w": 128,
-											"h": 128
-										}
-									],
-									"centerX": 0,
-									"centerY": 0,
-									"nextAction": "eating",
-									"nextFrame": 0
+									"category": "Sprite"
 								}
 							]
 						}
-					]
-				}
-			],
-			"separators": [],
-			"props": {}
-		},
-		{
-			"name": "characters@actions",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "0",
-					"name": "action"
-				},
-				{
-					"typeStr": "8",
-					"name": "frames",
-					"display": null
+					],
+					"name": "yuiffy"
 				}
 			]
 		},
 		{
-			"name": "characters@actions@frames",
+			"columns": [
+				{
+					"name": "action",
+					"typeStr": "0"
+				},
+				{
+					"name": "frames",
+					"typeStr": "8"
+				}
+			],
+			"name": "characters@actions",
+			"separators": [],
 			"props": {
 				"hide": true
 			},
-			"separators": [],
-			"lines": [],
+			"lines": []
+		},
+		{
 			"columns": [
 				{
+					"name": "category",
+					"typeStr": "6:frameType"
+				},
+				{
 					"typeStr": "7",
-					"name": "pic",
-					"display": null
+					"opt": true,
+					"name": "pic"
 				},
 				{
 					"typeStr": "3",
-					"name": "centerX"
-				},
-				{
-					"typeStr": "3",
-					"name": "centerY",
-					"display": null
-				},
-				{
-					"typeStr": "3",
+					"opt": true,
 					"name": "wait"
 				},
 				{
-					"typeStr": "8",
-					"name": "itrs"
-				},
-				{
-					"typeStr": "8",
-					"name": "bdys",
-					"display": null
-				},
-				{
-					"typeStr": "1",
-					"name": "nextAction",
+					"typeStr": "3",
 					"opt": true,
-					"display": null
-				},
-				{
-					"typeStr": "3",
-					"name": "nextFrame",
-					"opt": true
-				}
-			]
-		},
-		{
-			"name": "characters@actions@frames@itrs",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "3",
 					"name": "x"
 				},
 				{
 					"typeStr": "3",
+					"opt": true,
 					"name": "y"
 				},
 				{
 					"typeStr": "3",
-					"name": "w"
+					"opt": true,
+					"name": "width"
 				},
 				{
 					"typeStr": "3",
-					"name": "h"
+					"opt": true,
+					"name": "height"
+				},
+				{
+					"typeStr": "3",
+					"opt": true,
+					"name": "damage"
+				},
+				{
+					"typeStr": "3",
+					"opt": true,
+					"name": "frequency"
+				},
+				{
+					"typeStr": "10:collide,injury,catch",
+					"opt": true,
+					"name": "flags"
+				},
+				{
+					"typeStr": "1",
+					"opt": true,
+					"name": "nextAction"
+				},
+				{
+					"typeStr": "3",
+					"opt": true,
+					"name": "nextFrame"
+				}
+			],
+			"name": "characters@actions@frames",
+			"separators": [],
+			"props": {
+				"hide": true
+			},
+			"lines": []
+		},
+		{
+			"columns": [
+				{
+					"name": "id",
+					"typeStr": "0"
+				},
+				{
+					"name": "color",
+					"typeStr": "11"
+				},
+				{
+					"name": "necessary",
+					"typeStr": "8"
+				}
+			],
+			"name": "frameType",
+			"separators": [],
+			"props": [],
+			"lines": [
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "pic"
+						},
+						{
+							"default": 0,
+							"name": "wait"
+						},
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						}
+					],
+					"color": 15728895,
+					"id": "Sprite"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						},
+						{
+							"default": 0,
+							"name": "cx"
+						},
+						{
+							"default": 0,
+							"name": "cy"
+						},
+						{
+							"default": 0,
+							"name": "compute"
+						}
+					],
+					"color": 16772096,
+					"id": "Move"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						},
+						{
+							"default": 0,
+							"name": "w"
+						},
+						{
+							"default": 0,
+							"name": "h"
+						},
+						{
+							"default": 0,
+							"name": "damage"
+						},
+						{
+							"default": 0,
+							"name": "frequency"
+						}
+					],
+					"color": 16711680,
+					"id": "Attack"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						},
+						{
+							"default": 0,
+							"name": "w"
+						},
+						{
+							"default": 0,
+							"name": "h"
+						},
+						{
+							"default": 0,
+							"name": "flags"
+						}
+					],
+					"color": 65287,
+					"id": "Body"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "file"
+						}
+					],
+					"color": 16740352,
+					"id": "Sound"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						},
+						{
+							"default": 0,
+							"name": "id"
+						},
+						{
+							"default": "which action?",
+							"name": "action"
+						},
+						{
+							"default": 0,
+							"name": "frame"
+						}
+					],
+					"color": 8257536,
+					"id": "Object"
+				},
+				{
+					"necessary": [
+						{
+							"default": "which action?",
+							"name": "nextAction"
+						},
+						{
+							"default": 0,
+							"name": "nextFrame"
+						}
+					],
+					"color": 65490,
+					"id": "Warp"
+				},
+				{
+					"necessary": [],
+					"color": 0,
+					"id": "End"
 				}
 			]
 		},
 		{
-			"name": "characters@actions@frames@bdys",
+			"columns": [
+				{
+					"name": "name",
+					"typeStr": "1"
+				},
+				{
+					"name": "default",
+					"typeStr": "16"
+				}
+			],
+			"name": "frameType@necessary",
+			"separators": [],
 			"props": {
 				"hide": true
 			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "3",
-					"name": "x",
-					"display": null
-				},
-				{
-					"typeStr": "3",
-					"name": "y"
-				},
-				{
-					"typeStr": "3",
-					"name": "w",
-					"display": null
-				},
-				{
-					"typeStr": "3",
-					"name": "h",
-					"display": null
-				}
-			]
+			"lines": []
 		}
-	],
-	"customTypes": [],
-	"compress": false
+	]
 }

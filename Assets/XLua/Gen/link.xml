@@ -4,10 +4,14 @@
 
 	<assembly fullname="Assembly-CSharp">
 	    <type fullname="XLuaTest.LuaBehaviour" preserve="all"/>
+		<type fullname="BoundsIntersectExample" preserve="all"/>
+		<type fullname="ffffff" preserve="all"/>
 		<type fullname="GameLoader" preserve="all"/>
 		<type fullname="LuaManager" preserve="all"/>
 		<type fullname="ObjectManager" preserve="all"/>
 		<type fullname="Tools" preserve="all"/>
+		<type fullname="PhysicalObject" preserve="all"/>
+		<type fullname="test" preserve="all"/>
 		
 	</assembly>
 
@@ -170,13 +174,6 @@
 		<type fullname="UnityEngine.Hash128" preserve="all"/>
 		<type fullname="UnityEngine.HashUtilities" preserve="all"/>
 		<type fullname="UnityEngine.HashUnsafeUtilities" preserve="all"/>
-		<type fullname="UnityEngine.Touch" preserve="all"/>
-		<type fullname="UnityEngine.AccelerationEvent" preserve="all"/>
-		<type fullname="UnityEngine.Gyroscope" preserve="all"/>
-		<type fullname="UnityEngine.LocationInfo" preserve="all"/>
-		<type fullname="UnityEngine.LocationService" preserve="all"/>
-		<type fullname="UnityEngine.Compass" preserve="all"/>
-		<type fullname="UnityEngine.Input" preserve="all"/>
 		<type fullname="UnityEngine.Logger" preserve="all"/>
 		<type fullname="UnityEngine.Color" preserve="all"/>
 		<type fullname="UnityEngine.Color32" preserve="all"/>
@@ -257,6 +254,17 @@
 
 	<assembly fullname="UnityEngine.ImageConversionModule">
 	    <type fullname="UnityEngine.ImageConversion" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.InputLegacyModule">
+	    <type fullname="UnityEngine.Touch" preserve="all"/>
+		<type fullname="UnityEngine.AccelerationEvent" preserve="all"/>
+		<type fullname="UnityEngine.Gyroscope" preserve="all"/>
+		<type fullname="UnityEngine.LocationInfo" preserve="all"/>
+		<type fullname="UnityEngine.LocationService" preserve="all"/>
+		<type fullname="UnityEngine.Compass" preserve="all"/>
+		<type fullname="UnityEngine.Input" preserve="all"/>
 		
 	</assembly>
 
@@ -425,11 +433,11 @@
 	</assembly>
 
 	<assembly fullname="UnityEngine.UIModule">
-	    <type fullname="UnityEngine.Canvas" preserve="all"/>
-		<type fullname="UnityEngine.UISystemProfilerApi" preserve="all"/>
-		<type fullname="UnityEngine.CanvasGroup" preserve="all"/>
+	    <type fullname="UnityEngine.CanvasGroup" preserve="all"/>
 		<type fullname="UnityEngine.CanvasRenderer" preserve="all"/>
 		<type fullname="UnityEngine.RectTransformUtility" preserve="all"/>
+		<type fullname="UnityEngine.Canvas" preserve="all"/>
+		<type fullname="UnityEngine.UISystemProfilerApi" preserve="all"/>
 		
 	</assembly>
 
@@ -455,18 +463,24 @@
 		
 	</assembly>
 
+	<assembly fullname="UnityEngine.XRModule">
+	    <type fullname="UnityEngine.IntegratedSubsystemDescriptor" preserve="all"/>
+		<type fullname="UnityEngine.SubsystemDescriptor" preserve="all"/>
+		<type fullname="UnityEngine.SubsystemManager" preserve="all"/>
+		<type fullname="UnityEngine.IntegratedSubsystem" preserve="all"/>
+		<type fullname="UnityEngine.Subsystem" preserve="all"/>
+		
+	</assembly>
+
 	<assembly fullname="UnityEngine.UI">
 	    <type fullname="UnityEngine.UI.AnimationTriggers" preserve="all"/>
 		<type fullname="UnityEngine.UI.Button" preserve="all"/>
-		<type fullname="UnityEngine.UI.Button+ButtonClickedEvent" preserve="all"/>
 		<type fullname="UnityEngine.UI.CanvasUpdateRegistry" preserve="all"/>
 		<type fullname="UnityEngine.UI.ColorBlock" preserve="all"/>
+		<type fullname="UnityEngine.UI.ClipperRegistry" preserve="all"/>
+		<type fullname="UnityEngine.UI.Clipping" preserve="all"/>
 		<type fullname="UnityEngine.UI.DefaultControls" preserve="all"/>
-		<type fullname="UnityEngine.UI.DefaultControls+Resources" preserve="all"/>
 		<type fullname="UnityEngine.UI.Dropdown" preserve="all"/>
-		<type fullname="UnityEngine.UI.Dropdown+OptionData" preserve="all"/>
-		<type fullname="UnityEngine.UI.Dropdown+OptionDataList" preserve="all"/>
-		<type fullname="UnityEngine.UI.Dropdown+DropdownEvent" preserve="all"/>
 		<type fullname="UnityEngine.UI.FontData" preserve="all"/>
 		<type fullname="UnityEngine.UI.FontUpdateTracker" preserve="all"/>
 		<type fullname="UnityEngine.UI.Graphic" preserve="all"/>
@@ -474,30 +488,6 @@
 		<type fullname="UnityEngine.UI.GraphicRegistry" preserve="all"/>
 		<type fullname="UnityEngine.UI.Image" preserve="all"/>
 		<type fullname="UnityEngine.UI.InputField" preserve="all"/>
-		<type fullname="UnityEngine.UI.InputField+SubmitEvent" preserve="all"/>
-		<type fullname="UnityEngine.UI.InputField+OnChangeEvent" preserve="all"/>
-		<type fullname="UnityEngine.UI.Mask" preserve="all"/>
-		<type fullname="UnityEngine.UI.MaskableGraphic" preserve="all"/>
-		<type fullname="UnityEngine.UI.MaskableGraphic+CullStateChangedEvent" preserve="all"/>
-		<type fullname="UnityEngine.UI.MaskUtilities" preserve="all"/>
-		<type fullname="UnityEngine.UI.Navigation" preserve="all"/>
-		<type fullname="UnityEngine.UI.RawImage" preserve="all"/>
-		<type fullname="UnityEngine.UI.RectMask2D" preserve="all"/>
-		<type fullname="UnityEngine.UI.Scrollbar" preserve="all"/>
-		<type fullname="UnityEngine.UI.Scrollbar+ScrollEvent" preserve="all"/>
-		<type fullname="UnityEngine.UI.ScrollRect" preserve="all"/>
-		<type fullname="UnityEngine.UI.ScrollRect+ScrollRectEvent" preserve="all"/>
-		<type fullname="UnityEngine.UI.Selectable" preserve="all"/>
-		<type fullname="UnityEngine.UI.Slider" preserve="all"/>
-		<type fullname="UnityEngine.UI.Slider+SliderEvent" preserve="all"/>
-		<type fullname="UnityEngine.UI.SpriteState" preserve="all"/>
-		<type fullname="UnityEngine.UI.StencilMaterial" preserve="all"/>
-		<type fullname="UnityEngine.UI.Text" preserve="all"/>
-		<type fullname="UnityEngine.UI.Toggle" preserve="all"/>
-		<type fullname="UnityEngine.UI.Toggle+ToggleEvent" preserve="all"/>
-		<type fullname="UnityEngine.UI.ToggleGroup" preserve="all"/>
-		<type fullname="UnityEngine.UI.ClipperRegistry" preserve="all"/>
-		<type fullname="UnityEngine.UI.Clipping" preserve="all"/>
 		<type fullname="UnityEngine.UI.AspectRatioFitter" preserve="all"/>
 		<type fullname="UnityEngine.UI.CanvasScaler" preserve="all"/>
 		<type fullname="UnityEngine.UI.ContentSizeFitter" preserve="all"/>
@@ -509,11 +499,38 @@
 		<type fullname="UnityEngine.UI.LayoutRebuilder" preserve="all"/>
 		<type fullname="UnityEngine.UI.LayoutUtility" preserve="all"/>
 		<type fullname="UnityEngine.UI.VerticalLayoutGroup" preserve="all"/>
+		<type fullname="UnityEngine.UI.Mask" preserve="all"/>
+		<type fullname="UnityEngine.UI.MaskableGraphic" preserve="all"/>
+		<type fullname="UnityEngine.UI.MaskUtilities" preserve="all"/>
+		<type fullname="UnityEngine.UI.Navigation" preserve="all"/>
+		<type fullname="UnityEngine.UI.RawImage" preserve="all"/>
+		<type fullname="UnityEngine.UI.RectMask2D" preserve="all"/>
+		<type fullname="UnityEngine.UI.Scrollbar" preserve="all"/>
+		<type fullname="UnityEngine.UI.ScrollRect" preserve="all"/>
+		<type fullname="UnityEngine.UI.Selectable" preserve="all"/>
+		<type fullname="UnityEngine.UI.Slider" preserve="all"/>
+		<type fullname="UnityEngine.UI.SpriteState" preserve="all"/>
+		<type fullname="UnityEngine.UI.StencilMaterial" preserve="all"/>
+		<type fullname="UnityEngine.UI.Text" preserve="all"/>
+		<type fullname="UnityEngine.UI.Toggle" preserve="all"/>
+		<type fullname="UnityEngine.UI.ToggleGroup" preserve="all"/>
 		<type fullname="UnityEngine.UI.VertexHelper" preserve="all"/>
 		<type fullname="UnityEngine.UI.BaseMeshEffect" preserve="all"/>
 		<type fullname="UnityEngine.UI.Outline" preserve="all"/>
 		<type fullname="UnityEngine.UI.PositionAsUV1" preserve="all"/>
 		<type fullname="UnityEngine.UI.Shadow" preserve="all"/>
+		<type fullname="UnityEngine.UI.Button+ButtonClickedEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.DefaultControls+Resources" preserve="all"/>
+		<type fullname="UnityEngine.UI.Dropdown+OptionData" preserve="all"/>
+		<type fullname="UnityEngine.UI.Dropdown+OptionDataList" preserve="all"/>
+		<type fullname="UnityEngine.UI.Dropdown+DropdownEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.InputField+SubmitEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.InputField+OnChangeEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.MaskableGraphic+CullStateChangedEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.Scrollbar+ScrollEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.ScrollRect+ScrollRectEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.Slider+SliderEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.Toggle+ToggleEvent" preserve="all"/>
 		
 	</assembly>
 

@@ -4,12 +4,18 @@
 -- http://opensource.org/licenses/MIT
 -- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
+require "castleDB"
 utils = require 'tool1_utils'
---~ local util = require 'xlua.util'
-
 require "tool1_LGUIBox"
 require "tool1_LGUIWindow"
-json = require "json"
+tool2_castleDB = require "tool2_castleDB"
+
+require "LObject"
+
+local filePath = CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/"
+
+local perviewCamera = nil
+local previewRenderTexture = nil
 
 local too = false
 local toxy = { x = 0, y = 0}
@@ -20,16 +26,17 @@ local focusWindowID = -1 -- 当前聚焦窗口id
 local toolWindowID = -1
 local toolWindowPos = {x = 0, y = 0}
 
-local settingsDB = {}
 
+local settingsDB = {}
 local charactersDB = {}
-local imagesDB = {}
+
 local texture2Ds = {}
 local pics = {}
 
 local categorys = {}
 
 local displayingCharacterObject = nil
+local PreviewCharacterObject = nil
 
 local currentCharacter = nil
 local defAction = {}
@@ -38,50 +45,13 @@ local currentFrame = nil
 
 local Dx = 0
 local Dy = 0
+local box = {x = 0, y = 0, w = 0, h = 0}
 
--- 从.img加载图片做成texture2D然后直接生成sprite
-function LoadImageToTexture2D(index)
-	local temp = utils.split(imagesDB[index], ",")
-	temp = temp[#temp]
-	local mod4 = #temp % 4
-	if mod4 > 0 then
-		for i = 1, 4 - mod4, 1 do
-			temp = temp .. "="
-		end
-	end
+local zoom = 1
 
---~ 	print("str " .. #temp)
+local display = true
 
-	local bytes = CS.System.Convert.FromBase64String(temp)
-
---~ 	print(#bytes)
---~     for i, v in ipairs(bytes) do
---~ 		print(v)
---~ 	end
-
---~ 	print("waaaaaaaaaaaaaaaaaaaaaaaaa")
-
-
-	-- 加载图片
-	local texture = CS.UnityEngine.Texture2D(0, 0, CS.UnityEngine.TextureFormat.RGBA32, false, false)
-	texture.filterMode = CS.UnityEngine.FilterMode.Point
---~ 	CS.UnityEngine.ImageConversion.LoadImage(texture, bytes) -- 这个怎么不行了？
-	texture:LoadImage(bytes) --- Texture2d  成员方法无法使用，为什么？为什么又能使用了？
-	table.insert(texture2Ds, texture)
-
-	local x = 0
-	local y = 0
-
-	local sprite = CS.UnityEngine.Sprite.Create(texture, CS.UnityEngine.Rect(x, y, texture.width, texture.height), CS.UnityEngine.Vector2(0, 1))
-
---~ 	local test_object = CS.UnityEngine.GameObject("test")
---~ 	test_object.transform.localPosition = CS.UnityEngine.Vector3(0, 0, 0)
---~ 	local sr = test_object:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
---~ 	sr.sprite = sprite
-
-
-	return sprite
-end
+local scale = 2
 
 -- 构建工具窗口
 function createToolWindow(cx, cy, partDetail)
@@ -210,12 +180,12 @@ function createToolWindow(cx, cy, partDetail)
 			local Tcd = nil
 			if partDetail == nil then
 
-				local canDrawBool = "0"
-				if valuef.canDraw then
-					canDrawBool = "1"
+				local canDragBool = "0"
+				if valuef.canDrag then
+					canDragBool = "1"
 				end
-				w:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), nil, "", "canDraw", 10, 140, 40, 20))
-				Tcd = LGUITextField:new(utils.createid(LGUIWindowStack), nil, "", canDrawBool, 50, 140, 40, 20)
+				w:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), nil, "", "canDrag", 10, 140, 40, 20))
+				Tcd = LGUITextField:new(utils.createid(LGUIWindowStack), nil, "", canDragBool, 50, 140, 40, 20)
 				w:addGUIpart(Tcd)
 			else
 				w:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), nil, "", "pid", 10, 140, 40, 20))
@@ -245,7 +215,7 @@ function createToolWindow(cx, cy, partDetail)
 					if Tcd.context == "0" then
 						temp = false
 					end
-					valuef.canDraw = temp
+					valuef.canDrag = temp
 
 					if Tclose.context == "close" then
 						LGUIWindowStack[valuef.id] = nil
@@ -365,16 +335,14 @@ end
 function localCategory()
 end
 
--- 读取frame中的pic
-function loadPic(data)
-    for i, v in ipairs(data) do
-		local p = v["pic"]
-        if pics[p] == nil then
-            pics[p] = LoadImageToTexture2D(p)
+function createSprites()
+    for i, v in pairs(texture2Ds) do
+        if pics[i] == nil then
+            pics[i] = CS.UnityEngine.Sprite.Create(v, CS.UnityEngine.Rect(0, 0, v.width, v.height), CS.UnityEngine.Vector2(0, 1))
         end
---~ 		print(i)
 	end
 end
+
 
 -- 构建显示用角色
 function createCharacterDisplay(c, f, i)
@@ -397,62 +365,62 @@ function createCharacterDisplay(c, f, i)
 
 	if display then
 
-		if pics[f["pic"]] == nil then
-			pics[f["pic"]] = LoadImageToTexture2D(f["pic"])
-		end
+--~ 		if pics[f["pic"]] == nil then
+--~ 			pics[f["pic"]] = LoadImageToTexture2D(f["pic"])
+--~ 		end
 
 		local character = CS.UnityEngine.GameObject("tool1_character") -- c.id
-		character.transform.localPosition = CS.UnityEngine.Vector3(0, 0, 0)
+		character.transform.position = CS.UnityEngine.Vector3(0, 0, 0)
 
-		local pic = CS.UnityEngine.GameObject("pic")
-		pic.transform.parent = character.transform
-		local sr = pic:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
-		sr.sprite = pics[f["pic"]]
+--~ 		local pic = CS.UnityEngine.GameObject("pic")
+--~ 		pic.transform.parent = character.transform
+--~ 		local sr = pic:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
+--~ 		sr.sprite = pics[f["pic"]]
 
 		-- 给object挂上LuaBehaviour组件
-		local script = character:AddComponent(typeof(CS.XLuaTest.LuaBehaviour))
-		local t = script.scriptEnv
-		t.myFrame = f
-		t.myPic = pic
+--~ 		local script = character:AddComponent(typeof(CS.XLuaTest.LuaBehaviour))
+--~ 		local t = script.scriptEnv
+--~ 		t.myFrame = f
+--~ 		t.myPic = pic
 
 		displayingCharacterObject = character
 
-		t.myDrawField = {}
-		local attackFound = false
-		local bodyFound = false
-		local attackEnd = false
-		local bodyEnd = false
-		for nextpic = i, 1, -1 do
-			if defFrame[nextpic].category == "Attack" and attackEnd == false then
-				local cur = 0.3
-				if nextpic == i then
-					cur = 0.5
-				end
-				table.insert(t.myDrawField, function()
-					utils.drawField(defFrame[nextpic].x, defFrame[nextpic].y, defFrame[nextpic].width, defFrame[nextpic].height, CS.UnityEngine.Color(1, 0, 0, cur))
-				end)
-				attackFound = true
-			elseif defFrame[nextpic].category == "Body" and bodyEnd == false then
-				local cur = 0.3
-				if nextpic == i then
-					cur = 0.5
-				end
-				table.insert(t.myDrawField, function()
-					utils.drawField(defFrame[nextpic].x, defFrame[nextpic].y, defFrame[nextpic].width, defFrame[nextpic].height, CS.UnityEngine.Color(0, 1, 0, cur))
-				end)
-				bodyFound = true
-			elseif defFrame[nextpic].category == "Sprite" and nextpic ~= i then
-				if attackEnd == true and bodyEnd == true then
-					break
-				end
-				if attackFound then
-					attackEnd = true
-				end
-				if bodyFound then
-					bodyEnd = true
-				end
-			end
-		end
+--~ 		t.myDrawField = {}
+--~ 		local attackFound = false
+--~ 		local bodyFound = false
+--~ 		local attackEnd = false
+--~ 		local bodyEnd = false
+--~ 		for nextpic = i, 1, -1 do
+--~ 			if defFrame[nextpic].category == "Attack" and attackEnd == false then
+--~ 				local cur = 0.3
+--~ 				if nextpic == i then
+--~ 					cur = 0.5
+--~ 				end
+--~ 				table.insert(t.myDrawField, function()
+--~ 					utils.drawField(defFrame[nextpic].x, defFrame[nextpic].y, defFrame[nextpic].width, defFrame[nextpic].height, CS.UnityEngine.Color(1, 0, 0, cur))
+--~ 				end)
+--~ 				attackFound = true
+--~ 			elseif defFrame[nextpic].category == "Body" and bodyEnd == false then
+--~ 				local cur = 0.3
+--~ 				if nextpic == i then
+--~ 					cur = 0.5
+--~ 				end
+--~ 				table.insert(t.myDrawField, function()
+--~ 					utils.drawField(defFrame[nextpic].x, defFrame[nextpic].y, defFrame[nextpic].width, defFrame[nextpic].height, CS.UnityEngine.Color(0, 1, 0, cur))
+--~ 				end)
+--~ 				bodyFound = true
+--~ 			elseif defFrame[nextpic].category == "Sprite" and nextpic ~= i then
+--~ 				if attackEnd == true and bodyEnd == true then
+--~ 					break
+--~ 				end
+--~ 				if attackFound then
+--~ 					attackEnd = true
+--~ 				end
+--~ 				if bodyFound then
+--~ 					bodyEnd = true
+--~ 				end
+--~ 			end
+--~ 		end
 
 
 	else
@@ -460,23 +428,141 @@ function createCharacterDisplay(c, f, i)
 	end
 end
 
+function playAnimation()
+	if PreviewCharacterObject ~= nil then
+		CS.UnityEngine.GameObject.Destroy(PreviewCharacterObject)
+	end
+
+	local character = CS.UnityEngine.GameObject("tool1_character") -- c.id
+	character.transform.position = CS.UnityEngine.Vector3(100, 0, 0)
+
+--~ 	local pic = CS.UnityEngine.GameObject("pic")
+--~ 	pic.transform.parent = character.transform
+--~ 	local sr = pic:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
+--~ 	sr.sprite = nil
+
+	-- 给object挂上LuaBehaviour组件
+	local script = character:AddComponent(typeof(CS.XLuaTest.LuaBehaviour))
+	local t = script.scriptEnv
+	t.object = LObject:new(charactersDB.characters, pics, "ljokp", "shooting", 0, character, 0, 0)
+
+	local character2 = CS.UnityEngine.GameObject("tool1_character") -- c.id
+	character2.transform.position = CS.UnityEngine.Vector3(100, 0, 0)
+
+	local script2 = character2:AddComponent(typeof(CS.XLuaTest.LuaBehaviour))
+	local t2 = script2.scriptEnv
+	t2.object = LObject:new(charactersDB.characters, pics, "ljokp", "shooting", 0, character2, 0, 0)
+
+	PreviewCharacterObject = character
+end
+
 -- 构建工具窗口
 function createCharacterEditor()
 	-- 读取setting
 	local setting = {}
-    for i, v in ipairs(settingsDB["sheets"][1]["lines"]) do
+    for i, v in ipairs(settingsDB:getLines("settings")) do
 		local p = v["id"]
         if setting[p] == nil then
             setting[p] = v
         end
 	end
 
-	local characters = charactersDB["sheets"][1]["lines"]
+	local characters = charactersDB:getLines("characters")
 	-- 工具窗口
 	local toolsBarSetting = setting["ToolsBar"]
 	local toolsBarWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "ToolsBar", toolsBarSetting.x, toolsBarSetting.y, toolsBarSetting.w, toolsBarSetting.h, true, nil)
  	toolsBarWindow:addToStacks(LGUIWindowStack)
-	toolsBarWindow:addGUIpart(LGUIButton:new(utils.createid(LGUIWindowStack), frameWindow, "", ">", 10, 20, 20, 20))
+	local previewButton = LGUIButton:new(utils.createid(LGUIWindowStack), frameWindow, "", ">", 10, 20, 20, 20)
+	toolsBarWindow:addGUIpart(previewButton)
+	previewButton.temp = -1
+	table.insert(previewButton.eventFunc, function()
+		local previewWindow = nil
+		if previewButton.temp < 0 then
+			previewButton.context = "*"
+
+			local PreviewSetting = setting["Preview"]
+			previewWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "Preview", PreviewSetting.x, PreviewSetting.y, PreviewSetting.w, PreviewSetting.h, true, nil)
+			previewWindow:addToStacks(LGUIWindowStack)
+
+			-- 给窗口加入事件
+			previewWindow.event = function()
+				local x = CS.UnityEngine.Input.mousePosition.x
+				local y = CS.UnityEngine.Screen.height - CS.UnityEngine.Input.mousePosition.y
+				if x > previewWindow.x and y > previewWindow.y and x < previewWindow.x + previewWindow.w and y < previewWindow.y + previewWindow.h then
+					-- 中键拖拽移动摄像机
+					if CS.UnityEngine.Input.GetMouseButtonDown(2) then
+
+						Dx = CS.UnityEngine.Input.mousePosition.x
+						Dy = CS.UnityEngine.Screen.height - CS.UnityEngine.Input.mousePosition.y
+						if previewWindow.canDrag == true then
+							previewWindow.canDrag = false
+						end
+					elseif CS.UnityEngine.Input.GetMouseButtonUp(2) then
+						if previewWindow.canDrag == false then
+							previewWindow.canDrag = true
+						end
+					elseif CS.UnityEngine.Input.GetMouseButton(2) then
+
+						local x = Dx - CS.UnityEngine.Input.mousePosition.x
+						local y = Dy - (CS.UnityEngine.Screen.height - CS.UnityEngine.Input.mousePosition.y)
+
+						local c_x = perviewCamera.transform.position.x + x / 100
+						local c_y = perviewCamera.transform.position.y - y / 100
+
+						perviewCamera.transform.position = CS.UnityEngine.Vector3(c_x, c_y, LMainCamera.transform.position.z)
+
+						Dx = CS.UnityEngine.Input.mousePosition.x
+						Dy = CS.UnityEngine.Screen.height - CS.UnityEngine.Input.mousePosition.y
+					end
+				else
+					if previewWindow.canDrag == false then
+						previewWindow.canDrag = true
+					end
+				end
+			end
+
+			local previewBox = LGUIBox:new(utils.createid(LGUIWindowStack), frameWindow, "", previewRenderTexture, 0 + 5, 0 + 20, PreviewSetting.w - 10, PreviewSetting.h - 25)
+			previewWindow:addGUIpart(previewBox)
+			previewBox.style = CS.UnityEngine.GUIStyle()
+			previewBox.style.fixedWidth = previewRenderTexture.width
+			previewBox.style.fixedHeight = previewRenderTexture.height
+			previewBox.style.contentOffset = CS.UnityEngine.Vector2((-previewRenderTexture.width + previewWindow.w) / 2, (-previewRenderTexture.height + previewWindow.h) / 2 )
+
+			previewButton.temp = previewWindow.id
+			CS.UnityEngine.GUI.FocusWindow(previewWindow.id)
+
+			playAnimation()
+		else
+			previewButton.context = ">"
+
+			LGUIWindowStack[previewButton.temp] = nil
+			toolWindowID = - 1
+
+			previewButton.temp = -1
+
+			if PreviewCharacterObject ~= nil then
+				CS.UnityEngine.GameObject.Destroy(PreviewCharacterObject)
+			end
+		end
+	end)
+	local zoomInButton = LGUIButton:new(utils.createid(LGUIWindowStack), frameWindow, "", "+", 40 + 10, 20, 20, 20)
+	toolsBarWindow:addGUIpart(zoomInButton)
+	table.insert(zoomInButton.eventFunc, function()
+		if zoom < 4 then
+			zoom = zoom + 1
+			local pCamera = LMainCamera:GetComponent(typeof(CS.UnityEngine.Camera))
+			pCamera.orthographicSize = CS.UnityEngine.Screen.height / 2 / 100 / zoom * scale
+		end
+	end)
+	local zoomOutButton = LGUIButton:new(utils.createid(LGUIWindowStack), frameWindow, "", "-", 80 + 10, 20, 20, 20)
+	toolsBarWindow:addGUIpart(zoomOutButton)
+	table.insert(zoomOutButton.eventFunc, function()
+		if zoom > 1 then
+			zoom = zoom - 1
+			local pCamera = LMainCamera:GetComponent(typeof(CS.UnityEngine.Camera))
+			pCamera.orthographicSize = CS.UnityEngine.Screen.height / 2 / 100 / zoom * scale
+		end
+	end)
 
 	-- 角色窗口
 	local charactersSetting = setting["Characters"]
@@ -525,130 +611,132 @@ function createCharacterEditor()
 
 				if currentFrame.category == "Sprite" then
 
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "pic", 0 + 10, 20, 80, 20))
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", currentFrame.pic, 100 + 10, 20, 300, 20))
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "pic", 0 + 10, 20, 80, 20))
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", currentFrame.pic, 100 + 10, 20, 300, 20))
 
 					-- centerX
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "centerX", 0 + 10, 20 + 20, 80, 20))
-					local centerXTF = LGUITextField:new(utils.createid(LGUIWindowStack), characterWindow, "", utils.intNumberToString(currentFrame.x), 100 + 10, 20 + 20, 80, 20)
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "centerX", 0 + 10, 20 + 20, 80, 20))
+					local centerXTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", utils.intNumberToString(currentFrame.x), 100 + 10, 20 + 20, 80, 20)
 					frameInfoWindow:addGUIpart(centerXTF)
-					centerXTF.temp = utils.intNumberToString(currentFrame.x)
 					-- event，如果数据有变化，则自己的context也变化，否则使数据=context
 					table.insert(centerXTF.eventFunc, function()
-						local value = utils.intNumberToString(currentFrame.x)
-						if centerXTF.temp ~= value then
-							centerXTF.context = value
-							centerXTF.temp = value
-						else
-							if centerXTF.context ~= "-" then
+						if centerXTF.context ~= "-" and centerXTF.context ~= "" then
+							if CS.UnityEngine.GUI.changed then
 								currentFrame.x = utils.stringToIntNumber(centerXTF.context)
+							else
+								centerXTF.context = utils.intNumberToString(currentFrame.x)
 							end
 						end
 					end)
 
 					-- centerY
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "centerY", 200 + 10, 20 + 20, 80, 20))
-					local centerYTF = LGUITextField:new(utils.createid(LGUIWindowStack), characterWindow, "", utils.intNumberToString(currentFrame.y), 300 + 10, 20 + 20, 80, 20)
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "centerY", 200 + 10, 20 + 20, 80, 20))
+					local centerYTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", utils.intNumberToString(currentFrame.y), 300 + 10, 20 + 20, 80, 20)
 					frameInfoWindow:addGUIpart(centerYTF)
-					centerYTF.temp = utils.intNumberToString(currentFrame.y)
 					-- event，如果数据有变化，则自己的context也变化，否则使数据=context
 					table.insert(centerYTF.eventFunc, function()
-						local value = utils.intNumberToString(currentFrame.y)
-						if centerYTF.temp ~= value then
-							centerYTF.context = value
-							centerYTF.temp = value
-						else
-							if centerYTF.context ~= "-" then
+						if centerYTF.context ~= "-" and centerYTF.context ~= "" then
+							if CS.UnityEngine.GUI.changed then
 								currentFrame.y = utils.stringToIntNumber(centerYTF.context)
+							else
+								centerYTF.context = utils.intNumberToString(currentFrame.y)
 							end
 						end
 					end)
 
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "wait", 0 + 10, 20 + 40, 80, 20))
-					frameInfoWindow:addGUIpart(LGUITextField:new(utils.createid(LGUIWindowStack), characterWindow, "", utils.intNumberToString(currentFrame.wait), 100 + 10, 20 + 40, 80, 20))
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "wait", 0 + 10, 20 + 40, 80, 20))
+					local waitTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", utils.intNumberToString(currentFrame.wait), 100 + 10, 20 + 40, 80, 20)
+					frameInfoWindow:addGUIpart(waitTF)
+					-- event，使数据=context
+					table.insert(waitTF.eventFunc, function()
+						currentFrame.wait = utils.stringToIntNumber(waitTF.context)
+					end)
 				elseif currentFrame.category == "Attack" or currentFrame.category == "Body" then
 					-- x
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "x", 0 + 10, 20 + 20, 80, 20))
-					local xTF = LGUITextField:new(utils.createid(LGUIWindowStack), characterWindow, "", utils.intNumberToString(currentFrame.x), 100 + 10, 20 + 20, 80, 20)
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "x", 0 + 10, 20 + 20, 80, 20))
+					local xTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", utils.intNumberToString(currentFrame.x), 100 + 10, 20 + 20, 80, 20)
 					frameInfoWindow:addGUIpart(xTF)
-					xTF.temp = utils.intNumberToString(currentFrame.x)
 					-- event，如果数据有变化，则自己的context也变化，否则使数据=context
 					table.insert(xTF.eventFunc, function()
-						local value = utils.intNumberToString(currentFrame.x)
-						if xTF.temp ~= value then
-							xTF.context = value
-							xTF.temp = value
-						else
-							if xTF.context ~= "-" then
+						if xTF.context ~= "-" and xTF.context ~= "" then
+							if CS.UnityEngine.GUI.changed then
 								currentFrame.x = utils.stringToIntNumber(xTF.context)
+							else
+								xTF.context = utils.intNumberToString(currentFrame.x)
 							end
 						end
 					end)
 					-- y
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "y", 200 + 10, 20 + 20, 80, 20))
-					local yTF = LGUITextField:new(utils.createid(LGUIWindowStack), characterWindow, "", utils.intNumberToString(currentFrame.y), 300 + 10, 20 + 20, 80, 20)
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "y", 200 + 10, 20 + 20, 80, 20))
+					local yTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", utils.intNumberToString(currentFrame.y), 300 + 10, 20 + 20, 80, 20)
 					frameInfoWindow:addGUIpart(yTF)
-					yTF.temp = utils.intNumberToString(currentFrame.y)
 					-- event，如果数据有变化，则自己的context也变化，否则使数据=context
 					table.insert(yTF.eventFunc, function()
-						local value = utils.intNumberToString(currentFrame.y)
-						if yTF.temp ~= value then
-							yTF.context = value
-							yTF.temp = value
-						else
-							if yTF.context ~= "-" then
+						if yTF.context ~= "-" and yTF.context ~= "" then
+							if CS.UnityEngine.GUI.changed then
 								currentFrame.y = utils.stringToIntNumber(yTF.context)
+							else
+								yTF.context = utils.intNumberToString(currentFrame.y)
 							end
 						end
 					end)
 					-- width
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "width", 0 + 10, 20 + 40, 80, 20))
-					local widthTF = LGUITextField:new(utils.createid(LGUIWindowStack), characterWindow, "", utils.intNumberToString(currentFrame.width), 100 + 10, 20 + 40, 80, 20)
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "width", 0 + 10, 20 + 40, 80, 20))
+					local widthTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", utils.intNumberToString(currentFrame.width), 100 + 10, 20 + 40, 80, 20)
 					frameInfoWindow:addGUIpart(widthTF)
-					widthTF.temp = utils.intNumberToString(currentFrame.width)
 					-- event，如果数据有变化，则自己的context也变化，否则使数据=context
 					table.insert(widthTF.eventFunc, function()
-						local value = utils.intNumberToString(currentFrame.width)
-						if widthTF.temp ~= value then
-							widthTF.context = value
-							widthTF.temp = value
-						else
-							if widthTF.context ~= "-" then
+						if widthTF.context ~= "-" and widthTF.context ~= "" then
+							if CS.UnityEngine.GUI.changed then
 								currentFrame.width = utils.stringToIntNumber(widthTF.context)
+							else
+								widthTF.context = utils.intNumberToString(currentFrame.width)
 							end
 						end
 					end)
 					-- height
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "height", 200 + 10, 20 + 40, 80, 20))
-					local heightTF = LGUITextField:new(utils.createid(LGUIWindowStack), characterWindow, "", utils.intNumberToString(currentFrame.height), 300 + 10, 20 + 40, 80, 20)
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "height", 200 + 10, 20 + 40, 80, 20))
+					local heightTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", utils.intNumberToString(currentFrame.height), 300 + 10, 20 + 40, 80, 20)
 					frameInfoWindow:addGUIpart(heightTF)
-					heightTF.temp = utils.intNumberToString(currentFrame.height)
 					-- event，如果数据有变化，则自己的context也变化，否则使数据=context
 					table.insert(heightTF.eventFunc, function()
-						local value = utils.intNumberToString(currentFrame.height)
-						if heightTF.temp ~= value then
-							heightTF.context = value
-							heightTF.temp = value
-						else
-							if heightTF.context ~= "-" then
+						if heightTF.context ~= "-" and heightTF.context ~= "" then
+							if CS.UnityEngine.GUI.changed then
 								currentFrame.height = utils.stringToIntNumber(heightTF.context)
+							else
+								heightTF.context = utils.intNumberToString(currentFrame.height)
 							end
 						end
 					end)
+					if currentFrame.category == "Attack" then
+						frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "damage", 0 + 10, 20 + 60, 80, 20))
+						local damageTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", utils.intNumberToString(currentFrame.damage), 100 + 10, 20 + 60, 80, 20)
+						frameInfoWindow:addGUIpart(damageTF)
+						-- event，使数据=context
+						table.insert(damageTF.eventFunc, function()
+							if CS.UnityEngine.GUI.changed then
+								currentFrame.damage = utils.stringToIntNumber(damageTF.context)
+							end
+						end)
+					end
 				elseif currentFrame.category == "Warp" then
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "nextAction", 0 + 10, 20, 80, 20))
-					local nextActionTF = LGUITextField:new(utils.createid(LGUIWindowStack), characterWindow, "", currentFrame.nextAction, 100 + 10, 20, 80, 20)
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "nextAction", 0 + 10, 20, 80, 20))
+					local nextActionTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", currentFrame.nextAction, 100 + 10, 20, 80, 20)
 					frameInfoWindow:addGUIpart(nextActionTF)
 					-- event，使数据=context
 					table.insert(nextActionTF.eventFunc, function()
-						currentFrame.nextAction = nextActionTF.context
+						if CS.UnityEngine.GUI.changed then
+							currentFrame.nextAction = nextActionTF.context
+						end
 					end)
-					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), characterWindow, "", "nextFrame", 200 + 10, 20, 80, 20))
-					local nextFrameTF = LGUITextField:new(utils.createid(LGUIWindowStack), characterWindow, "", utils.intNumberToString(currentFrame.nextFrame), 300 + 10, 20, 80, 20)
+					frameInfoWindow:addGUIpart(LGUILabel:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", "nextFrame", 200 + 10, 20, 80, 20))
+					local nextFrameTF = LGUITextField:new(utils.createid(LGUIWindowStack), frameInfoWindow, "", utils.intNumberToString(currentFrame.nextFrame), 300 + 10, 20, 80, 20)
 					frameInfoWindow:addGUIpart(nextFrameTF)
 					-- event，使数据=context
 					table.insert(nextFrameTF.eventFunc, function()
-						currentFrame.nextFrame = utils.stringToIntNumber(nextFrameTF.context)
+						if CS.UnityEngine.GUI.changed then
+							currentFrame.nextFrame = utils.stringToIntNumber(nextFrameTF.context)
+						end
 					end)
 				end
 
@@ -662,59 +750,59 @@ function createCharacterEditor()
 					-- 右键拖拽移动frame的centerX和centerY
 					if currentFrame ~= nil then
 						if CS.UnityEngine.Event.current.button == 1 and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.MouseDown then
-
-							Dx = CS.UnityEngine.Input.mousePosition.x
-							Dy = CS.UnityEngine.Screen.height - CS.UnityEngine.Input.mousePosition.y
+							local world =  CS.UnityEngine.Camera.main:ScreenToWorldPoint(CS.UnityEngine.Input.mousePosition)
+							Dx = world.x
+							Dy = world.y
 
 						elseif CS.UnityEngine.Event.current.button == 1 and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.MouseDrag then
+							local world =  CS.UnityEngine.Camera.main:ScreenToWorldPoint(CS.UnityEngine.Input.mousePosition)
 
-							local x = Dx - CS.UnityEngine.Input.mousePosition.x
-							local y = Dy - (CS.UnityEngine.Screen.height - CS.UnityEngine.Input.mousePosition.y)
+							local vx = math.floor((world.x - Dx) * 100 + 0.5)
+							local vy = -math.floor((world.y - Dy) * 100 + 0.5)
 
-							local c_x = currentFrame.x - x
-							local c_y = currentFrame.y - y
+							currentFrame.x = currentFrame.x + vx
+							currentFrame.y = currentFrame.y + vy
 
-							currentFrame.x = c_x
-							currentFrame.y = c_y
-
-							Dx = CS.UnityEngine.Input.mousePosition.x
-							Dy = CS.UnityEngine.Screen.height - CS.UnityEngine.Input.mousePosition.y
+							Dx = world.x
+							Dy = world.y
 						end
 					end
 				elseif currentFrame.category == "Attack" or currentFrame.category == "Body" then
-					-- 右键拖拽移动frame的centerX和centerY
+					-- 右键拖拽设定hitbox
 					if currentFrame ~= nil then
 						if CS.UnityEngine.Event.current.button == 1 and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.MouseDown then
-
---~ 							Dx = CS.UnityEngine.Input.mousePosition.x
---~ 							Dy = CS.UnityEngine.Screen.height - CS.UnityEngine.Input.mousePosition.y
-
 							local world =  CS.UnityEngine.Camera.main:ScreenToWorldPoint(CS.UnityEngine.Input.mousePosition)
-							Dx = world.x
-							Dy = world.y
 
-							local ax, bx = math.modf(Dx * 100)
-							local ay, by = math.modf(Dy * 100)
-							currentFrame.x = ax
-							currentFrame.y = ay
-							currentFrame.width = 0
-							currentFrame.height = 0
+							box.x = math.floor(world.x * 100 + 0.5)
+							box.y = -math.floor(world.y * 100 + 0.5)
+							box.w = 0
+							box.h = 0
 
 						elseif CS.UnityEngine.Event.current.button == 1 and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.MouseDrag then
 
 							local world =  CS.UnityEngine.Camera.main:ScreenToWorldPoint(CS.UnityEngine.Input.mousePosition)
-							local x = Dx - world.x * 100
-							local y = Dy - world.y * 100
 
-							local ax, bx = math.modf(x)
-							local ay, by = math.modf(y)
-							currentFrame.width = -(ax + currentFrame.x)
-							currentFrame.height = ay + currentFrame.y
+							local vx = math.floor(world.x * 100 + 0.5) - box.x
+							local vy = math.floor(-world.y * 100 + 0.5) - box.y
 
-							Dx = world.x
-							Dy = world.y
+							box.w = vx
+							box.h = vy
 
-							print(currentFrame.x ,currentFrame.y ,currentFrame.width ,currentFrame.height)
+							-- 使用全局变量box来存储拉去选框xywh，根据拉取方向来判断xy是否需要根据wh的方向进行变化，因为wh最后必须为正数
+							if box.x <= box.x + box.w then
+								currentFrame.x = box.x
+								currentFrame.width = box.w
+							else
+								currentFrame.x = box.x + box.w
+								currentFrame.width = math.abs(box.w)
+							end
+							if box.y <= box.y + box.h then
+								currentFrame.y = box.y
+								currentFrame.height = box.h
+							else
+								currentFrame.y = box.y + box.h
+								currentFrame.height = math.abs(box.h)
+							end
 						end
 					end
 				end
@@ -723,62 +811,70 @@ function createCharacterEditor()
 	end
 
 	-- 动作信息窗口
-	local ActionsSetting = setting["Actions"]
-	local actionWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "Actions", ActionsSetting.x, ActionsSetting.y, ActionsSetting.w, ActionsSetting.h, true, nil)
+	local actionsSetting = setting["Actions"]
+	local actionWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "Actions", actionsSetting.x, actionsSetting.y, actionsSetting.w, actionsSetting.h, true, nil)
  	actionWindow:addToStacks(LGUIWindowStack)
 
-	actionWindow.temp = defAction
-	-- 给窗口加入事件
-	actionWindow.event = function()
-		if actionWindow.temp ~= defAction then
-			for i, v in pairs(actionWindow.guiParts) do
+	-- 加一个ScrollView来显示可能超出的内容
+	local actionsScrollView = LGUIScrollView:new(utils.createid(LGUIWindowStack), actionWindow, "", "", 0, 20, actionsSetting.w, actionsSetting.h - 20)
+	actionWindow:addGUIpart(actionsScrollView)
+
+	actionsScrollView.temp = defAction
+	-- 给actionsScrollView加入事件
+	table.insert(actionsScrollView.eventFunc, function()
+		if actionsScrollView.temp ~= defAction then
+			for i, v in pairs(actionsScrollView.guiParts) do
 				v = nil
-				actionWindow.guiParts[i] = nil
+				actionsScrollView.guiParts[i] = nil
 			end
+			local countH = 0
 			for i, v in pairs(defAction) do
-				local p = LGUIButton:new(utils.createid(LGUIWindowStack),actionWindow, "", v.action, 10, 20 + (i - 1)  * 20, 80, 20)
-				actionWindow:addGUIpart(p)
+				local p = LGUIButton:new(utils.createid(LGUIWindowStack), actionsScrollView, "", v.action, 10, 0 + (i - 1)  * 20, 80, 20)
+				actionsScrollView:addGUIpart(p)
 
 		 		table.insert(p.eventFunc, function()
 					defFrame = v.frames
 
 					createCharacterDisplay(currentCharacter, v.frames[1], 1)
 		 		end)
+				countH = countH + 20
 			end
-			actionWindow.temp = defAction
+			actionsScrollView.viewRect.height = countH
+			actionsScrollView.temp = defAction
 		end
-	end
+	end)
 
 	-- 帧窗口
 	local FramesSetting = setting["Frames"]
 	local frameWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "Frames", FramesSetting.x, FramesSetting.y, FramesSetting.w, FramesSetting.h, true, nil)
  	frameWindow:addToStacks(LGUIWindowStack)
 
-	frameWindow.temp = defAction
-	-- 给窗口加入事件
-	frameWindow.event = function()
-		if frameWindow.temp ~= defFrame then
-			for i, v in pairs(frameWindow.guiParts) do
-				v = nil
-				frameWindow.guiParts[i] = nil
-			end
+	-- 加一个ScrollView来显示可能超出的内容
+	local framesScrollView = LGUIScrollView:new(utils.createid(LGUIWindowStack), frameWindow, "", "", 0, 20, FramesSetting.w, FramesSetting.h - 20)
+	frameWindow:addGUIpart(framesScrollView)
 
+	framesScrollView.temp = defAction
+	-- 给framesScrollView加入事件
+	table.insert(framesScrollView.eventFunc, function()
+		if framesScrollView.temp ~= defFrame then
+			for i, v in pairs(framesScrollView.guiParts) do
+				v = nil
+				framesScrollView.guiParts[i] = nil
+			end
+			local countW = 0
 			for i, v in pairs(defFrame) do
-				local p = LGUIButton:new(utils.createid(LGUIWindowStack), frameWindow, "", v.category, (i - 1) * 50, 20, 50, 50)
-				frameWindow:addGUIpart(p)
+				local p = LGUIButton:new(utils.createid(LGUIWindowStack), framesScrollView, "", (i - 1) .. "\n" .. v.category, (i - 1) * 50, 0, 50, 50)
+				framesScrollView:addGUIpart(p)
 
 		 		table.insert(p.eventFunc, function()
 					createCharacterDisplay(currentCharacter, v, i)
 		 		end)
+				countW = countW + 50
 			end
-			frameWindow.temp = defFrame
-
-			if #defFrame > 0 then
-				local frameWindowHorizontalScrollbar = LGUIHorizontalScrollbar:new(utils.createid(LGUIWindowStack), characterWindow, "", 0, 0, 70, FramesSetting.w, 20, 1, 0, 10)
-				frameWindow:addGUIpart(frameWindowHorizontalScrollbar)
-			end
+			framesScrollView.viewRect.width = countW
+			framesScrollView.temp = defFrame
 		end
-	end
+	end)
 
 	return editorWindow
 end
@@ -787,91 +883,61 @@ function start()
 	print("lua start...")
     print("injected object", LMainCamera)
 
---~     local file = io.open(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/" .. "file_read_and_write.txt", "r")
---~     io.input(file)
---~     local str = io.read("*a")
---~     io.close(file)
---~     local data = json.decode(str)
+    settingsDB = castleDB:new(filePath, "setting.cdb")
+    settingsDB:readDB()
 
---~ 	for i, v in pairs(data) do
---~ 		local win = LGUIWindow:new(v["id"], v["title"], v["x"], v["y"], v["w"], v["h"], v["canDraw"], nil)
---~ 		win:addToStacks(LGUIWindowStack)
+    charactersDB = LCastleDBCharacter:new(filePath, "new.cdb")
+	charactersDB:readDB()
+	charactersDB:readIMG()
+	texture2Ds = charactersDB:loadIMGToTexture2Ds()
+	createSprites()
 
---~ 		for i2, v2 in pairs(v["guiParts"]) do
---~ 			local p = nil
---~ 			if v2["LGUIType"] == "LGUIBox" then
---~ 				p = LGUIBox:new(v2["id"], nil, v2["title"], v2["context"], v2["x"], v2["y"], v2["w"], v2["h"])
---~ 			elseif v2["LGUIType"] == "LGUIButton" then
---~ 				p = LGUIButton:new(v2["id"], nil, v2["title"], v2["context"], v2["x"], v2["y"], v2["w"], v2["h"])
---~ 			elseif v2["LGUIType"] == "LGUITextField" then
---~ 				p = LGUITextField:new(v2["id"], nil, v2["title"], v2["context"], v2["x"], v2["y"], v2["w"], v2["h"])
---~ 			elseif v2["LGUIType"] == "LGUILabel" then
---~ 				p = LGUILabel:new(v2["id"], nil, v2["title"], v2["context"], v2["x"], v2["y"], v2["w"], v2["h"])
---~ 			end
---~ 			if p ~= nil then
---~ 				win:addGUIpart(p)
---~ 			end
-
---~ 			-- 处理event
---~ 			local event = v2["event1"]
---~ 			if event ~= nil then
---~ 				for i = 1, #event, 1 do
---~ 					if event[i]["kind"] == "NW" then
---~ 						local e = function()
---~ 							LGUIWindow:new(utils.createid(LGUIWindowStack), "no title", win.x, win.y, 100, 150, true, nil)
---~ 						end
---~ 						table.insert(p.eventFunc, e)
---~ 					end
---~ 					if event[i]["kind"] == "CW" then
---~ 						local e = function()
---~ 							LGUIWindowStack[win.id] = nil
---~ 							toolWindowID = - 1
---~ 						end
---~ 						table.insert(p.eventFunc, e)
---~ 					end
---~ 					if event[i]["kind"] == "R" then
---~ 						if event[i]["context"] == "context" then
---~ 							local e = function()
---~ 								p.context = utils.getObject(event[i]["id"], LGUIWindowStack).context
---~ 							end
---~ 							table.insert(p.eventFunc, e)
---~ 						end
---~ 					end
---~ 				end
---~ 			end
-
-
---~ 		end
---~ 	end
---~ 	print("json read!")
-
-    local file3 = io.open(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/" .. "setting.cdb", "r")
-    io.input(file3)
-    local str3 = io.read("*a")
-    io.close(file3)
-    settingsDB = json.decode(str3)
-
-	print("json read! ")
-
-    local file = io.open(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/" .. "new.cdb", "r")
-    io.input(file)
-    local str = io.read("*a")
-    io.close(file)
-    charactersDB = json.decode(str)
-
-	print("json read! ")
-
-    local file2 = io.open(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/" .. "new.img", "r")
-    io.input(file2)
-    local str2 = io.read("*a")
-    io.close(file2)
-    imagesDB = json.decode(str2)
-
-	print("json read! ")
-
-	localCategory(charactersDB["sheets"][4])
+	localCategory()
 
 	createCharacterEditor(0, 0)
+
+	previewRenderTexture = CS.UnityEngine.RenderTexture(CS.UnityEngine.Screen.width, CS.UnityEngine.Screen.height, 0)
+	previewRenderTexture.filterMode = CS.UnityEngine.FilterMode.Point
+
+	local ppCamera = LMainCamera:GetComponent(typeof(CS.UnityEngine.Camera))
+	ppCamera.orthographicSize = CS.UnityEngine.Screen.height / 2 / 100 / zoom * scale
+	-- 复制一份相机用来预览
+	perviewCamera = CS.UnityEngine.GameObject.Instantiate(LMainCamera)
+	-- 删掉原来相机的AudioListener
+	CS.UnityEngine.GameObject.Destroy(LMainCamera:GetComponent(typeof(CS.UnityEngine.AudioListener)))
+	perviewCamera.transform.position = CS.UnityEngine.Vector3(perviewCamera.transform.position.x + 100, perviewCamera.transform.position.x, perviewCamera.transform.position.z)
+	local pCamera = perviewCamera:GetComponent(typeof(CS.UnityEngine.Camera))
+--~ 	pCamera.orthographicSize = CS.UnityEngine.Screen.height / 2 / 100 * scale
+	pCamera.targetTexture = previewRenderTexture
+
+	-- 画个测试地图
+	tool2_castleDB.new(filePath, "data2.cdb")
+
+	local x = 0 - 5
+	local y = 2
+	local width = 10
+	local height = 2
+	local map = {}
+    for i = x, x + width - 1, 1 do
+		map[i] = {}
+        for j = y, y + height - 1, 1 do
+			map[i][j] = 1
+        end
+    end
+
+	map[x - 1] = {}
+	map[x - 1][y] = 2
+	map[x + width] = {}
+	map[x + width][y] = 2
+
+	map[x][y - 1] = 1
+	map[x + width - 1][y - 1] = 1
+
+
+	tool2_castleDB.drawMap(map, 100, 0, 2)
+--~ 	tool2_castleDB.gen()
+
+	CS.UnityEngine.Physics2D.gravity = CS.UnityEngine.Physics2D.gravity * scale
 end
 
 function update()
@@ -881,6 +947,16 @@ function fixedupdate()
 end
 
 function ongui()
+	if CS.UnityEngine.Event.current.keyCode == CS.UnityEngine.KeyCode.Q and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.KeyDown then
+		if display then
+			display = false
+		else
+			display = true
+		end
+	end
+	if display == false then
+		return
+	end
 	local count = 0
 	for i, v in pairs(LGUIWindowStack) do
 		count = count + 1
@@ -925,8 +1001,8 @@ function ongui()
 		local x = Dx - CS.UnityEngine.Input.mousePosition.x
 		local y = Dy - (CS.UnityEngine.Screen.height - CS.UnityEngine.Input.mousePosition.y)
 
-		local c_x = LMainCamera.transform.position.x + x / 100
-		local c_y = LMainCamera.transform.position.y - y / 100
+		local c_x = LMainCamera.transform.position.x + x / 100 / zoom
+		local c_y = LMainCamera.transform.position.y - y / 100 / zoom
 
 		LMainCamera.transform.position = CS.UnityEngine.Vector3(c_x, c_y, LMainCamera.transform.position.z)
 
@@ -936,22 +1012,17 @@ function ongui()
 
 	if CS.UnityEngine.Event.current.keyCode == CS.UnityEngine.KeyCode.KeypadEnter and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.KeyDown then
 		-- 复制原来的.cdb文件做备份
-		local file2 = io.open(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/" .. "new.cdb", "r")
+		local file2 = io.open(filePath .. "new.cdb", "r")
 		io.input(file2)
 		local file2_context = io.read("*a")
 		io.close(file2)
-		local file3 = io.open(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/" .. "new.cdb.bak", "w")
+		local file3 = io.open(filePath .. "new.cdb.bak", "w")
 		file3:write(file2_context)
 		file3:close()
 
 
 		-- 写入原来的.cdb文件
-		local data = json.encode(charactersDB)
-		local file = io.open(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/" .. "new.cdb", "w")
-		file:write(data)
-		file:close()
-
-		print("json writed!")
+		charactersDB:writeDB()
 	end
 
 

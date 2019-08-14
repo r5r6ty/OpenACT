@@ -21,11 +21,12 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.UI.ToggleGroup);
-			Utils.BeginObjectRegister(type, L, translator, 0, 6, 1, 1);
+			Utils.BeginObjectRegister(type, L, translator, 0, 7, 1, 1);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "NotifyToggleOn", _m_NotifyToggleOn);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "UnregisterToggle", _m_UnregisterToggle);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RegisterToggle", _m_RegisterToggle);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "EnsureValidState", _m_EnsureValidState);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AnyTogglesOn", _m_AnyTogglesOn);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ActiveToggles", _m_ActiveToggles);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetAllTogglesOff", _m_SetAllTogglesOff);
@@ -149,6 +150,33 @@ namespace XLua.CSObjectWrap
                     UnityEngine.UI.Toggle _toggle = (UnityEngine.UI.Toggle)translator.GetObject(L, 2, typeof(UnityEngine.UI.Toggle));
                     
                     gen_to_be_invoked.RegisterToggle( _toggle );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_EnsureValidState(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                UnityEngine.UI.ToggleGroup gen_to_be_invoked = (UnityEngine.UI.ToggleGroup)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.EnsureValidState(  );
                     
                     
                     
