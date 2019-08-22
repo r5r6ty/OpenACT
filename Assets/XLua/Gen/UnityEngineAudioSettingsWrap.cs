@@ -31,9 +31,8 @@ namespace XLua.CSObjectWrap
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
 
-		    Utils.BeginClassRegister(type, L, __CreateInstance, 8, 4, 2);
+		    Utils.BeginClassRegister(type, L, __CreateInstance, 7, 4, 2);
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "GetDSPBufferSize", _m_GetDSPBufferSize_xlua_st_);
-            Utils.RegisterFunc(L, Utils.CLS_IDX, "GetSpatializerPluginNames", _m_GetSpatializerPluginNames_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetSpatializerPluginName", _m_GetSpatializerPluginName_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "SetSpatializerPluginName", _m_SetSpatializerPluginName_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetConfiguration", _m_GetConfiguration_xlua_st_);
@@ -105,32 +104,6 @@ namespace XLua.CSObjectWrap
                     
                     
                     return 2;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_GetSpatializerPluginNames_xlua_st_(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-            
-                
-                {
-                    
-                        string[] gen_ret = UnityEngine.AudioSettings.GetSpatializerPluginNames(  );
-                        translator.Push(L, gen_ret);
-                    
-                    
-                    
-                    return 1;
                 }
                 
             } catch(System.Exception gen_e) {

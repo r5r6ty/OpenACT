@@ -1,5 +1,4 @@
-
-local utils = require 'tool1_utils'
+local utils = require "tool1_utils"
 
 LPlayer = {object = nil, keys = nil, commands = nil}
 LPlayer.__index = LPlayer
@@ -78,7 +77,6 @@ function LPlayer:createCommand(c)
 			command.level = v.level
 			command.cmds = self:createCMD(v.command)
 			command.time = v.time
-			command.action = v.action
 			command.frame = v.frame
 			command.count = 1
 			command.timeCount = 0
@@ -211,8 +209,6 @@ function LPlayer:input()
 				elseif v.count > 1 then -- 如果之前是按住，现在就是刚放开
 					v2.state = 3
 				end
-
-				v2.count = 0
 			end
 		else
 			if v.count == 0 then -- 如果之前没按，现在就是没按
@@ -222,6 +218,8 @@ function LPlayer:input()
 			elseif v.count > 1 then -- 如果之前是按住，现在就是刚放开
 				v.state = 3
 			end
+
+			v.count = 0
 		end
 	end
 end
@@ -417,27 +415,7 @@ function LPlayer:judgeCommand()
 				v.timeCount = v.timeCount + 1
 			end
 		else
---~ 			self.object:addEvent("Command", 1, function()
-				for i2, v2 in ipairs(self.object.commandQueue) do
-					if (v2.rangeA ~= nil and v2.rangeB ~= nil and v.level >= v2.rangeA and v.level <= v2.rangeB) or (v2.name ~= nil and v2.name == v.name) then
-						self.object.action = v.action
-						self.object.frame = v.frame + 1
-						self.object.delay = 0
-						self.object.delayCounter = 0
-						self.object:clearCollidersAndCommand()
-						if v.direction == 1 then
-							if self.object.direction.x == -1 then
-								self.object.direction.x = 1
-							end
-						elseif v.direction == -1 then
-							if self.object.direction.x == 1 then
-								self.object.direction.x = -1
-							end
-						end
-						break
-					end
-				end
---~ 			end)
+			self.object:addEvent("Input", 0, 1, {level = v.level, name = v.name, direction = v.direction, frame = v.frame})
 			v.count = 1
 			v.timeCount = 0
 			v.direction = 0

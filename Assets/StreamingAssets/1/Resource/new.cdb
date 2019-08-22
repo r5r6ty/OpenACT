@@ -1,11 +1,84 @@
 {
+	"customTypes": [],
 	"compress": false,
 	"sheets": [
 		{
+			"separators": [],
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "name"
+				},
+				{
+					"typeStr": "8",
+					"name": "actions"
+				},
+				{
+					"name": "commands",
+					"typeStr": "8"
+				},
+				{
+					"name": "reactions",
+					"typeStr": "8"
+				},
+				{
+					"name": "maxHP",
+					"typeStr": "3"
+				},
+				{
+					"name": "HPRecoveryRate",
+					"display": 1,
+					"typeStr": "4"
+				},
+				{
+					"name": "maxMP",
+					"typeStr": "3"
+				},
+				{
+					"name": "MPRecoveryRate",
+					"display": 1,
+					"typeStr": "4"
+				},
+				{
+					"name": "maxFalling",
+					"typeStr": "3"
+				},
+				{
+					"name": "fallingRecoveryRate",
+					"display": 1,
+					"typeStr": "4"
+				},
+				{
+					"name": "maxDefencing",
+					"typeStr": "3"
+				},
+				{
+					"name": "defencingRecoveryRate",
+					"display": 1,
+					"typeStr": "4"
+				},
+				{
+					"name": "weight",
+					"typeStr": "4"
+				}
+			],
+			"name": "characters",
+			"props": [],
 			"lines": [
 				{
+					"defencingRecoveryRate": 0.1,
+					"HPRecoveryRate": 0.03,
+					"maxHP": 500,
+					"maxMP": 500,
+					"fallingRecoveryRate": 0.1,
 					"actions": [
 						{
+							"category": "Idle",
+							"action": "standing",
 							"frames": [
 								{
 									"category": "Move",
@@ -13,53 +86,59 @@
 								},
 								{
 									"category": "Command",
-									"wait": 0,
-									"rangeA": 0,
-									"rangeB": 100
+									"range": "0~100",
+									"wait": 0
 								},
 								{
 									"category": "Body",
-									"x": -9,
-									"y": -60,
-									"width": 18,
+									"bodyFlags": 7,
 									"height": 60,
-									"id": 0,
-									"flags": 7
+									"y": -60,
+									"x": -9,
+									"width": 18,
+									"id": 0
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "10576598204c22285531c7ce4e8c0545",
+									"category": "Sprite"
+								},
+								{
 									"category": "Sprite",
-									"wait": 60,
+									"pic": "10576598204c22285531c7ce4e8c0545",
+									"wait": 5,
 									"x": -30,
 									"y": -84
+								},
+								{
+									"category": "Warp",
+									"nextFrame": "standing-0"
 								}
-							],
-							"action": "standing",
-							"category": "Idle"
+							]
 						},
 						{
-							"action": "walking",
+							"category": "Walk",
 							"frames": [
 								{
 									"category": "Command",
-									"wait": 0,
-									"rangeA": -1,
-									"rangeB": -1
+									"range": "%-1~-1",
+									"wait": 0
 								},
 								{
 									"category": "Command",
-									"wait": 0,
-									"rangeA": 1,
-									"rangeB": 100
+									"range": "1~100",
+									"wait": 0
 								},
 								{
 									"category": "Body",
-									"x": -9,
-									"y": -60,
-									"width": 18,
+									"bodyFlags": 7,
 									"height": 60,
-									"id": 0,
-									"flags": 7
+									"y": -60,
+									"x": -9,
+									"width": 18,
+									"id": 0
 								},
 								{
 									"category": "Move",
@@ -67,974 +146,1823 @@
 									"compute": 0
 								},
 								{
+									"wait": 5,
+									"y": -82,
+									"x": -16,
 									"pic": "ae0fe71cab5251ff6d7b894bf340f40c",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -16,
-									"y": -82
+									"category": "Sprite"
 								},
 								{
-									"category": "Sprite",
+									"wait": 5,
+									"y": -82,
+									"x": -16,
 									"pic": "b6f6eaa11c8aea39ac5261ac7bbd8134",
-									"wait": 5,
-									"x": -16,
-									"y": -82
+									"category": "Sprite"
 								},
 								{
-									"category": "Sprite",
+									"wait": 5,
+									"y": -82,
+									"x": -16,
 									"pic": "15d53bda7b46ebd33605a96d016ee028",
-									"wait": 5,
-									"x": -16,
-									"y": -82
+									"category": "Sprite"
 								},
 								{
-									"category": "Sprite",
+									"wait": 5,
+									"y": -82,
+									"x": -16,
 									"pic": "c119379ece23c55d4a7c26418b794066",
-									"wait": 5,
-									"x": -16,
-									"y": -82
+									"category": "Sprite"
 								},
 								{
-									"category": "Sprite",
+									"wait": 5,
+									"y": -82,
+									"x": -16,
 									"pic": "9ff0f217e232dfdfe2a7064519ada28a",
-									"wait": 5,
-									"x": -16,
-									"y": -82
+									"category": "Sprite"
 								},
 								{
-									"category": "Sprite",
+									"wait": 5,
+									"y": -82,
+									"x": -16,
 									"pic": "f00f327d3888f9eddabb94c09c4ce773",
-									"wait": 5,
-									"x": -16,
-									"y": -82
+									"category": "Sprite"
 								},
 								{
-									"category": "Sprite",
-									"pic": "0340a7174d3180f2b6de3d774688f1bb",
 									"wait": 5,
+									"y": -82,
 									"x": -16,
-									"y": -82
+									"pic": "0340a7174d3180f2b6de3d774688f1bb",
+									"category": "Sprite"
+								},
+								{
+									"category": "Warp",
+									"nextFrame": "walking-0"
 								}
 							],
-							"category": "Walk"
+							"action": "walking"
 						},
 						{
+							"category": "Injured",
 							"frames": [
 								{
-									"category": "Move",
-									"compute": 0
+									"category": "Body",
+									"bodyFlags": 7,
+									"height": 60,
+									"y": -60,
+									"x": -9,
+									"width": 18,
+									"id": 0
 								},
 								{
-									"flags": 7,
+									"wait": 10,
+									"y": -84,
+									"x": -30,
+									"pic": "b42ef3d500e4a7d4571d60609615c0f6",
+									"category": "Sprite"
+								},
+								{
+									"nextFrame": "standing-0",
+									"category": "Warp"
+								}
+							],
+							"action": "injured"
+						},
+						{
+							"category": "hissatsu",
+							"frames": [
+								{
 									"category": "Body",
-									"width": 23,
+									"bodyFlags": 7,
+									"height": 60,
+									"y": -60,
+									"x": -9,
+									"width": 18,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "173179276b4688400f346e9cc981b640",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "f145a115d844d796e7ae0ee32f313937",
+									"category": "Sprite"
+								},
+								{
+									"category": "Sound",
+									"sfx": "jump"
+								},
+								{
+									"directionY": -9,
+									"category": "Move",
+									"compute": 1
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -50,
+									"pic": "345ee0aa7c370328d0032bac91da3a4a",
+									"category": "Sprite"
+								},
+								{
+									"compute": 0,
+									"category": "Move"
+								},
+								{
+									"nextFrame": "jumping_flying-0",
+									"category": "Warp"
+								}
+							],
+							"action": "jumping"
+						},
+						{
+							"category": "Jump",
+							"frames": [
+								{
+									"category": "Command",
+									"range": "200~200",
+									"wait": 0
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"height": 60,
+									"y": -60,
+									"x": -9,
+									"width": 18,
+									"id": 0
+								},
+								{
+									"category": "Act",
+									"actFlag": 0,
+									"nextFrame": "landing-0"
+								},
+								{
+									"wait": 90,
+									"y": -84,
+									"x": -50,
+									"pic": "345ee0aa7c370328d0032bac91da3a4a",
+									"category": "Sprite"
+								}
+							],
+							"action": "jumping_flying"
+						},
+						{
+							"category": "Injured",
+							"frames": [
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"height": 23,
+									"y": -23,
+									"x": -14,
+									"width": 28,
+									"id": 0
+								},
+								{
+									"category": "Act",
+									"actFlag": 0,
+									"nextFrame": "lying-0"
+								},
+								{
+									"wait": 90,
+									"y": -66,
+									"x": -43,
+									"pic": "b649f2faca4548ab04202b06f4fef4b0",
+									"category": "Sprite"
+								},
+								{
+									"nextFrame": "standing-0",
+									"category": "Warp"
+								}
+							],
+							"action": "falling"
+						},
+						{
+							"category": "Injured",
+							"frames": [
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"height": 16,
+									"y": -16,
+									"x": -21,
+									"width": 41,
+									"id": 0
+								},
+								{
+									"wait": 60,
+									"y": -19,
+									"x": -40,
+									"pic": "64d4630bcaa390d87310260c8b9b9dda",
+									"category": "Sprite"
+								},
+								{
+									"nextFrame": "landing-0",
+									"category": "Warp"
+								}
+							],
+							"action": "lying"
+						},
+						{
+							"category": "hissatsu",
+							"action": "shooting",
+							"frames": [
+								{
+									"compute": 0,
+									"category": "Move"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -40,
 									"height": 40,
 									"x": -10,
-									"y": -40,
-									"id": 0
-								},
-								{
-									"pic": "bc0e9d2bae642fba77e55137b8d4f05b",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
-								},
-								{
-									"flags": 7,
-									"category": "Body",
-									"height": 26,
 									"width": 23,
-									"x": -11,
-									"y": -26,
 									"id": 0
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "bc0e9d2bae642fba77e55137b8d4f05b",
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -26,
+									"height": 26,
+									"x": -11,
+									"width": 23,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "330bbb35a6f44c9a16fd84977ac2ec3b",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "369cd7ba79caf2a5b3042a718c216ccb",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "4b95dbd9266a97c1438b3ad8303fd476",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 20,
+									"y": -84,
+									"x": -30,
 									"pic": "1e7612b8d5b49cba98dc33bf5b4086d7",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
-									"width": 100,
-									"frequency": 0,
+									"category": "Sound",
+									"sfx": "fire"
+								},
+								{
+									"category": "Move",
+									"directionX": -5.5,
+									"compute": 1
+								},
+								{
 									"category": "Attack",
-									"height": 59,
 									"damage": 100,
-									"x": 16,
 									"y": -69,
+									"x": 16,
+									"defence": 70,
 									"id": 1,
-									"directionX": 150.5,
-									"directionY": -50.5
+									"fall": 80,
+									"frequency": 10,
+									"height": 59,
+									"directionX": 15.5,
+									"width": 100,
+									"directionY": -5.5
 								},
 								{
-									"pic": "95c5539b8a3259542e88f393687131cb",
-									"category": "Sprite",
 									"wait": 5,
+									"y": -84,
 									"x": -30,
-									"y": -84
+									"pic": "95c5539b8a3259542e88f393687131cb",
+									"category": "Sprite"
 								},
 								{
-									"width": 0,
-									"frequency": 0,
 									"category": "Attack",
-									"height": 0,
 									"damage": 0,
-									"x": 0,
 									"y": 0,
+									"x": 0,
+									"defence": 0,
 									"id": 1,
+									"fall": 0,
+									"frequency": 0,
+									"height": 0,
 									"directionX": 0,
+									"width": 0,
 									"directionY": 0
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "c8f1878bfcff0f8e0991f77e31e1f742",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 15,
+									"y": -84,
+									"x": -30,
 									"pic": "0059231a34cd442d268b39e51575fb51",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "766d8ec78103d1548304fb0ae9b177c7",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "1de8cc17d9c82e09f30f476476702a2f",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "1e7612b8d5b49cba98dc33bf5b4086d7",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "fb54cfc715369c77867d4b74af998e0e",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
-									"flags": 7,
 									"category": "Body",
-									"height": 37,
-									"width": 18,
-									"x": -6,
+									"bodyFlags": 7,
 									"y": -37,
+									"height": 37,
+									"x": -6,
+									"width": 18,
 									"id": 0
 								},
 								{
-									"pic": "173179276b4688400f346e9cc981b640",
-									"category": "Sprite",
 									"wait": 5,
+									"y": -84,
 									"x": -30,
-									"y": -84
+									"pic": "173179276b4688400f346e9cc981b640",
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "fb2aa10a6700449b7fd555a69e3ad127",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "f145a115d844d796e7ae0ee32f313937",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
-									"flags": 7,
 									"category": "Body",
-									"height": 40,
-									"width": 20,
-									"x": -8,
+									"bodyFlags": 7,
 									"y": -40,
+									"height": 40,
+									"x": -8,
+									"width": 20,
 									"id": 0
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "fc445615e65ff1aee0bd942defce3f39",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
-									"flags": 7,
 									"category": "Body",
-									"height": 60,
-									"width": 18,
-									"x": -9,
+									"bodyFlags": 7,
 									"y": -60,
+									"height": 60,
+									"x": -9,
+									"width": 18,
 									"id": 0
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "184cc24940c000be11541069ac35b302",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "7233f93352b741b6c9724f200ca16ed7",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "e637ebe560f83c25bd2108df536b3a3a",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "2409bdd2a80df17b6f4ccfcee7d9fe90",
-									"category": "Sprite",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "6029e261f6a3e85dffc96bc4a008761c",
-									"category": "Sprite",
+									"category": "Sprite"
+								},
+								{
+									"nextFrame": "standing-0",
+									"category": "Warp"
+								}
+							]
+						},
+						{
+							"category": "hissatsu",
+							"frames": [
+								{
+									"compute": 0,
+									"category": "Move"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -40,
+									"height": 40,
+									"x": -10,
+									"width": 23,
+									"id": 0
+								},
+								{
 									"wait": 5,
+									"y": -84,
 									"x": -30,
-									"y": -84
+									"pic": "bc0e9d2bae642fba77e55137b8d4f05b",
+									"category": "Sprite"
 								},
 								{
-									"category": "Warp",
-									"nextFrame": 0,
-									"nextAction": "standing"
-								}
-							],
-							"action": "shooting",
-							"category": "hissatsu"
-						},
-						{
-							"action": "injured",
-							"frames": [
+									"category": "Sound",
+									"sfx": "fire"
+								},
 								{
 									"category": "Body",
-									"x": -9,
-									"y": -60,
-									"width": 18,
-									"height": 60,
-									"id": 0,
-									"flags": 7
+									"bodyFlags": 7,
+									"y": -26,
+									"height": 26,
+									"x": -11,
+									"width": 23,
+									"id": 0
 								},
 								{
-									"category": "Sprite",
-									"pic": "b42ef3d500e4a7d4571d60609615c0f6",
-									"wait": 10,
+									"category": "Move",
+									"directionX": -1.5,
+									"compute": 1
+								},
+								{
+									"category": "Attack",
+									"damage": 100,
+									"y": -100,
+									"x": 0,
+									"defence": 70,
+									"id": 1,
+									"fall": 80,
+									"frequency": 10,
+									"height": 79,
+									"directionX": 0.5,
+									"width": 79,
+									"directionY": -6.5
+								},
+								{
+									"wait": 5,
+									"y": -84,
 									"x": -30,
-									"y": -84
+									"pic": "d355884cb9f6e794e2b050105a44d340",
+									"category": "Sprite"
 								},
 								{
-									"category": "Warp",
-									"nextAction": "standing",
-									"nextFrame": 0
-								}
-							],
-							"category": "Injured"
-						},
-						{
-							"action": "jumping",
-							"frames": [
+									"category": "Attack",
+									"damage": 0,
+									"y": 0,
+									"x": 0,
+									"defence": 0,
+									"id": 1,
+									"fall": 0,
+									"frequency": 0,
+									"height": 0,
+									"directionX": 0,
+									"width": 0,
+									"directionY": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "2f723953c557c8ad5668730179b84669",
+									"category": "Sprite"
+								},
+								{
+									"wait": 15,
+									"y": -84,
+									"x": -30,
+									"pic": "0059231a34cd442d268b39e51575fb51",
+									"category": "Sprite"
+								},
+								{
+									"nextFrame": "standing-0",
+									"category": "Warp"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "766d8ec78103d1548304fb0ae9b177c7",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "1de8cc17d9c82e09f30f476476702a2f",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "1e7612b8d5b49cba98dc33bf5b4086d7",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "fb54cfc715369c77867d4b74af998e0e",
+									"category": "Sprite"
+								},
 								{
 									"category": "Body",
-									"x": -9,
-									"y": -60,
+									"bodyFlags": 7,
+									"y": -37,
+									"height": 37,
+									"x": -6,
 									"width": 18,
-									"height": 60,
-									"id": 0,
-									"flags": 7
+									"id": 0
 								},
 								{
-									"category": "Sprite",
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "173179276b4688400f346e9cc981b640",
-									"wait": 5,
-									"x": -30,
-									"y": -84
+									"category": "Sprite"
 								},
 								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "fb2aa10a6700449b7fd555a69e3ad127",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
 									"pic": "f145a115d844d796e7ae0ee32f313937",
-									"category": "Sprite",
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -40,
+									"height": 40,
+									"x": -8,
+									"width": 20,
+									"id": 0
+								},
+								{
 									"wait": 5,
+									"y": -84,
 									"x": -30,
-									"y": -84
+									"pic": "fc445615e65ff1aee0bd942defce3f39",
+									"category": "Sprite"
 								},
 								{
-									"category": "Move",
-									"directionY": -3,
-									"directionX": 2,
-									"compute": 0
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -60,
+									"height": 60,
+									"x": -9,
+									"width": 18,
+									"id": 0
 								},
 								{
-									"category": "Sprite",
-									"pic": "345ee0aa7c370328d0032bac91da3a4a",
-									"wait": 1,
-									"x": -50,
-									"y": -84
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "184cc24940c000be11541069ac35b302",
+									"category": "Sprite"
 								},
 								{
-									"category": "Move",
-									"compute": 0
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "7233f93352b741b6c9724f200ca16ed7",
+									"category": "Sprite"
 								},
 								{
-									"category": "Warp",
-									"nextAction": "jumping_flying",
-									"nextFrame": 0
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "e637ebe560f83c25bd2108df536b3a3a",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "2409bdd2a80df17b6f4ccfcee7d9fe90",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "6029e261f6a3e85dffc96bc4a008761c",
+									"category": "Sprite"
+								},
+								{
+									"nextFrame": "standing-0",
+									"category": "Warp"
+								}
+							],
+							"action": "shooting_up"
+						},
+						{
+							"action": "landing",
+							"frames": [
+								{
+									"category": "Sound",
+									"sfx": "crouch"
+								},
+								{
+									"compute": 0,
+									"category": "Move"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -40,
+									"height": 40,
+									"x": -10,
+									"width": 23,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "fb54cfc715369c77867d4b74af998e0e",
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -37,
+									"height": 37,
+									"x": -6,
+									"width": 18,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "173179276b4688400f346e9cc981b640",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "fb2aa10a6700449b7fd555a69e3ad127",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "f145a115d844d796e7ae0ee32f313937",
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -40,
+									"height": 40,
+									"x": -8,
+									"width": 20,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "fc445615e65ff1aee0bd942defce3f39",
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -60,
+									"height": 60,
+									"x": -9,
+									"width": 18,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "184cc24940c000be11541069ac35b302",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "7233f93352b741b6c9724f200ca16ed7",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "e637ebe560f83c25bd2108df536b3a3a",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "2409bdd2a80df17b6f4ccfcee7d9fe90",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "6029e261f6a3e85dffc96bc4a008761c",
+									"category": "Sprite"
+								},
+								{
+									"nextFrame": "standing-0",
+									"category": "Warp"
+								}
+							],
+							"category": "Idle"
+						},
+						{
+							"action": "crouch",
+							"frames": [
+								{
+									"compute": 0,
+									"category": "Move"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -40,
+									"height": 40,
+									"x": -10,
+									"width": 23,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "bc0e9d2bae642fba77e55137b8d4f05b",
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -26,
+									"height": 26,
+									"x": -11,
+									"width": 23,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "330bbb35a6f44c9a16fd84977ac2ec3b",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "369cd7ba79caf2a5b3042a718c216ccb",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "4b95dbd9266a97c1438b3ad8303fd476",
+									"category": "Sprite"
+								},
+								{
+									"wait": 20,
+									"y": -84,
+									"x": -30,
+									"pic": "1e7612b8d5b49cba98dc33bf5b4086d7",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "766d8ec78103d1548304fb0ae9b177c7",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "1de8cc17d9c82e09f30f476476702a2f",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "1e7612b8d5b49cba98dc33bf5b4086d7",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "fb54cfc715369c77867d4b74af998e0e",
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -37,
+									"height": 37,
+									"x": -6,
+									"width": 18,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "173179276b4688400f346e9cc981b640",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "fb2aa10a6700449b7fd555a69e3ad127",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "f145a115d844d796e7ae0ee32f313937",
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -40,
+									"height": 40,
+									"x": -8,
+									"width": 20,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "fc445615e65ff1aee0bd942defce3f39",
+									"category": "Sprite"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"y": -60,
+									"height": 60,
+									"x": -9,
+									"width": 18,
+									"id": 0
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "184cc24940c000be11541069ac35b302",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "7233f93352b741b6c9724f200ca16ed7",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "e637ebe560f83c25bd2108df536b3a3a",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "2409bdd2a80df17b6f4ccfcee7d9fe90",
+									"category": "Sprite"
+								},
+								{
+									"wait": 5,
+									"y": -84,
+									"x": -30,
+									"pic": "6029e261f6a3e85dffc96bc4a008761c",
+									"category": "Sprite"
+								},
+								{
+									"nextFrame": "standing-0",
+									"category": "Warp"
 								}
 							],
 							"category": "hissatsu"
 						},
 						{
-							"action": "jumping_flying",
+							"action": "spark",
 							"frames": [
 								{
-									"category": "Body",
-									"x": -9,
-									"y": -60,
-									"width": 18,
-									"height": 60,
-									"id": 0,
-									"flags": 7
+									"category": "Sound",
+									"sfx": "hit"
 								},
 								{
-									"pic": "345ee0aa7c370328d0032bac91da3a4a",
+									"wait": 3,
+									"y": -32,
+									"x": -32,
 									"category": "Sprite",
-									"wait": 50,
-									"x": -50,
-									"y": -84
+									"pic": "22a1d77e62e23006b0c314488f21b513"
 								},
 								{
-									"category": "Warp",
-									"nextAction": "standing",
-									"nextFrame": 0
+									"category": "Sprite",
+									"wait": 3,
+									"x": -32,
+									"y": -32,
+									"pic": "bec43674c255512d3091a61aadd04175"
+								},
+								{
+									"category": "Sprite",
+									"wait": 3,
+									"x": -32,
+									"y": -32,
+									"pic": "503214e7765287296e064384f14c8315"
+								},
+								{
+									"category": "Sprite",
+									"wait": 3,
+									"x": -32,
+									"y": -32,
+									"pic": "5db51f6bc43f759941ff6491c511114a"
+								},
+								{
+									"category": "End"
 								}
 							],
-							"category": "Jump"
+							"category": "hissatsu"
 						}
 					],
-					"name": "ljokp",
-					"id": "ljokp",
 					"commands": [
 						{
-							"name": "walk",
-							"action": "walking",
-							"frame": 0,
+							"level": 0,
 							"time": 120,
-							"active": true,
+							"frame": "walking-0",
 							"command": [
 								{
-									"key": "F",
-									"kind": "/"
-								}
-							],
-							"level": 0
-						},
-						{
-							"name": "walk2idle",
-							"time": 20,
-							"action": "standing",
-							"frame": 0,
-							"active": true,
-							"command": [
-								{
-									"key": "F",
-									"kind": "~"
-								}
-							],
-							"level": -1
-						},
-						{
-							"name": "jump",
-							"time": 120,
-							"action": "jumping",
-							"frame": 0,
-							"active": true,
-							"command": [
-								{
-									"key": "U",
-									"kind": "/"
-								}
-							],
-							"level": 1
-						},
-						{
-							"name": "run",
-							"time": 20,
-							"action": "standing",
-							"frame": 0,
-							"active": false,
-							"command": [],
-							"level": 1
-						},
-						{
-							"name": "shoot",
-							"time": 120,
-							"action": "shooting",
-							"frame": 0,
-							"active": true,
-							"command": [
-								{
-									"key": "F",
-									"kind": "/"
-								},
-								{
-									"key": "FD"
-								},
-								{
-									"key": "D"
-								},
-								{
-									"key": "DB"
-								},
-								{
+									"kind": "/",
 									"key": "F"
+								}
+							],
+							"name": "walk",
+							"active": true
+						},
+						{
+							"level": -1,
+							"time": 20,
+							"frame": "standing-0",
+							"command": [
+								{
+									"kind": "~",
+									"key": "F"
+								}
+							],
+							"name": "walk2idle",
+							"active": true
+						},
+						{
+							"level": 1,
+							"time": 120,
+							"frame": "jumping-0",
+							"command": [
+								{
+									"kind": "/",
+									"key": "U"
+								}
+							],
+							"name": "jump",
+							"active": true
+						},
+						{
+							"level": 1,
+							"time": 20,
+							"frame": "standing-0",
+							"command": [],
+							"name": "run",
+							"active": false
+						},
+						{
+							"level": 10,
+							"time": 120,
+							"frame": "shooting-0",
+							"command": [
+								{
+									"key": "b"
+								}
+							],
+							"name": "shoot",
+							"active": true
+						},
+						{
+							"level": 200,
+							"time": 120,
+							"frame": "shooting-8",
+							"command": [
+								{
+									"key": "b"
+								}
+							],
+							"name": "shoot2",
+							"active": true
+						},
+						{
+							"level": 20,
+							"time": 120,
+							"frame": "shooting_up-0",
+							"command": [
+								{
+									"kind": "/",
+									"key": "D"
 								},
 								{
 									"key": "a"
 								}
 							],
-							"level": 10
+							"name": "shootup",
+							"active": true
+						},
+						{
+							"name": "crouch",
+							"command": [
+								{
+									"kind": "/",
+									"key": "D"
+								}
+							],
+							"time": 120,
+							"frame": "crouch-0",
+							"active": false,
+							"level": 1
 						}
 					],
-					"falling": 100,
-					"defence": 0,
-					"maxHP": 500,
-					"maxMP": 500,
-					"fallingRecoveryRate": 0.01,
-					"defenceRecoveryRate": 0.01,
-					"HPRecoveryRate": 0.03,
-					"MPRecoveryRate": 0.03
+					"reactions": [
+						{
+							"fallingRange": "1~69",
+							"sparkAction": "effect",
+							"reactionAction": "injured",
+							"direction": 3,
+							"random": 0.5,
+							"sparkFrame": 0,
+							"reactionFrame": 0
+						},
+						{
+							"fallingRange": "1~69",
+							"sparkAction": "effect",
+							"reactionAction": "injured",
+							"direction": 3,
+							"random": 0.5,
+							"sparkFrame": 0,
+							"reactionFrame": 0
+						},
+						{
+							"fallingRange": "70~100",
+							"sparkAction": "effect",
+							"reactionAction": "falling",
+							"direction": 3,
+							"random": 1,
+							"sparkFrame": 0,
+							"reactionFrame": 0
+						}
+					],
+					"maxFalling": 100,
+					"maxDefencing": 100,
+					"weight": 49,
+					"name": "ljokp",
+					"MPRecoveryRate": 0.03,
+					"id": "ljokp"
 				},
 				{
+					"defencingRecoveryRate": 0.01,
+					"HPRecoveryRate": 0.03,
+					"maxHP": 1500,
+					"maxMP": 500,
+					"fallingRecoveryRate": 0.01,
 					"actions": [
 						{
+							"category": "Idle",
+							"action": "hdas",
 							"frames": [
 								{
-									"pic": "10d0808021dcd330731057272431296a",
-									"category": "Sprite",
-									"wait": 11,
+									"compute": 0,
+									"category": "Move"
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"height": 100,
+									"y": -100,
+									"x": -17,
+									"width": 34,
+									"id": 0
+								},
+								{
+									"category": "Body",
+									"bodyFlags": 7,
+									"height": 100,
+									"y": -100,
+									"x": 20,
+									"width": 34,
+									"id": 1
+								},
+								{
+									"wait": 100,
+									"y": -128,
 									"x": -64,
-									"y": -128
+									"pic": "bfa8a42e75bd4f72414444c3a4f89481",
+									"category": "Sprite"
 								}
-							],
-							"action": "walking",
-							"category": "Idle"
+							]
 						}
 					],
-					"name": "songrunhe",
-					"id": "songrunhe",
 					"commands": [],
-					"falling": 100,
-					"defence": 0,
-					"maxHP": 500,
-					"maxMP": 500,
-					"fallingRecoveryRate": 0.01,
-					"defenceRecoveryRate": 0.01,
-					"HPRecoveryRate": 0.03,
-					"MPRecoveryRate": 0.03
+					"reactions": [],
+					"maxFalling": 100,
+					"maxDefencing": 100,
+					"weight": 200,
+					"name": "songrunhe",
+					"MPRecoveryRate": 0.03,
+					"id": "songrunhe"
 				},
 				{
+					"defencingRecoveryRate": 0.01,
+					"HPRecoveryRate": 0.03,
+					"maxHP": 1500,
+					"maxMP": 500,
+					"fallingRecoveryRate": 0.01,
 					"actions": [
 						{
+							"category": "Idle",
+							"action": "eating",
 							"frames": [
 								{
-									"pic": "c55bc0e26b7c56b9506dd23534717f1b",
-									"category": "Sprite",
 									"wait": 11,
+									"y": 0,
 									"x": 0,
-									"y": 0
+									"pic": "c55bc0e26b7c56b9506dd23534717f1b",
+									"category": "Sprite"
+								}
+							]
+						}
+					],
+					"commands": [],
+					"reactions": [],
+					"maxFalling": 100,
+					"maxDefencing": 0,
+					"weight": 0,
+					"name": "yuiffy",
+					"MPRecoveryRate": 0.03,
+					"id": "yuiffy"
+				},
+				{
+					"id": "common",
+					"name": "common",
+					"actions": [
+						{
+							"category": "Idle",
+							"action": "door1",
+							"frames": [
+								{
+									"wait": 100,
+									"y": -130,
+									"x": 10,
+									"pic": "7b393008f481b1d9546a5c8c2d743c1a",
+									"category": "Sprite"
+								}
+							]
+						},
+						{
+							"action": "door2",
+							"frames": [
+								{
+									"wait": 100,
+									"y": -130,
+									"x": 10,
+									"pic": "b5d1471e7257d2abcc13df1825c53706",
+									"category": "Sprite"
 								}
 							],
-							"action": "eating",
+							"category": "Idle"
+						},
+						{
+							"action": "door3",
+							"frames": [
+								{
+									"wait": 100,
+									"y": -130,
+									"x": 10,
+									"pic": "60c8a9d93acdeb01f3c76a138e81b8b3",
+									"category": "Sprite"
+								}
+							],
+							"category": "Idle"
+						},
+						{
+							"action": "gate1",
+							"frames": [
+								{
+									"wait": 100,
+									"y": -110,
+									"x": 0,
+									"pic": "1aa03c3d888bc5e0f34f4fdcf3f71ef8",
+									"category": "Sprite"
+								}
+							],
+							"category": "Idle"
+						},
+						{
+							"action": "window1",
+							"frames": [
+								{
+									"wait": 100,
+									"y": -110,
+									"x": 6,
+									"pic": "bf3e5ee5c3566e86efc879a12e966dc7",
+									"category": "Sprite"
+								}
+							],
+							"category": "Idle"
+						},
+						{
+							"action": "torch1",
+							"frames": [
+								{
+									"wait": 5,
+									"y": -40,
+									"x": 3,
+									"pic": "8b58c21363c558cd9562c1965a135e93",
+									"category": "Sprite"
+								},
+								{
+									"category": "Sprite",
+									"pic": "6dea7e7a235a3c8a0c3ad1fc4faa3d8a",
+									"wait": 5,
+									"x": 3,
+									"y": -40
+								},
+								{
+									"category": "Sprite",
+									"pic": "bb7a6c1c50412748467b186b6fee3a92",
+									"wait": 5,
+									"x": 3,
+									"y": -40
+								},
+								{
+									"category": "Sprite",
+									"pic": "205b1082ace67c9099f8ca2af7430adc",
+									"wait": 5,
+									"x": 3,
+									"y": -40
+								},
+								{
+									"category": "Sprite",
+									"pic": "3fe57c485c7f370c34b0d548e196d9ef",
+									"wait": 5,
+									"x": 3,
+									"y": -40
+								},
+								{
+									"category": "Warp",
+									"nextFrame": "torch1-0"
+								}
+							],
 							"category": "Idle"
 						}
 					],
-					"name": "yuiffy",
-					"id": "yuiffy",
 					"commands": [],
-					"falling": 100,
-					"defence": 0,
-					"maxHP": 500,
-					"maxMP": 500,
-					"fallingRecoveryRate": 0.01,
-					"defenceRecoveryRate": 0.01,
+					"reactions": [],
+					"maxHP": 1500,
 					"HPRecoveryRate": 0.03,
-					"MPRecoveryRate": 0.03
+					"maxMP": 500,
+					"MPRecoveryRate": 0.03,
+					"maxFalling": 100,
+					"fallingRecoveryRate": 0.01,
+					"maxDefencing": 100,
+					"defencingRecoveryRate": 0.01,
+					"weight": 200
 				}
-			],
+			]
+		},
+		{
 			"separators": [],
 			"columns": [
 				{
-					"name": "id",
-					"typeStr": "0"
-				},
-				{
-					"name": "name",
-					"typeStr": "1"
-				},
-				{
-					"name": "actions",
-					"typeStr": "8"
+					"typeStr": "0",
+					"name": "action"
 				},
 				{
 					"typeStr": "8",
-					"name": "commands",
-					"display": null
+					"name": "frames"
 				},
 				{
-					"typeStr": "3",
-					"name": "maxHP"
-				},
-				{
-					"typeStr": "4",
-					"name": "HPRecoveryRate",
-					"display": 1
-				},
-				{
-					"typeStr": "3",
-					"name": "maxMP"
-				},
-				{
-					"typeStr": "4",
-					"name": "MPRecoveryRate",
-					"display": 1
-				},
-				{
-					"typeStr": "3",
-					"name": "falling"
-				},
-				{
-					"typeStr": "4",
-					"name": "fallingRecoveryRate",
-					"display": 1
-				},
-				{
-					"typeStr": "3",
-					"name": "defence"
-				},
-				{
-					"typeStr": "4",
-					"name": "defenceRecoveryRate",
-					"display": 1
-				}
-			],
-			"name": "characters",
-			"props": []
-		},
-		{
-			"lines": [],
-			"separators": [],
-			"columns": [
-				{
-					"name": "action",
-					"typeStr": "0"
-				},
-				{
-					"name": "frames",
-					"typeStr": "8"
-				},
-				{
-					"typeStr": "6:actionType",
 					"name": "category",
-					"display": null
+					"typeStr": "6:actionType"
 				}
 			],
 			"name": "characters@actions",
 			"props": {
 				"hide": true
-			}
+			},
+			"lines": []
 		},
 		{
-			"lines": [],
 			"separators": [],
 			"columns": [
 				{
-					"name": "category",
-					"typeStr": "6:frameType"
+					"typeStr": "6:frameType",
+					"name": "category"
 				},
 				{
+					"opt": true,
 					"name": "pic",
-					"typeStr": "7",
-					"opt": true
+					"typeStr": "7"
 				},
 				{
+					"opt": true,
 					"name": "wait",
-					"typeStr": "3",
-					"opt": true
+					"typeStr": "3"
 				},
 				{
+					"opt": true,
 					"name": "x",
-					"typeStr": "3",
-					"opt": true
+					"typeStr": "3"
 				},
 				{
+					"opt": true,
 					"name": "y",
-					"typeStr": "3",
-					"opt": true
+					"typeStr": "3"
 				},
 				{
+					"opt": true,
 					"name": "width",
-					"typeStr": "3",
-					"opt": true
+					"typeStr": "3"
 				},
 				{
+					"opt": true,
 					"name": "height",
-					"typeStr": "3",
-					"opt": true
+					"typeStr": "3"
 				},
 				{
-					"typeStr": "3",
+					"opt": true,
 					"name": "id",
-					"opt": true
+					"typeStr": "3"
 				},
 				{
-					"name": "damage",
-					"typeStr": "3",
-					"opt": true
-				},
-				{
-					"typeStr": "4",
+					"opt": true,
 					"name": "directionX",
-					"opt": true
+					"typeStr": "4"
 				},
 				{
-					"typeStr": "4",
+					"opt": true,
 					"name": "directionY",
-					"opt": true
+					"typeStr": "4"
 				},
 				{
-					"typeStr": "4",
+					"opt": true,
 					"name": "accelerationX",
-					"opt": true
+					"typeStr": "4"
 				},
 				{
-					"typeStr": "4",
+					"opt": true,
 					"name": "accelerationY",
-					"opt": true
+					"typeStr": "4"
 				},
 				{
+					"opt": true,
+					"name": "damage",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "fall",
+					"typeStr": "4"
+				},
+				{
+					"opt": true,
+					"name": "defence",
+					"typeStr": "4"
+				},
+				{
+					"opt": true,
 					"name": "frequency",
-					"typeStr": "3",
-					"opt": true
+					"typeStr": "3"
 				},
 				{
-					"typeStr": "5:equal,plus",
+					"opt": true,
 					"name": "compute",
-					"opt": true
+					"typeStr": "5:equal,plus"
 				},
 				{
-					"name": "flags",
-					"typeStr": "10:collide,injury,catch",
-					"opt": true
-				},
-				{
-					"typeStr": "3",
-					"name": "rangeA",
-					"opt": true
-				},
-				{
-					"typeStr": "3",
-					"name": "rangeB",
 					"opt": true,
-					"display": null
+					"name": "bodyFlags",
+					"typeStr": "10:Collide,Injury,Catch"
 				},
 				{
-					"typeStr": "1",
+					"opt": true,
+					"name": "actFlag",
+					"typeStr": "5:OnGround,OnWall"
+				},
+				{
+					"opt": true,
+					"name": "range",
+					"typeStr": "1"
+				},
+				{
+					"opt": true,
 					"name": "command",
+					"typeStr": "1"
+				},
+				{
 					"opt": true,
-					"display": null
-				},
-				{
-					"name": "nextAction",
-					"typeStr": "1",
-					"opt": true
-				},
-				{
 					"name": "nextFrame",
-					"typeStr": "3",
+					"typeStr": "1"
+				},
+				{
+					"typeStr": "6:sounds",
+					"name": "sfx",
 					"opt": true
 				}
 			],
 			"name": "characters@actions@frames",
 			"props": {
 				"hide": true
-			}
+			},
+			"lines": []
 		},
 		{
-			"lines": [
-				{
-					"id": "Sprite",
-					"necessary": [
-						{
-							"name": "pic",
-							"default": 0
-						},
-						{
-							"name": "wait",
-							"default": 0
-						},
-						{
-							"name": "x",
-							"default": 0
-						},
-						{
-							"name": "y",
-							"default": 0
-						}
-					],
-					"color": 15728895,
-					"comment": "调用图片，哪张图片，以及持续帧数，指定图片坐标",
-					" optional ": []
-				},
-				{
-					"id": "Move",
-					"necessary": [
-						{
-							"name": "x",
-							"default": 0
-						},
-						{
-							"name": "y",
-							"default": 0
-						},
-						{
-							"name": "directionX",
-							"default": 0
-						},
-						{
-							"name": "directionY",
-							"default": 0
-						},
-						{
-							"name": "wait",
-							"default": 0
-						}
-					],
-					"color": 16772096,
-					"comment": "移动坐标，有恒速和加速，相加和代入",
-					" optional ": []
-				},
-				{
-					"id": "Attack",
-					"necessary": [
-						{
-							"name": "id",
-							"default": 0
-						},
-						{
-							"name": "x",
-							"default": 0
-						},
-						{
-							"name": "y",
-							"default": 0
-						},
-						{
-							"name": "w",
-							"default": 0
-						},
-						{
-							"name": "h",
-							"default": 0
-						},
-						{
-							"name": "damage",
-							"default": 0
-						},
-						{
-							"name": "frequency",
-							"default": 0
-						}
-					],
-					"color": 16711680,
-					"comment": "攻击盒子，攻击力，敌人飞行方向，破防数值，倒下数值，攻击击中后接受A~B之间招式等级的招式指令，或是直接跳转招式",
-					" optional ": []
-				},
-				{
-					"id": "Body",
-					"necessary": [
-						{
-							"name": "id",
-							"default": 0
-						},
-						{
-							"name": "x",
-							"default": 0
-						},
-						{
-							"name": "y",
-							"default": 0
-						},
-						{
-							"name": "w",
-							"default": 0
-						},
-						{
-							"name": "h",
-							"default": 0
-						},
-						{
-							"name": "flags",
-							"default": 0
-						}
-					],
-					"color": 65287,
-					"comment": "受攻击盒子，可以指定是否碰撞等",
-					" optional ": []
-				},
-				{
-					"id": "Sound",
-					"necessary": [
-						{
-							"name": "file",
-							"default": 0
-						}
-					],
-					"color": 16740352,
-					"comment": "调用音效，以后再说",
-					" optional ": []
-				},
-				{
-					"id": "Object",
-					"necessary": [
-						{
-							"name": "x",
-							"default": 0
-						},
-						{
-							"name": "y",
-							"default": 0
-						},
-						{
-							"name": "id",
-							"default": 0
-						},
-						{
-							"name": "action",
-							"default": "which action?"
-						},
-						{
-							"name": "frame",
-							"default": 0
-						}
-					],
-					"color": 8257536,
-					"comment": "调用物体，以后再说",
-					" optional ": []
-				},
-				{
-					"id": "Command",
-					"color": 0,
-					"necessary": [
-						{
-							"name": "wait",
-							"default": 0
-						},
-						{
-							"name": "command",
-							"default": "hissatsu"
-						}
-					],
-					"comment": "指令受理，可以指定受理时间，0为一直到最后，指定搓招跳转到哪里，以及A~B之间等级招式",
-					" optional ": []
-				},
-				{
-					"id": "Warp",
-					"necessary": [
-						{
-							"name": "nextAction",
-							"default": "which action?"
-						},
-						{
-							"name": "nextFrame",
-							"default": 0
-						}
-					],
-					"color": 65490,
-					"comment": "帧跳转，跳转到指定动作的指定帧，清空指令受理",
-					" optional ": []
-				},
-				{
-					"id": "End",
-					"necessary": [],
-					"color": 0,
-					"comment": "结束，使动作不循环",
-					" optional ": []
-				}
-			],
 			"separators": [],
 			"columns": [
 				{
-					"name": "id",
-					"typeStr": "0"
+					"typeStr": "0",
+					"name": "id"
 				},
 				{
-					"name": "color",
-					"typeStr": "11"
+					"typeStr": "11",
+					"name": "color"
 				},
 				{
-					"typeStr": "1",
 					"name": "comment",
-					"display": null
-				},
-				{
-					"name": "necessary",
-					"typeStr": "8"
+					"typeStr": "1"
 				},
 				{
 					"typeStr": "8",
-					"name": " optional ",
-					"display": null
+					"name": "necessary"
+				},
+				{
+					"name": "optional",
+					"typeStr": "8"
 				}
 			],
 			"name": "frameType",
-			"props": []
+			"props": [],
+			"lines": [
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "pic"
+						},
+						{
+							"default": 0,
+							"name": "wait"
+						},
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						}
+					],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 15728895,
+					"id": "Sprite"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						},
+						{
+							"default": 0,
+							"name": "directionX"
+						},
+						{
+							"default": 0,
+							"name": "directionY"
+						},
+						{
+							"default": 0,
+							"name": "wait"
+						}
+					],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 16772096,
+					"id": "Move"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "id"
+						},
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						},
+						{
+							"default": 0,
+							"name": "w"
+						},
+						{
+							"default": 0,
+							"name": "h"
+						},
+						{
+							"default": 0,
+							"name": "damage"
+						},
+						{
+							"default": 0,
+							"name": "frequency"
+						}
+					],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 16711680,
+					"id": "Attack"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "id"
+						},
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						},
+						{
+							"default": 0,
+							"name": "w"
+						},
+						{
+							"default": 0,
+							"name": "h"
+						},
+						{
+							"default": 0,
+							"name": "flags"
+						}
+					],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 65287,
+					"id": "Body"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "file"
+						}
+					],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 16740352,
+					"id": "Sound"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "x"
+						},
+						{
+							"default": 0,
+							"name": "y"
+						},
+						{
+							"default": 0,
+							"name": "id"
+						},
+						{
+							"default": "which action?",
+							"name": "action"
+						},
+						{
+							"default": 0,
+							"name": "frame"
+						}
+					],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 8257536,
+					"id": "Object"
+				},
+				{
+					"necessary": [
+						{
+							"default": 0,
+							"name": "wait"
+						},
+						{
+							"default": "hissatsu",
+							"name": "command"
+						}
+					],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 0,
+					"id": "Command"
+				},
+				{
+					"necessary": [
+						{
+							"default": "which action?",
+							"name": "nextAction"
+						},
+						{
+							"default": 0,
+							"name": "nextFrame"
+						}
+					],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 65490,
+					"id": "Warp"
+				},
+				{
+					"necessary": [],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 0,
+					"id": "End"
+				},
+				{
+					"necessary": [],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 0,
+					"id": "Cancel"
+				},
+				{
+					"necessary": [],
+					"comment": "",
+					"optional": [],
+					" optional ": [],
+					"color": 0,
+					"id": "Act"
+				}
+			]
 		},
 		{
-			"lines": [],
+			"separators": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "name"
+				},
+				{
+					"typeStr": "16",
+					"name": "default"
+				}
+			],
+			"name": "frameType@necessary",
+			"props": {
+				"hide": true
+			},
+			"lines": []
+		},
+		{
+			"separators": [],
+			"columns": [
+				{
+					"name": "",
+					"typeStr": "0"
+				}
+			],
+			"props": {
+				"hide": true
+			},
+			"name": "characters@commands",
+			"lines": []
+		},
+		{
 			"separators": [],
 			"columns": [
 				{
@@ -1042,202 +1970,233 @@
 					"typeStr": "1"
 				},
 				{
-					"name": "default",
-					"typeStr": "16"
-				}
-			],
-			"name": "frameType@necessary",
-			"props": {
-				"hide": true
-			}
-		},
-		{
-			"name": "characters@commands",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "0",
-					"name": "",
-					"display": null
-				}
-			]
-		},
-		{
-			"name": "characters@commands",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "1",
-					"name": "name",
-					"display": null
+					"name": "command",
+					"typeStr": "8"
 				},
 				{
-					"typeStr": "8",
-					"name": "command"
+					"name": "time",
+					"typeStr": "3"
 				},
 				{
-					"typeStr": "3",
-					"name": "time"
+					"name": "frame",
+					"typeStr": "1"
 				},
 				{
-					"typeStr": "1",
-					"name": "action",
-					"display": null
-				},
-				{
-					"typeStr": "3",
-					"name": "frame"
-				},
-				{
-					"typeStr": "2",
 					"name": "active",
-					"display": null
+					"typeStr": "2"
 				},
 				{
-					"typeStr": "3",
-					"name": "level"
-				}
-			]
-		},
-		{
-			"name": "actionType",
-			"columns": [
-				{
-					"typeStr": "0",
-					"name": "id",
-					"display": null
-				},
-				{
-					"typeStr": "1",
-					"name": "kind"
+					"name": "level",
+					"typeStr": "3"
 				}
 			],
-			"lines": [
-				{
-					"id": "Idle",
-					"kind": "<>"
-				},
-				{
-					"id": "Walk",
-					"kind": "~"
-				},
-				{
-					"id": "Run",
-					"kind": "~"
-				},
-				{
-					"id": "Jump",
-					"kind": "~"
-				},
-				{
-					"id": "Dash",
-					"kind": ""
-				},
-				{
-					"id": "Injured",
-					"kind": ""
-				},
-				{
-					"id": "hissatsu",
-					"kind": ""
-				},
-				{
-					"id": "XaxisMove",
-					"kind": ""
-				},
-				{
-					"id": "YaxisMove",
-					"kind": ""
-				}
-			],
-			"separators": [],
-			"props": {}
-		},
-		{
-			"name": "AttackType",
-			"columns": [
-				{
-					"typeStr": "0",
-					"name": "id",
-					"display": 1
-				},
-				{
-					"typeStr": "3",
-					"name": "effect"
-				}
-			],
-			"lines": [
-				{
-					"id": "Limb",
-					"effect": 0
-				},
-				{
-					"id": "Sharp",
-					"effect": 2
-				},
-				{
-					"id": "Mace",
-					"effect": 1
-				},
-				{
-					"id": "Gun",
-					"effect": 3
-				},
-				{
-					"id": "Magic",
-					"effect": 4
-				},
-				{
-					"id": "Weapon",
-					"effect": 5
-				}
-			],
-			"separators": [],
-			"props": {}
-		},
-		{
-			"name": "characters@commands@command",
 			"props": {
 				"hide": true
 			},
+			"name": "characters@commands",
+			"lines": []
+		},
+		{
 			"separators": [],
-			"lines": [],
 			"columns": [
 				{
-					"typeStr": "1",
-					"name": "key",
-					"display": null
+					"name": "id",
+					"typeStr": "0"
 				},
 				{
-					"typeStr": "1",
 					"name": "kind",
-					"opt": true
+					"typeStr": "1"
 				}
-			]
+			],
+			"lines": [
+				{
+					"kind": "<>",
+					"id": "Idle"
+				},
+				{
+					"kind": "~",
+					"id": "Walk"
+				},
+				{
+					"kind": "~",
+					"id": "Run"
+				},
+				{
+					"kind": "~",
+					"id": "Jump"
+				},
+				{
+					"kind": "",
+					"id": "Dash"
+				},
+				{
+					"kind": "",
+					"id": "Injured"
+				},
+				{
+					"kind": "",
+					"id": "hissatsu"
+				},
+				{
+					"kind": "",
+					"id": "XaxisMove"
+				},
+				{
+					"kind": "",
+					"id": "YaxisMove"
+				}
+			],
+			"props": [],
+			"name": "actionType"
 		},
 		{
-			"name": "frameType@ optional ",
+			"separators": [],
+			"columns": [
+				{
+					"name": "id",
+					"display": 1,
+					"typeStr": "0"
+				},
+				{
+					"name": "effect",
+					"typeStr": "3"
+				}
+			],
+			"lines": [
+				{
+					"effect": 0,
+					"id": "Limb"
+				},
+				{
+					"effect": 2,
+					"id": "Sharp"
+				},
+				{
+					"effect": 1,
+					"id": "Mace"
+				},
+				{
+					"effect": 3,
+					"id": "Gun"
+				},
+				{
+					"effect": 4,
+					"id": "Magic"
+				},
+				{
+					"effect": 5,
+					"id": "Weapon"
+				}
+			],
+			"props": [],
+			"name": "AttackType"
+		},
+		{
+			"separators": [],
+			"columns": [
+				{
+					"name": "key",
+					"typeStr": "1"
+				},
+				{
+					"opt": true,
+					"name": "kind",
+					"typeStr": "1"
+				}
+			],
 			"props": {
 				"hide": true
 			},
+			"name": "characters@commands@command",
+			"lines": []
+		},
+		{
 			"separators": [],
-			"lines": [],
 			"columns": [
 				{
-					"typeStr": "1",
 					"name": "name",
+					"typeStr": "1"
+				}
+			],
+			"props": {
+				"hide": true
+			},
+			"name": "frameType@optional",
+			"lines": []
+		},
+		{
+			"separators": [],
+			"columns": [
+				{
+					"name": "reactionAction",
+					"typeStr": "1"
+				},
+				{
+					"name": "reactionFrame",
+					"typeStr": "3"
+				},
+				{
+					"name": "random",
+					"display": 1,
+					"typeStr": "4"
+				},
+				{
+					"name": "fallingRange",
+					"typeStr": "1"
+				},
+				{
+					"name": "sparkAction",
+					"typeStr": "1"
+				},
+				{
+					"name": "sparkFrame",
+					"typeStr": "3"
+				},
+				{
+					"name": "direction",
+					"typeStr": "10:1,-1"
+				}
+			],
+			"props": {
+				"hide": true
+			},
+			"name": "characters@reactions",
+			"lines": []
+		},
+		{
+			"name": "sounds",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "13",
+					"name": "file",
 					"display": null
 				}
-			]
+			],
+			"lines": [
+				{
+					"id": "jump",
+					"file": "sfx/Jump.wav"
+				},
+				{
+					"id": "hit",
+					"file": "sfx/kick1.wav"
+				},
+				{
+					"id": "fire",
+					"file": "sfx/fire.wav"
+				},
+				{
+					"id": "crouch",
+					"file": "sfx/crouch.wav"
+				}
+			],
+			"separators": [],
+			"props": {}
 		}
-	],
-	"customTypes": []
+	]
 }

@@ -31,7 +31,7 @@ namespace XLua.CSObjectWrap
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
 
-		    Utils.BeginClassRegister(type, L, __CreateInstance, 12, 1, 1);
+		    Utils.BeginClassRegister(type, L, __CreateInstance, 12, 0, 0);
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "CreatePanel", _m_CreatePanel_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "CreateButton", _m_CreateButton_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "CreateText", _m_CreateText_xlua_st_);
@@ -46,10 +46,8 @@ namespace XLua.CSObjectWrap
             
 			
             
-			Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "factory", _g_get_factory);
-            
-			Utils.RegisterFunc(L, Utils.CLS_SETTER_IDX, "factory", _s_set_factory);
-            
+			
+			
 			
 			Utils.EndClassRegister(type, L, translator);
         }
@@ -367,32 +365,7 @@ namespace XLua.CSObjectWrap
         
         
         
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _g_get_factory(RealStatePtr L)
-        {
-		    try {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			    translator.PushAny(L, UnityEngine.UI.DefaultControls.factory);
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 1;
-        }
         
-        
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _s_set_factory(RealStatePtr L)
-        {
-		    try {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			    UnityEngine.UI.DefaultControls.factory = (UnityEngine.UI.DefaultControls.IFactoryControls)translator.GetObject(L, 1, typeof(UnityEngine.UI.DefaultControls.IFactoryControls));
-            
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 0;
-        }
         
 		
 		

@@ -33,10 +33,8 @@ namespace XLua.CSObjectWrap
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
 
-		    Utils.BeginClassRegister(type, L, __CreateInstance, 3, 0, 0);
-			Utils.RegisterFunc(L, Utils.CLS_IDX, "StopRecordingUndo", _m_StopRecordingUndo_xlua_st_);
-            Utils.RegisterFunc(L, Utils.CLS_IDX, "StartRecordingUndo", _m_StartRecordingUndo_xlua_st_);
-            
+		    Utils.BeginClassRegister(type, L, __CreateInstance, 1, 0, 0);
+			
 			
             
 			
@@ -72,52 +70,6 @@ namespace XLua.CSObjectWrap
         
         
         
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_StopRecordingUndo_xlua_st_(RealStatePtr L)
-        {
-		    try {
-            
-            
-            
-                
-                {
-                    
-                    UnityEngine.DrivenRectTransformTracker.StopRecordingUndo(  );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_StartRecordingUndo_xlua_st_(RealStatePtr L)
-        {
-		    try {
-            
-            
-            
-                
-                {
-                    
-                    UnityEngine.DrivenRectTransformTracker.StartRecordingUndo(  );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_Add(RealStatePtr L)

@@ -31,7 +31,7 @@ namespace XLua.CSObjectWrap
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
 
-		    Utils.BeginClassRegister(type, L, __CreateInstance, 5, 36, 33);
+		    Utils.BeginClassRegister(type, L, __CreateInstance, 5, 35, 32);
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "IncreaseLevel", _m_IncreaseLevel_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "DecreaseLevel", _m_DecreaseLevel_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "SetQualityLevel", _m_SetQualityLevel_xlua_st_);
@@ -67,7 +67,6 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "skinWeights", _g_get_skinWeights);
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "streamingMipmapsActive", _g_get_streamingMipmapsActive);
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "streamingMipmapsMemoryBudget", _g_get_streamingMipmapsMemoryBudget);
-            Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "streamingMipmapsRenderersPerFrame", _g_get_streamingMipmapsRenderersPerFrame);
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "streamingMipmapsMaxLevelReduction", _g_get_streamingMipmapsMaxLevelReduction);
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "streamingMipmapsAddAllCameras", _g_get_streamingMipmapsAddAllCameras);
             Utils.RegisterFunc(L, Utils.CLS_GETTER_IDX, "streamingMipmapsMaxFileIORequests", _g_get_streamingMipmapsMaxFileIORequests);
@@ -104,7 +103,6 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.CLS_SETTER_IDX, "skinWeights", _s_set_skinWeights);
             Utils.RegisterFunc(L, Utils.CLS_SETTER_IDX, "streamingMipmapsActive", _s_set_streamingMipmapsActive);
             Utils.RegisterFunc(L, Utils.CLS_SETTER_IDX, "streamingMipmapsMemoryBudget", _s_set_streamingMipmapsMemoryBudget);
-            Utils.RegisterFunc(L, Utils.CLS_SETTER_IDX, "streamingMipmapsRenderersPerFrame", _s_set_streamingMipmapsRenderersPerFrame);
             Utils.RegisterFunc(L, Utils.CLS_SETTER_IDX, "streamingMipmapsMaxLevelReduction", _s_set_streamingMipmapsMaxLevelReduction);
             Utils.RegisterFunc(L, Utils.CLS_SETTER_IDX, "streamingMipmapsAddAllCameras", _s_set_streamingMipmapsAddAllCameras);
             Utils.RegisterFunc(L, Utils.CLS_SETTER_IDX, "streamingMipmapsMaxFileIORequests", _s_set_streamingMipmapsMaxFileIORequests);
@@ -604,18 +602,6 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _g_get_streamingMipmapsRenderersPerFrame(RealStatePtr L)
-        {
-		    try {
-            
-			    LuaAPI.xlua_pushinteger(L, UnityEngine.QualitySettings.streamingMipmapsRenderersPerFrame);
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 1;
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_streamingMipmapsMaxLevelReduction(RealStatePtr L)
         {
 		    try {
@@ -1065,19 +1051,6 @@ namespace XLua.CSObjectWrap
 		    try {
                 
 			    UnityEngine.QualitySettings.streamingMipmapsMemoryBudget = (float)LuaAPI.lua_tonumber(L, 1);
-            
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 0;
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _s_set_streamingMipmapsRenderersPerFrame(RealStatePtr L)
-        {
-		    try {
-                
-			    UnityEngine.QualitySettings.streamingMipmapsRenderersPerFrame = LuaAPI.xlua_tointeger(L, 1);
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);

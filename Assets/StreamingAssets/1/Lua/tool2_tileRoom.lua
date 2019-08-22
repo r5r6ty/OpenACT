@@ -4,12 +4,12 @@
 -- http://opensource.org/licenses/MIT
 -- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-utils = require "tool2_utils"
+local utils = require "tool2_utils"
 
 --~ -- 构造体linker
 --~ local linker = {kind = 0, pos = {}}
 -- 类的声明，这里声明了类名还有属性，并且给出了属性的初始值
-tileRoom = {name = nil, x = 0, y = 0, width = 0, height = 0, linkers = {}}
+tileRoom = {name = nil, x = 0, y = 0, width = 0, height = 0, linkers = nil, map = nil}
 -- 设置元表的索引，想模拟类的话，这步操作很关键
 tileRoom.__index = tileRoom
 -- 构造方法new
@@ -21,39 +21,49 @@ function tileRoom:new(x, y, level, map, n)
     self.width = level.width
     self.height = level.height
     self.name = n
+	self.linkers = {}
+	self.map = {}
 
 	-- 把room的信息写入map中
     for i = x, x + level.width - 1, 1 do
         if map[i] == nil then
             map[i] = {}
         end
+		self.map[i] = {}
         for j = y, y + level.height - 1, 1 do
             local num = ((i - x) + (j - y) * level.width) + 1
 			-- 如果要生成的房间的位置上没有或者是墙壁，才生成房间
 			if map[i][j] == nil or map[i][j] == 0  then
 				map[i][j] = level.blocks[num]
 			end
+			self.map[i][j] = level.blocks[num]
         end
     end
 
 	-- 深拷贝level中的连接点，把连接点坐标加上房间坐标得到实际坐标
-    self.linkers = utils.deep_copy(level.connectors)
-    for i = 1, #self.linkers, 1 do
-        for j = 1, #self.linkers[i].position, 1 do
-            self.linkers[i].position[j].x = self.linkers[i].position[j].x + self.x
-            self.linkers[i].position[j].y = self.linkers[i].position[j].y + self.y
+	if #level.connectors > 0 then
+		print(#level.connectors)
+		self.linkers = utils.deep_copy(level.connectors)
+		for i = 1, #self.linkers, 1 do
+			for j = 1, #self.linkers[i].position, 1 do
+				self.linkers[i].position[j].x = self.linkers[i].position[j].x + self.x
+				self.linkers[i].position[j].y = self.linkers[i].position[j].y + self.y
+			end
+			for j = 1, #self.linkers[i].dPosition, 1 do
+				self.linkers[i].dPosition[j].x = self.linkers[i].dPosition[j].x + self.x
+				self.linkers[i].dPosition[j].y = self.linkers[i].dPosition[j].y + self.y
+			end
 		end
-        for j = 1, #self.linkers[i].dPosition, 1 do
-            self.linkers[i].dPosition[j].x = self.linkers[i].dPosition[j].x + self.x
-            self.linkers[i].dPosition[j].y = self.linkers[i].dPosition[j].y + self.y
-        end
-    end
+	end
 --    print("new", self.linkers, level.connectors)
     return self  --返回自身
 end
 
 -- 连接房间（哪个连接点，房间预设，大地图）
 function tileRoom:link(linkIndex, level, map, n)
+	if #self.linkers == 0 then
+		return nil, nil, nil
+	end
 	-- 自己room的连接点暂时选择为第1个
     local myLinker = self.linkers[linkIndex]
     local ml_x = myLinker.position[1].x
@@ -118,7 +128,7 @@ function tileRoom:link(linkIndex, level, map, n)
     end
 --    print("new", temp, level.connectors)
     if #temp <= 0 then
-        return nil, nil
+        return nil, nil, nil
     end
 
 	-- 创建房间
@@ -191,11 +201,13 @@ function tileRoom:close(map)
 				local x = self.linkers[i].position[j].x
 				local y = self.linkers[i].position[j].y
 				map[x][y] = 1
+				self.map[x][y] = 1
             end
             for j = 1, #self.linkers[i].dPosition, 1 do
 				local x = self.linkers[i].dPosition[j].x
 				local y = self.linkers[i].dPosition[j].y
 				map[x][y] = 0
+				self.map[x][y] = 0
             end
         end
     end

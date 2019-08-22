@@ -153,7 +153,6 @@ MonoBehaviour:
   folder: StreamingAssets/1/Lua
   scripts:
   - tool3_main
-  - tool1_character
   prefabs: []
 --- !u!4 &1382062399
 Transform:
@@ -281,6 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e37f6ad9e269ec4fa22486e5794e6b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UpdateInterval: 0.5
   injections:
   - name: LMainCamera
     value: {fileID: 1559508066}

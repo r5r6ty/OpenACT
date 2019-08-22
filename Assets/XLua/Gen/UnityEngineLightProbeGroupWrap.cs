@@ -21,16 +21,12 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.LightProbeGroup);
-			Utils.BeginObjectRegister(type, L, translator, 0, 0, 2, 2);
+			Utils.BeginObjectRegister(type, L, translator, 0, 0, 0, 0);
 			
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "probePositions", _g_get_probePositions);
-            Utils.RegisterFunc(L, Utils.GETTER_IDX, "dering", _g_get_dering);
-            
-			Utils.RegisterFunc(L, Utils.SETTER_IDX, "probePositions", _s_set_probePositions);
-            Utils.RegisterFunc(L, Utils.SETTER_IDX, "dering", _s_set_dering);
-            
+			
+			
 			
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
@@ -78,65 +74,7 @@ namespace XLua.CSObjectWrap
         
         
         
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _g_get_probePositions(RealStatePtr L)
-        {
-		    try {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			
-                UnityEngine.LightProbeGroup gen_to_be_invoked = (UnityEngine.LightProbeGroup)translator.FastGetCSObj(L, 1);
-                translator.Push(L, gen_to_be_invoked.probePositions);
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 1;
-        }
         
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _g_get_dering(RealStatePtr L)
-        {
-		    try {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			
-                UnityEngine.LightProbeGroup gen_to_be_invoked = (UnityEngine.LightProbeGroup)translator.FastGetCSObj(L, 1);
-                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.dering);
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 1;
-        }
-        
-        
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _s_set_probePositions(RealStatePtr L)
-        {
-		    try {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			
-                UnityEngine.LightProbeGroup gen_to_be_invoked = (UnityEngine.LightProbeGroup)translator.FastGetCSObj(L, 1);
-                gen_to_be_invoked.probePositions = (UnityEngine.Vector3[])translator.GetObject(L, 2, typeof(UnityEngine.Vector3[]));
-            
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 0;
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _s_set_dering(RealStatePtr L)
-        {
-		    try {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			
-                UnityEngine.LightProbeGroup gen_to_be_invoked = (UnityEngine.LightProbeGroup)translator.FastGetCSObj(L, 1);
-                gen_to_be_invoked.dering = LuaAPI.lua_toboolean(L, 2);
-            
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 0;
-        }
         
 		
 		

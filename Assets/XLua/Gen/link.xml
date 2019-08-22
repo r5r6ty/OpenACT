@@ -2,87 +2,9 @@
 
 <linker>
 
-	<assembly fullname="Assembly-CSharp">
-	    <type fullname="XLuaTest.LuaBehaviour" preserve="all"/>
-		<type fullname="BoundsIntersectExample" preserve="all"/>
-		<type fullname="ffffff" preserve="all"/>
-		<type fullname="GameLoader" preserve="all"/>
-		<type fullname="LuaManager" preserve="all"/>
-		<type fullname="ObjectManager" preserve="all"/>
-		<type fullname="Tools" preserve="all"/>
-		<type fullname="PhysicalObject" preserve="all"/>
-		<type fullname="test" preserve="all"/>
-		
-	</assembly>
-
-	<assembly fullname="UnityEngine.AnimationModule">
-	    <type fullname="UnityEngine.Animator" preserve="all"/>
-		<type fullname="UnityEngine.StateMachineBehaviour" preserve="all"/>
-		<type fullname="UnityEngine.AnimationClip" preserve="all"/>
-		<type fullname="UnityEngine.AnimatorClipInfo" preserve="all"/>
-		<type fullname="UnityEngine.AnimatorStateInfo" preserve="all"/>
-		<type fullname="UnityEngine.AnimatorTransitionInfo" preserve="all"/>
-		<type fullname="UnityEngine.MatchTargetWeightMask" preserve="all"/>
-		<type fullname="UnityEngine.AnimatorControllerParameter" preserve="all"/>
-		<type fullname="UnityEngine.AnimatorOverrideController" preserve="all"/>
-		<type fullname="UnityEngine.AnimatorUtility" preserve="all"/>
-		<type fullname="UnityEngine.Avatar" preserve="all"/>
-		<type fullname="UnityEngine.SkeletonBone" preserve="all"/>
-		<type fullname="UnityEngine.HumanLimit" preserve="all"/>
-		<type fullname="UnityEngine.HumanBone" preserve="all"/>
-		<type fullname="UnityEngine.HumanDescription" preserve="all"/>
-		<type fullname="UnityEngine.AvatarBuilder" preserve="all"/>
-		<type fullname="UnityEngine.AvatarMask" preserve="all"/>
-		<type fullname="UnityEngine.HumanPose" preserve="all"/>
-		<type fullname="UnityEngine.HumanPoseHandler" preserve="all"/>
-		<type fullname="UnityEngine.HumanTrait" preserve="all"/>
-		<type fullname="UnityEngine.RuntimeAnimatorController" preserve="all"/>
-		<type fullname="UnityEngine.AnimationEvent" preserve="all"/>
-		<type fullname="UnityEngine.Animation" preserve="all"/>
-		<type fullname="UnityEngine.AnimationState" preserve="all"/>
-		
-	</assembly>
-
-	<assembly fullname="UnityEngine.AssetBundleModule">
-	    <type fullname="UnityEngine.AssetBundle" preserve="all"/>
-		<type fullname="UnityEngine.AssetBundleCreateRequest" preserve="all"/>
-		<type fullname="UnityEngine.AssetBundleManifest" preserve="all"/>
-		<type fullname="UnityEngine.AssetBundleRecompressOperation" preserve="all"/>
-		<type fullname="UnityEngine.AssetBundleRequest" preserve="all"/>
-		<type fullname="UnityEngine.BuildCompression" preserve="all"/>
-		
-	</assembly>
-
-	<assembly fullname="UnityEngine.AudioModule">
-	    <type fullname="UnityEngine.AudioSettings" preserve="all"/>
-		<type fullname="UnityEngine.AudioSource" preserve="all"/>
-		<type fullname="UnityEngine.AudioLowPassFilter" preserve="all"/>
-		<type fullname="UnityEngine.AudioHighPassFilter" preserve="all"/>
-		<type fullname="UnityEngine.AudioReverbFilter" preserve="all"/>
-		<type fullname="UnityEngine.AudioConfiguration" preserve="all"/>
-		<type fullname="UnityEngine.AudioClip" preserve="all"/>
-		<type fullname="UnityEngine.AudioBehaviour" preserve="all"/>
-		<type fullname="UnityEngine.AudioListener" preserve="all"/>
-		<type fullname="UnityEngine.AudioReverbZone" preserve="all"/>
-		<type fullname="UnityEngine.AudioDistortionFilter" preserve="all"/>
-		<type fullname="UnityEngine.AudioEchoFilter" preserve="all"/>
-		<type fullname="UnityEngine.AudioChorusFilter" preserve="all"/>
-		<type fullname="UnityEngine.Microphone" preserve="all"/>
-		<type fullname="UnityEngine.AudioRenderer" preserve="all"/>
-		<type fullname="UnityEngine.WebCamDevice" preserve="all"/>
-		<type fullname="UnityEngine.WebCamTexture" preserve="all"/>
-		
-	</assembly>
-
-	<assembly fullname="UnityEngine.ClothModule">
-	    <type fullname="UnityEngine.ClothSphereColliderPair" preserve="all"/>
-		<type fullname="UnityEngine.ClothSkinningCoefficient" preserve="all"/>
-		<type fullname="UnityEngine.Cloth" preserve="all"/>
-		
-	</assembly>
-
 	<assembly fullname="UnityEngine.CoreModule">
-	    <type fullname="UnityEngine.SortingLayer" preserve="all"/>
+	    <type fullname="UnityEngine.WaitForSeconds" preserve="all"/>
+		<type fullname="UnityEngine.SortingLayer" preserve="all"/>
 		<type fullname="UnityEngine.Keyframe" preserve="all"/>
 		<type fullname="UnityEngine.AnimationCurve" preserve="all"/>
 		<type fullname="UnityEngine.Application" preserve="all"/>
@@ -218,7 +140,6 @@
 		<type fullname="UnityEngine.Object" preserve="all"/>
 		<type fullname="UnityEngine.WaitForEndOfFrame" preserve="all"/>
 		<type fullname="UnityEngine.WaitForFixedUpdate" preserve="all"/>
-		<type fullname="UnityEngine.WaitForSeconds" preserve="all"/>
 		<type fullname="UnityEngine.WaitForSecondsRealtime" preserve="all"/>
 		<type fullname="UnityEngine.WaitUntil" preserve="all"/>
 		<type fullname="UnityEngine.WaitWhile" preserve="all"/>
@@ -238,6 +159,86 @@
 		<type fullname="UnityEngine.SpriteRenderer" preserve="all"/>
 		<type fullname="UnityEngine.SecondarySpriteTexture" preserve="all"/>
 		<type fullname="UnityEngine.Sprite" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="Assembly-CSharp">
+	    <type fullname="XLuaTest.LuaBehaviour" preserve="all"/>
+		<type fullname="ExampleGenConfig" preserve="all"/>
+		<type fullname="AudioTest" preserve="all"/>
+		<type fullname="GameLoader" preserve="all"/>
+		<type fullname="LuaManager" preserve="all"/>
+		<type fullname="ObjectManager" preserve="all"/>
+		<type fullname="Tools" preserve="all"/>
+		<type fullname="LayerMaskTest" preserve="all"/>
+		<type fullname="test" preserve="all"/>
+		<type fullname="WWUtils.Audio.WAV" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.AnimationModule">
+	    <type fullname="UnityEngine.Animator" preserve="all"/>
+		<type fullname="UnityEngine.StateMachineBehaviour" preserve="all"/>
+		<type fullname="UnityEngine.AnimationClip" preserve="all"/>
+		<type fullname="UnityEngine.AnimatorClipInfo" preserve="all"/>
+		<type fullname="UnityEngine.AnimatorStateInfo" preserve="all"/>
+		<type fullname="UnityEngine.AnimatorTransitionInfo" preserve="all"/>
+		<type fullname="UnityEngine.MatchTargetWeightMask" preserve="all"/>
+		<type fullname="UnityEngine.AnimatorControllerParameter" preserve="all"/>
+		<type fullname="UnityEngine.AnimatorOverrideController" preserve="all"/>
+		<type fullname="UnityEngine.AnimatorUtility" preserve="all"/>
+		<type fullname="UnityEngine.Avatar" preserve="all"/>
+		<type fullname="UnityEngine.SkeletonBone" preserve="all"/>
+		<type fullname="UnityEngine.HumanLimit" preserve="all"/>
+		<type fullname="UnityEngine.HumanBone" preserve="all"/>
+		<type fullname="UnityEngine.HumanDescription" preserve="all"/>
+		<type fullname="UnityEngine.AvatarBuilder" preserve="all"/>
+		<type fullname="UnityEngine.AvatarMask" preserve="all"/>
+		<type fullname="UnityEngine.HumanPose" preserve="all"/>
+		<type fullname="UnityEngine.HumanPoseHandler" preserve="all"/>
+		<type fullname="UnityEngine.HumanTrait" preserve="all"/>
+		<type fullname="UnityEngine.RuntimeAnimatorController" preserve="all"/>
+		<type fullname="UnityEngine.AnimationEvent" preserve="all"/>
+		<type fullname="UnityEngine.Animation" preserve="all"/>
+		<type fullname="UnityEngine.AnimationState" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.AssetBundleModule">
+	    <type fullname="UnityEngine.AssetBundle" preserve="all"/>
+		<type fullname="UnityEngine.AssetBundleCreateRequest" preserve="all"/>
+		<type fullname="UnityEngine.AssetBundleManifest" preserve="all"/>
+		<type fullname="UnityEngine.AssetBundleRecompressOperation" preserve="all"/>
+		<type fullname="UnityEngine.AssetBundleRequest" preserve="all"/>
+		<type fullname="UnityEngine.BuildCompression" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.AudioModule">
+	    <type fullname="UnityEngine.AudioSettings" preserve="all"/>
+		<type fullname="UnityEngine.AudioSource" preserve="all"/>
+		<type fullname="UnityEngine.AudioLowPassFilter" preserve="all"/>
+		<type fullname="UnityEngine.AudioHighPassFilter" preserve="all"/>
+		<type fullname="UnityEngine.AudioReverbFilter" preserve="all"/>
+		<type fullname="UnityEngine.AudioConfiguration" preserve="all"/>
+		<type fullname="UnityEngine.AudioClip" preserve="all"/>
+		<type fullname="UnityEngine.AudioBehaviour" preserve="all"/>
+		<type fullname="UnityEngine.AudioListener" preserve="all"/>
+		<type fullname="UnityEngine.AudioReverbZone" preserve="all"/>
+		<type fullname="UnityEngine.AudioDistortionFilter" preserve="all"/>
+		<type fullname="UnityEngine.AudioEchoFilter" preserve="all"/>
+		<type fullname="UnityEngine.AudioChorusFilter" preserve="all"/>
+		<type fullname="UnityEngine.Microphone" preserve="all"/>
+		<type fullname="UnityEngine.AudioRenderer" preserve="all"/>
+		<type fullname="UnityEngine.WebCamDevice" preserve="all"/>
+		<type fullname="UnityEngine.WebCamTexture" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.ClothModule">
+	    <type fullname="UnityEngine.ClothSphereColliderPair" preserve="all"/>
+		<type fullname="UnityEngine.ClothSkinningCoefficient" preserve="all"/>
+		<type fullname="UnityEngine.Cloth" preserve="all"/>
 		
 	</assembly>
 

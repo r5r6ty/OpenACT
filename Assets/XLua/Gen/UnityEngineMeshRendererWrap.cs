@@ -21,16 +21,14 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.MeshRenderer);
-			Utils.BeginObjectRegister(type, L, translator, 0, 0, 3, 2);
+			Utils.BeginObjectRegister(type, L, translator, 0, 0, 2, 1);
 			
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "additionalVertexStreams", _g_get_additionalVertexStreams);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "subMeshStartIndex", _g_get_subMeshStartIndex);
-            Utils.RegisterFunc(L, Utils.GETTER_IDX, "receiveGI", _g_get_receiveGI);
             
 			Utils.RegisterFunc(L, Utils.SETTER_IDX, "additionalVertexStreams", _s_set_additionalVertexStreams);
-            Utils.RegisterFunc(L, Utils.SETTER_IDX, "receiveGI", _s_set_receiveGI);
             
 			
 			Utils.EndObjectRegister(type, L, translator, null, null,
@@ -107,20 +105,6 @@ namespace XLua.CSObjectWrap
             return 1;
         }
         
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _g_get_receiveGI(RealStatePtr L)
-        {
-		    try {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			
-                UnityEngine.MeshRenderer gen_to_be_invoked = (UnityEngine.MeshRenderer)translator.FastGetCSObj(L, 1);
-                translator.Push(L, gen_to_be_invoked.receiveGI);
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 1;
-        }
-        
         
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
@@ -131,22 +115,6 @@ namespace XLua.CSObjectWrap
 			
                 UnityEngine.MeshRenderer gen_to_be_invoked = (UnityEngine.MeshRenderer)translator.FastGetCSObj(L, 1);
                 gen_to_be_invoked.additionalVertexStreams = (UnityEngine.Mesh)translator.GetObject(L, 2, typeof(UnityEngine.Mesh));
-            
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            return 0;
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _s_set_receiveGI(RealStatePtr L)
-        {
-		    try {
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			
-                UnityEngine.MeshRenderer gen_to_be_invoked = (UnityEngine.MeshRenderer)translator.FastGetCSObj(L, 1);
-                UnityEngine.ReceiveGI gen_value;translator.Get(L, 2, out gen_value);
-				gen_to_be_invoked.receiveGI = gen_value;
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);

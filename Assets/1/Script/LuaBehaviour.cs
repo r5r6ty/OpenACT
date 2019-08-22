@@ -25,6 +25,15 @@ namespace XLuaTest
     [LuaCallCSharp]
     public class LuaBehaviour : MonoBehaviour
     {
+        //更新的时间间隔
+        public float UpdateInterval = 0.5F;
+        //最后的时间间隔
+        private float _lastInterval;
+        //帧[中间变量 辅助]
+        private int _frames = 0;
+        //当前的帧率
+        private float _fps;
+
         //public TextAsset luaScript;
         public Injection[] injections;
 
@@ -135,6 +144,8 @@ namespace XLuaTest
         // Use this for initialization
         void Start()
         {
+            UpdateInterval = Time.realtimeSinceStartup;
+            _frames = 0;
             if (luaStart != null)
             {
                 luaStart();
@@ -144,6 +155,13 @@ namespace XLuaTest
         // Update is called once per frame
         void Update()
         {
+            _frames++;
+            if (Time.realtimeSinceStartup > _lastInterval + UpdateInterval)
+            {
+                _fps = _frames / (Time.realtimeSinceStartup - _lastInterval);
+                _frames = 0;
+                _lastInterval = Time.realtimeSinceStartup;
+            }
             if (luaUpdate != null)
             {
                 luaUpdate();
@@ -178,6 +196,7 @@ namespace XLuaTest
 
         void OnGUI()
         {
+            GUI.Label(new Rect(10, Screen.height - 40, 200, 20), "Lua Memory:" + luaEnv.Memroy + "Kb" + ", FPS: " + _fps.ToString("f2"));
             if (luaOnGui != null)
             {
                 luaOnGui();

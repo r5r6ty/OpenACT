@@ -6,7 +6,7 @@
 
 require "castleDB"
 require "tool2_tileRoom"
-utils = require "tool2_utils"
+local utils = require "tool2_utils"
 
 local tool2_castleDB = {}            -- Public namespace
 
@@ -242,6 +242,14 @@ function loadTileSet(index)
 				end
 				local s = utils.CreateSprite(dataBase.textures[ff], v["tile"]["x"], v["tile"]["y"], v["tile"]["size"])
 				table.insert(dataBase.tiles, s)
+
+				local sa = {}
+				for i2, v2 in ipairs(v["tiles"]) do
+					local s2 = utils.CreateSprite(dataBase.textures[ff], v2["tile"]["x"], v2["tile"]["y"], v2["tile"]["size"])
+					table.insert(dataBase.tiles, s2)
+					table.insert(sa, s2)
+				end
+
 				-- 读取tile规则
 				local tt = utils.Base64DecodeToArray_Ground(v["data"]["data"])
 	--~ 			for g = 1, #tt, 1 do
@@ -305,7 +313,7 @@ function loadTileSet(index)
 	--~ 					print(p .. "," .. k .. ":", g[p][k])
 	--~ 				end
 	--~ 			end
-				local tab = {name = v["name"], tileType = da["tileType"], rule = r, gird = g, sprite = s, size = 20} -- v["tile"]["size"]
+				local tab = {name = v["name"], tileType = da["tileType"], rule = r, gird = g, sprite = s, spriteArray = sa, size = 20} -- v["tile"]["size"]
 				table.insert(dataBase.tileSets, tab)
 			end
 		end
@@ -469,6 +477,7 @@ function tool2_castleDB.gen()
 	local test = dataBase.levels[CS.Tools.Instance:RandomRangeInt(1, #dataBase.levels + 1)]
     local room = tileRoom:new(0, 0, test, gameMap, test.name .. "mainhouse")
 
+	local decorations = {}
 --  local room2 = nil
 -- 	local room3 = nil
 -- 	local x = nil
@@ -481,6 +490,14 @@ function tool2_castleDB.gen()
 	local t = crateRoom(room, 10)
 	for i = 1, #t, 1 do
 		t[i]:close(gameMap)
+		local d = tool2_castleDB.drawBackGround(t[i].map, 0, 0, 2, "door", 5, 7)
+		for i, v in ipairs(d) do
+			table.insert(decorations, v)
+		end
+		local d2 = tool2_castleDB.drawBackGround(t[i].map, 0, 0, 2, "gate", 4, 6)
+		for i, v in ipairs(d2) do
+			table.insert(decorations, v)
+		end
 	end
 
 --~ 	outlineMap(gameMap)
@@ -506,7 +523,112 @@ function tool2_castleDB.gen()
 --~ --            end
 --~         end
 --~     end
-	tool2_castleDB.drawMap(gameMap, 0, 0,2)
+	tool2_castleDB.drawMap(gameMap, 0, 0, 2)
+
+	return decorations
+end
+
+function tool2_castleDB.gen2(x, y, scale)
+	local test = dataBase.levels[1]
+	local room = tileRoom:new(0, 0, test, gameMap, test.name .. "mainhouse")
+	room:close(gameMap)
+	fillMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
+	tool2_castleDB.drawMap(gameMap, x, y, scale)
+	local decorations = tool2_castleDB.drawBackGround(room.map, x, y, scale, "door", 5, 7)
+	return decorations
+end
+
+function tool2_castleDB.drawBackGround(map, x, y, scale, n, w, h)
+--~     local p = CS.UnityEngine.GameObject("test")
+--~     local unityobject = CS.UnityEngine.GameObject("blocks")
+--~     unityobject.transform.parent = p.transform
+--~ 	local sortArray = {}
+
+	local decorations = {}
+    for p, a in pairs(map) do
+        for k, b in pairs(map[p]) do
+			if (map[p][k] == 1 or map[p][k] == 2) and (map[p][k - 1] ~= nil and (map[p][k - 1] == 0 or map[p][k - 1] == 4)) then -- 先判断地面上的东西
+				local decoration = tool2_castleDB.judgeBackGround(map, p, k - 1, w, h)
+--~ 				print(decoration)
+				if decoration ~= nil then
+--~ 					for q, c in pairs(decoration) do
+--~ 						for l, d in pairs(decoration[q]) do
+--~ 								map[q][l] = nil
+
+--~ 								if sortArray[10] == nil then
+--~ 									local sortObject = CS.UnityEngine.GameObject("Sort " .. 10)
+--~ 									sortObject.transform.parent = unityobject.transform
+--~ 									sortArray[10] = sortObject
+--~ 								end
+
+--~ 								ts = dataBase.tileSets[1]
+--~ 								n = ts.name
+
+--~ 								local unityobject_child = CS.UnityEngine.GameObject("background" .. q .. "," .. l .. "[" .. gameMap[q][l] .. "]" .. n)
+--~ 								unityobject_child.transform.parent = sortArray[10].transform
+--~ 								unityobject_child.transform.localPosition = CS.UnityEngine.Vector3(q * ts.size / 100, -l * ts.size / 100, 0)
+--~ 								local sr = unityobject_child:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
+--~ 								sr.sprite = ts.spriteArray[CS.Tools.Instance:RandomRangeInt(1, #ts.spriteArray + 1)]
+--~ 								sr.sortingOrder = -10
+
+--~ 						end
+--~ 					end
+					print(n, x + p * 0.2 * scale, y + -(k - 1 + 1) * 0.2 * scale, decoration)
+					table.insert(decorations, {name = n, dx = x + p * 0.2 * scale, dy = y + -(k - 1 + 1) * 0.2 * scale, width = decoration})
+				end
+			end
+		end
+	end
+--~ 	p.transform.position = CS.UnityEngine.Vector3(x, y, 0)
+--~ 	p.transform.localScale = CS.UnityEngine.Vector3(scale, scale, 1)
+	return decorations
+end
+
+function tool2_castleDB.judgeBackGround(map, p, k, width, height)
+--~ 	local decoration = {}
+	local b = false
+	local i = 0
+	while true do
+		for j = 0, height - 1, 1 do
+			if map[p + i] ~= nil then
+				if map[p + i][k - j] ~= nil and (map[p + i][k - j] == 0 or map[p + i][k - j] == 4) and (map[p + i][k + 1] == 1 or map[p + i][k + 1] == 2) then
+--~ 					if decoration[p + i] == nil then
+--~ 						decoration[p + i] = {}
+--~ 					end
+--~ 					decoration[p + i][k - j] = 999
+				else
+--~ 					print("gaga")
+--~ 					i = i - 1
+					b = true
+					break
+				end
+			else
+--~ 				print("gaga")
+				b = true
+				break
+			end
+		end
+		if b then
+			break
+		end
+		i = i + 1
+	end
+	if i >= width - 1 then
+		local bw = i
+		for i = 0, bw - 1, 1 do
+			for j = 0, height - 1, 1 do
+				map[p + i][k - j] = nil
+			end
+		end
+		return bw
+	else
+		return nil
+	end
 end
 
 -- 渲染gameMap2D
@@ -519,7 +641,24 @@ function tool2_castleDB.drawMap(gameMap, x, y, scale)
 	local sortArray = {}
     for p, a in pairs(gameMap) do
         for k, b in pairs(gameMap[p]) do
-			if gameMap[p][k] ~= 0 then
+			if gameMap[p][k] == 0 or gameMap[p][k] == 2 or gameMap[p][k] == 4 then -- 生成背景
+				if sortArray[10] == nil then
+					local sortObject = CS.UnityEngine.GameObject("Sort " .. 10)
+					sortObject.transform.parent = unityobject.transform
+					sortArray[10] = sortObject
+				end
+
+				ts = dataBase.tileSets[1]
+				n = ts.name
+
+				local unityobject_child = CS.UnityEngine.GameObject("background" .. p .. "," .. k .. "[" .. gameMap[p][k] .. "]" .. n)
+				unityobject_child.transform.parent = sortArray[10].transform
+				unityobject_child.transform.localPosition = CS.UnityEngine.Vector3(p * ts.size / 100, -k * ts.size / 100, 0)
+				local sr = unityobject_child:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
+				sr.sprite = ts.spriteArray[CS.Tools.Instance:RandomRangeInt(1, #ts.spriteArray + 1)]
+				sr.sortingOrder = -10
+			end
+			if gameMap[p][k] ~= 0 then -- 生成碰撞场景
 				local ts = nil
 				for i = 1, #dataBase.tileSets, 1 do
 					if ruileJudge(p, k, gameMap, dataBase.tileSets[i].gird, dataBase.blocksTiles[dataBase.tileSets[i].tileType]) == true then
@@ -549,19 +688,26 @@ function tool2_castleDB.drawMap(gameMap, x, y, scale)
 				sr.sprite = ts.sprite
 				sr.sortingOrder = -s
 
-				-- 这里要给不同朝向的地板放上不同的collider，0000四个bit位组合来表示朝向，放在名字最后
-				local bit = tool2_castleDB.judgeColliderType(gameMap, p, k)
-				unityobject_child.name = unityobject_child.name .. "," .. bit
-				if bit > 0 then
+				if gameMap[p][k] ~= 4 then -- 梯子先不加碰撞
+					local bit = nil
+					if gameMap[p][k] == 2 then
+						bit = 1
+					else
+						-- 这里要给不同朝向的地板放上不同的collider，0000四个bit位组合来表示朝向，放在名字最后
+						bit = tool2_castleDB.judgeColliderType(gameMap, p, k)
+					end
+					unityobject_child.name = unityobject_child.name .. "," .. bit
+					if bit > 0 then
 
 
-					local boxCollider2D = unityobject_child:AddComponent(typeof(CS.UnityEngine.BoxCollider2D))
-					boxCollider2D.size = CS.UnityEngine.Vector2(20 / 100, 20 / 100)
---~ 				boxCollider2D.usedByComposite = true
---~ 				local boxCollider2D2 = unityobject_child:AddComponent(typeof(CS.UnityEngine.BoxCollider2D))
---~ 				boxCollider2D2.size = CS.UnityEngine.Vector2(20 / 100, 20 / 100)
---~ 				boxCollider2D2.isTrigger = true
+						local boxCollider2D = unityobject_child:AddComponent(typeof(CS.UnityEngine.BoxCollider2D))
+						boxCollider2D.size = CS.UnityEngine.Vector2(20 / 100, 20 / 100)
+	--~ 				boxCollider2D.usedByComposite = true
+	--~ 				local boxCollider2D2 = unityobject_child:AddComponent(typeof(CS.UnityEngine.BoxCollider2D))
+	--~ 				boxCollider2D2.size = CS.UnityEngine.Vector2(20 / 100, 20 / 100)
+	--~ 				boxCollider2D2.isTrigger = true
 
+					end
 				end
 
 			end

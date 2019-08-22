@@ -21,14 +21,16 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(XLuaTest.LuaBehaviour);
-			Utils.BeginObjectRegister(type, L, translator, 0, 0, 2, 2);
+			Utils.BeginObjectRegister(type, L, translator, 0, 0, 3, 3);
 			
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "injections", _g_get_injections);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "UpdateInterval", _g_get_UpdateInterval);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "injections", _g_get_injections);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "scriptEnv", _g_get_scriptEnv);
             
-			Utils.RegisterFunc(L, Utils.SETTER_IDX, "injections", _s_set_injections);
+			Utils.RegisterFunc(L, Utils.SETTER_IDX, "UpdateInterval", _s_set_UpdateInterval);
+            Utils.RegisterFunc(L, Utils.SETTER_IDX, "injections", _s_set_injections);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "scriptEnv", _s_set_scriptEnv);
             
 			
@@ -79,6 +81,20 @@ namespace XLua.CSObjectWrap
         
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_UpdateInterval(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                XLuaTest.LuaBehaviour gen_to_be_invoked = (XLuaTest.LuaBehaviour)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushnumber(L, gen_to_be_invoked.UpdateInterval);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_injections(RealStatePtr L)
         {
 		    try {
@@ -107,6 +123,21 @@ namespace XLua.CSObjectWrap
         }
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _s_set_UpdateInterval(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                XLuaTest.LuaBehaviour gen_to_be_invoked = (XLuaTest.LuaBehaviour)translator.FastGetCSObj(L, 1);
+                gen_to_be_invoked.UpdateInterval = (float)LuaAPI.lua_tonumber(L, 2);
+            
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 0;
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _s_set_injections(RealStatePtr L)

@@ -375,6 +375,49 @@
 			],
 			"lines": [
 				{
+					"type": "combat",
+					"width": 80,
+					"height": 20,
+					"tileProps": [],
+					"layers": [],
+					"triggers": [],
+					"blocks": "AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQICAgICAgICAgICAgICAgICAgICAgIBAQEBAQEBAQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAQEBAQEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEBAQEBAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQQAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQEBAQEBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEBAQQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAQEBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQEBAQEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEBAQEBAQQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAQEBAQEBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQEBAQEBAQEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ==",
+					"linkers": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+					"markers": [],
+					"group": 0,
+					"level": "test0",
+					"props": {
+						"tileSize": 16,
+						"layers": [
+							{
+								"l": "triggers",
+								"p": {
+									"alpha": 0.53,
+									"color": 5119
+								}
+							},
+							{
+								"l": "blocks",
+								"p": {
+									"alpha": 0.5
+								}
+							},
+							{
+								"l": "linkers",
+								"p": {
+									"alpha": 0.5
+								}
+							},
+							{
+								"l": "markers",
+								"p": {
+									"alpha": 1
+								}
+							}
+						]
+					}
+				},
+				{
 					"width": 30,
 					"height": 20,
 					"layers": [],
@@ -624,7 +667,7 @@
 			],
 			"separators": [
 				0,
-				3
+				4
 			],
 			"props": {
 				"level": {
@@ -1096,6 +1139,99 @@
 			],
 			"lines": [
 				{
+					"id": "test0",
+					"width": 3,
+					"height": 3,
+					"tileProps": [],
+					"layers": [
+						{
+							"name": "t1",
+							"data": {
+								"file": "map/tileSet_mark.png",
+								"size": 15,
+								"stride": 3,
+								"data": "AAAAAAAAAAAAAAAAAAAAAAAA"
+							},
+							"tile": {
+								"file": "map/tiletile.png",
+								"size": 24,
+								"x": 13,
+								"y": 0
+							},
+							"active": true,
+							"rules": [],
+							"tiles": [
+								{
+									"tile": {
+										"file": "map/tiletile.png",
+										"size": 24,
+										"x": 13,
+										"y": 0
+									},
+									"random": 0.9
+								},
+								{
+									"tile": {
+										"file": "map/tiletile.png",
+										"size": 24,
+										"x": 13,
+										"y": 1
+									},
+									"random": 0
+								},
+								{
+									"tile": {
+										"file": "map/tiletile.png",
+										"size": 24,
+										"x": 13,
+										"y": 2
+									},
+									"random": 0
+								},
+								{
+									"tile": {
+										"file": "map/tiletile.png",
+										"size": 24,
+										"x": 13,
+										"y": 3
+									},
+									"random": 0
+								},
+								{
+									"random": 0,
+									"tile": {
+										"file": "map/tiletile.png",
+										"size": 24,
+										"x": 13,
+										"y": 4
+									}
+								},
+								{
+									"random": 0,
+									"tile": {
+										"file": "map/tiletile.png",
+										"size": 24,
+										"x": 13,
+										"y": 5
+									}
+								}
+							]
+						}
+					],
+					"props": {
+						"tileSize": 15,
+						"layers": [
+							{
+								"l": "t1",
+								"p": {
+									"alpha": 1
+								}
+							}
+						]
+					},
+					"tileType": "No"
+				},
+				{
 					"id": "test1",
 					"width": 3,
 					"height": 3,
@@ -1116,7 +1252,8 @@
 								"y": 0
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t2",
@@ -1133,7 +1270,8 @@
 								"y": 0
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t4",
@@ -1150,7 +1288,8 @@
 								"y": 1
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t5",
@@ -1167,7 +1306,8 @@
 								"y": 1
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t6",
@@ -1184,7 +1324,8 @@
 								"y": 2
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t7",
@@ -1201,7 +1342,8 @@
 								"y": 2
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t8",
@@ -1218,7 +1360,8 @@
 								"y": 2
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t9",
@@ -1235,7 +1378,8 @@
 								"y": 3
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t10",
@@ -1252,7 +1396,8 @@
 								"y": 3
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t11",
@@ -1269,7 +1414,8 @@
 								"y": 4
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t12",
@@ -1286,7 +1432,8 @@
 								"y": 4
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t13",
@@ -1303,7 +1450,8 @@
 								"y": 1
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t14",
@@ -1320,7 +1468,8 @@
 								"x": 3,
 								"y": 0
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t15",
@@ -1337,7 +1486,8 @@
 								"x": 3,
 								"y": 1
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t16",
@@ -1354,7 +1504,8 @@
 								"x": 3,
 								"y": 2
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t3",
@@ -1371,7 +1522,8 @@
 								"y": 0
 							},
 							"active": true,
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t17",
@@ -1388,7 +1540,8 @@
 								"x": 3,
 								"y": 3
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t18",
@@ -1405,7 +1558,8 @@
 								"x": 3,
 								"y": 4
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t19",
@@ -1422,7 +1576,8 @@
 								"x": 3,
 								"y": 5
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t20",
@@ -1439,7 +1594,8 @@
 								"x": 4,
 								"y": 0
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t21",
@@ -1456,7 +1612,8 @@
 								"x": 4,
 								"y": 1
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t22",
@@ -1473,7 +1630,8 @@
 								"x": 4,
 								"y": 2
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t23",
@@ -1490,7 +1648,8 @@
 								"x": 4,
 								"y": 3
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t24",
@@ -1507,7 +1666,8 @@
 								"x": 5,
 								"y": 0
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t25",
@@ -1524,7 +1684,8 @@
 								"x": 6,
 								"y": 0
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t26",
@@ -1541,7 +1702,8 @@
 								"x": 5,
 								"y": 1
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t27",
@@ -1558,7 +1720,8 @@
 								"x": 6,
 								"y": 1
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t28",
@@ -1575,7 +1738,8 @@
 								"x": 5,
 								"y": 2
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t29",
@@ -1592,7 +1756,8 @@
 								"x": 6,
 								"y": 2
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t30",
@@ -1609,7 +1774,8 @@
 								"x": 5,
 								"y": 3
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t31",
@@ -1626,7 +1792,8 @@
 								"x": 6,
 								"y": 3
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t32",
@@ -1643,7 +1810,8 @@
 								"x": 5,
 								"y": 4
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t33",
@@ -1660,7 +1828,8 @@
 								"x": 6,
 								"y": 4
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t34",
@@ -1677,7 +1846,8 @@
 								"x": 5,
 								"y": 5
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t35",
@@ -1694,9 +1864,11 @@
 								"x": 6,
 								"y": 5
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						}
 					],
+					"tileType": "Block",
 					"props": {
 						"tileSize": 15,
 						"layers": [
@@ -1911,8 +2083,7 @@
 								}
 							}
 						]
-					},
-					"tileType": "Block"
+					}
 				},
 				{
 					"id": "test2",
@@ -1956,7 +2127,8 @@
 									"y": 0,
 									"block": "Terrace"
 								}
-							]
+							],
+							"tiles": []
 						},
 						{
 							"name": "t2",
@@ -1984,7 +2156,8 @@
 									"y": 0,
 									"block": "Terrace"
 								}
-							]
+							],
+							"tiles": []
 						},
 						{
 							"name": "t3",
@@ -2012,7 +2185,8 @@
 									"y": 0,
 									"block": "Terrace"
 								}
-							]
+							],
+							"tiles": []
 						}
 					],
 					"props": {
@@ -2061,7 +2235,8 @@
 								"x": 12,
 								"y": 0
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t2",
@@ -2078,7 +2253,8 @@
 								"x": 12,
 								"y": 1
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						},
 						{
 							"name": "t3",
@@ -2095,7 +2271,8 @@
 								"x": 12,
 								"y": 2
 							},
-							"rules": []
+							"rules": [],
+							"tiles": []
 						}
 					],
 					"tileType": "Ladder",
@@ -2179,6 +2356,10 @@
 				},
 				{
 					"typeStr": "8",
+					"name": "tiles"
+				},
+				{
+					"typeStr": "8",
 					"name": "rules",
 					"display": null
 				},
@@ -2209,6 +2390,26 @@
 					"typeStr": "6:block",
 					"name": "block",
 					"display": null
+				}
+			]
+		},
+		{
+			"name": "tileSet@layers@tiles",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "14",
+					"name": "tile",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "random",
+					"display": 1
 				}
 			]
 		}

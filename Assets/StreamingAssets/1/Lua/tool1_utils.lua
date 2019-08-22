@@ -6,6 +6,8 @@
 
 local utils = {}
 
+local objects = {}
+
 local idLoop
 
 -- id循环
@@ -51,16 +53,12 @@ function utils.getObject(id, s)
 end
 
 -- 字符串分割
-function utils.split(str, delimiter)
-    if str==nil or str=='' or delimiter==nil then
-        return nil
-    end
-
-    local result = {}
-    for match in (str..delimiter):gmatch("(.-)"..delimiter) do
-        table.insert(result, match)
-    end
-    return result
+function utils.split(str, reps)
+    local resultStrList = {}
+    string.gsub(str, '[^'..reps..']+' ,function (w)
+        table.insert(resultStrList, w)
+    end)
+    return resultStrList
 end
 
 -- 比较字符串a是否包含在b里面（长度要相等）
@@ -95,6 +93,63 @@ function utils.stringToIntNumber(str)
 	end
 	local a, b = math.modf(num)
 	return a
+end
+
+function utils.getRangeAB(str)
+	local rA, rB = string.match(str, "(%-?%d+)~(%-?%d+)")
+	return tonumber(rA), tonumber(rB)
+end
+
+function utils.getFrame(str)
+	local action, frame = string.match(str, "(.+)-(%d+)")
+	return action, tonumber(frame) + 1
+end
+
+function utils.createObject(db, p, ac, id, f, x, y, dx, dy, k)
+	local character = CS.UnityEngine.GameObject(id)
+	character.transform.position = CS.UnityEngine.Vector3(x, y, 0)
+	o = LObject:new(db, p, ac, id, f, character, dx, dy, k)
+
+	utils.addObject(character:GetInstanceID(), o)
+	return o
+end
+
+function utils.getObject(id)
+	return objects[id]
+end
+
+function utils.addObject(id, o)
+	objects[id] = o
+end
+
+function utils.destroyObject(id)
+	local o = objects[id]
+	if o ~= nil then
+		CS.UnityEngine.GameObject.Destroy(o.gameObject)
+		objects[id] = nil
+	else
+		print("utils.destroyObject(id) --- object is nil!")
+	end
+end
+
+function utils.displayObjectsInfo()
+    for i, v in pairs(objects) do
+		v:displayInfo()
+	end
+end
+
+function utils.runObjectsFrame()
+    for i, v in pairs(objects) do
+		v:runFrame()
+	end
+end
+
+function utils.display()
+	local num = 0
+	for i, v in pairs(objects) do
+		num = num + 1
+	end
+	CS.UnityEngine.GUILayout.Label("object: " .. num)
 end
 
 -- 从.img加载图片做成texture2D

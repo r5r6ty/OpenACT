@@ -22,6 +22,9 @@ namespace XLua.CSObjectWrap
         static void wrapInit0(LuaEnv luaenv, ObjectTranslator translator)
         {
         
+            translator.DelayWrapLoader(typeof(UnityEngine.WaitForSeconds), UnityEngineWaitForSecondsWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(XLuaTest.LuaBehaviour), XLuaTestLuaBehaviourWrap.__Register);
         
         
@@ -171,13 +174,13 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(UnityEngine.ClothSkinningCoefficient), UnityEngineClothSkinningCoefficientWrap.__Register);
         
-        
-            translator.DelayWrapLoader(typeof(UnityEngine.Cloth), UnityEngineClothWrap.__Register);
-        
         }
         
         static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
         {
+        
+            translator.DelayWrapLoader(typeof(UnityEngine.Cloth), UnityEngineClothWrap.__Register);
+        
         
             translator.DelayWrapLoader(typeof(UnityEngine.SortingLayer), UnityEngineSortingLayerWrap.__Register);
         
@@ -328,13 +331,13 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(UnityEngine.ImageEffectUsesCommandBuffer), UnityEngineImageEffectUsesCommandBufferWrap.__Register);
         
-        
-            translator.DelayWrapLoader(typeof(UnityEngine.Mesh), UnityEngineMeshWrap.__Register);
-        
         }
         
         static void wrapInit2(LuaEnv luaenv, ObjectTranslator translator)
         {
+        
+            translator.DelayWrapLoader(typeof(UnityEngine.Mesh), UnityEngineMeshWrap.__Register);
+        
         
             translator.DelayWrapLoader(typeof(UnityEngine.Renderer), UnityEngineRendererWrap.__Register);
         
@@ -485,13 +488,13 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(UnityEngine.Matrix4x4), UnityEngineMatrix4x4Wrap.__Register);
         
-        
-            translator.DelayWrapLoader(typeof(UnityEngine.Vector3), UnityEngineVector3Wrap.__Register);
-        
         }
         
         static void wrapInit3(LuaEnv luaenv, ObjectTranslator translator)
         {
+        
+            translator.DelayWrapLoader(typeof(UnityEngine.Vector3), UnityEngineVector3Wrap.__Register);
+        
         
             translator.DelayWrapLoader(typeof(UnityEngine.Quaternion), UnityEngineQuaternionWrap.__Register);
         
@@ -593,9 +596,6 @@ namespace XLua.CSObjectWrap
         
         
             translator.DelayWrapLoader(typeof(UnityEngine.WaitForFixedUpdate), UnityEngineWaitForFixedUpdateWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(UnityEngine.WaitForSeconds), UnityEngineWaitForSecondsWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(UnityEngine.WaitForSecondsRealtime), UnityEngineWaitForSecondsRealtimeWrap.__Register);
@@ -1290,10 +1290,10 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(UnityEngine.UI.Toggle.ToggleEvent), UnityEngineUIToggleToggleEventWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(BoundsIntersectExample), BoundsIntersectExampleWrap.__Register);
+            translator.DelayWrapLoader(typeof(ExampleGenConfig), ExampleGenConfigWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(ffffff), ffffffWrap.__Register);
+            translator.DelayWrapLoader(typeof(AudioTest), AudioTestWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(GameLoader), GameLoaderWrap.__Register);
@@ -1308,10 +1308,13 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(Tools), ToolsWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(PhysicalObject), PhysicalObjectWrap.__Register);
+            translator.DelayWrapLoader(typeof(LayerMaskTest), LayerMaskTestWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(test), testWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(WWUtils.Audio.WAV), WWUtilsAudioWAVWrap.__Register);
         
         
         
@@ -1338,6 +1341,8 @@ namespace XLua.CSObjectWrap
             
             wrapInit8(luaenv, translator);
             
+            
+            translator.AddInterfaceBridgeCreator(typeof(System.Collections.IEnumerator), SystemCollectionsIEnumeratorBridge.__Create);
             
         }
         
