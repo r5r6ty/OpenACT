@@ -58,7 +58,7 @@ tool1_LObject = {database = nil,
 
 			}
 tool1_LObject.__index = tool1_LObject
-function tool1_LObject:new(db, ps, id, f, go, vx, vy)
+function tool1_LObject:new(db, ps, m, id, f, go, vx, vy)
 	local self = {}
 	setmetatable(self, tool1_LObject)
 
@@ -108,6 +108,7 @@ function tool1_LObject:new(db, ps, id, f, go, vx, vy)
 	self.pic_object.transform.parent = self.gameObject.transform
 	self.pic_object.transform.localPosition = CS.UnityEngine.Vector3.zero
 	self.spriteRenderer = self.pic_object:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
+	self.spriteRenderer.material = m
 
 	self.atk_object = CS.UnityEngine.GameObject("atk")
 	self.atk_object.transform.parent = self.gameObject.transform
@@ -229,17 +230,17 @@ function tool1_LObject:updatePic()
 end
 
 function tool1_LObject:display()
-	local xy = CS.UnityEngine.Camera.main:WorldToScreenPoint(self.gameObject.transform.position)
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300, 200, 100), "x: " .. self.velocity.x .. "y: " .. self.velocity.y)
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 20, 200, 100), "hp: " .. self.HP)
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 30, 200, 100), "mp: " .. self.MP)
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 40, 200, 100), "action: " .. self.action)
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 50, 200, 100), "frame: " .. self.frame)
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 60, 200, 100), "command: " .. #self.commandQueue)
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 70, 200, 100), "g: " .. tostring(self.isOnGround))
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 80, 200, 100), "w: " .. tostring(self.isWall))
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 90, 200, 100), "f: " .. self.falling)
-	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 100, 200, 100), "d: " .. self.defencing)
+	-- local xy = CS.UnityEngine.Camera.main:WorldToScreenPoint(self.gameObject.transform.position)
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300, 200, 100), "x: " .. self.velocity.x .. "y: " .. self.velocity.y)
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 20, 200, 100), "hp: " .. self.HP)
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 30, 200, 100), "mp: " .. self.MP)
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 40, 200, 100), "action: " .. self.action)
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 50, 200, 100), "frame: " .. self.frame)
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 60, 200, 100), "command: " .. #self.commandQueue)
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 70, 200, 100), "g: " .. tostring(self.isOnGround))
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 80, 200, 100), "w: " .. tostring(self.isWall))
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 90, 200, 100), "f: " .. self.falling)
+	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 100, 200, 100), "d: " .. self.defencing)
 end
 
 

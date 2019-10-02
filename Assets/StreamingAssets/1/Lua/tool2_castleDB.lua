@@ -538,6 +538,13 @@ function tool2_castleDB.gen2(x, y, scale)
 	outlineMap(gameMap)
 	outlineMap(gameMap)
 	outlineMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
+	outlineMap(gameMap)
 	tool2_castleDB.drawMap(gameMap, x, y, scale)
 	local decorations = tool2_castleDB.drawBackGround(room.map, x, y, scale, "door", 5, 7)
 	return decorations
@@ -670,6 +677,7 @@ function tool2_castleDB.drawMap(gameMap, x, y, scale)
 				if ts == nil then
 					ts = dataBase.tileSets[1]
 					n = "no tile matched"
+					print(n)
 				else
 					n = ts.name
 				end
@@ -681,14 +689,44 @@ function tool2_castleDB.drawMap(gameMap, x, y, scale)
 					sortArray[s] = sortObject
 				end
 
-				local unityobject_child = CS.UnityEngine.GameObject("block" .. p .. "," .. k .. "[" .. gameMap[p][k] .. "]" .. n)
+				if gameMap[p][k] == 4 and gameMap[p][k - 1] == 2 then -- 如果梯子上面一个格子是平台,在梯子上面延伸一个梯子
+					local unityobject_child = CS.UnityEngine.GameObject("block" .. p .. "," .. k - 1 .. "[" .. gameMap[p][k] .. "]" .. n)
+					unityobject_child.transform.parent = sortArray[s].transform
+					unityobject_child.transform.localPosition = CS.UnityEngine.Vector3(p * ts.size / 100, -(k - 1) * ts.size / 100, 0)
+					local sr = unityobject_child:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
+					sr.sprite = ts.sprite
+					sr.sortingOrder = -s
+
+					unityobject_child.layer = gameMap[p][k]
+					unityobject_child.name = unityobject_child.name .. "," .. 0
+
+					local boxCollider2D = unityobject_child:AddComponent(typeof(CS.UnityEngine.BoxCollider2D))
+					boxCollider2D.size = CS.UnityEngine.Vector2(20 / 100, 20 / 100)
+
+					for i = 1, #dataBase.tileSets, 1 do
+						if ruileJudge(p, k + 1, gameMap, dataBase.tileSets[i].gird, dataBase.blocksTiles[dataBase.tileSets[i].tileType]) == true then
+							ts = dataBase.tileSets[i]
+							break
+						end
+					end
+					if ts == nil then
+						ts = dataBase.tileSets[1]
+						n = "no tile matched"
+						print(n)
+					else
+						n = ts.name
+					end
+				end
+
+				local unityobject_child = CS.UnityEngine.GameObject("block" .. p .. "," .. k .. "[" .. gameMap[p][k] .. "]" .. n .. ",")
 				unityobject_child.transform.parent = sortArray[s].transform
 				unityobject_child.transform.localPosition = CS.UnityEngine.Vector3(p * ts.size / 100, -k * ts.size / 100, 0)
 				local sr = unityobject_child:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
 				sr.sprite = ts.sprite
 				sr.sortingOrder = -s
 
-				if gameMap[p][k] ~= 4 then -- 梯子先不加碰撞
+				unityobject_child.layer = gameMap[p][k]
+				if gameMap[p][k] ~= 4 then -- 梯子加碰撞，但不碰
 					local bit = nil
 					if gameMap[p][k] == 2 then
 						bit = 1
@@ -708,8 +746,11 @@ function tool2_castleDB.drawMap(gameMap, x, y, scale)
 	--~ 				boxCollider2D2.isTrigger = true
 
 					end
+				else
+					local boxCollider2D = unityobject_child:AddComponent(typeof(CS.UnityEngine.BoxCollider2D))
+					boxCollider2D.size = CS.UnityEngine.Vector2(20 / 100, 20 / 100)
+					unityobject_child.name = unityobject_child.name .. "," .. 0
 				end
-
 			end
         end
     end
@@ -749,7 +790,7 @@ function tool2_castleDB.getColliderTypeWithString(str)
 	local r = 0
     for i = #str, 1, -1 do
 		if tonumber(string.sub(str, i, i)) ~= 0 then
-			local p = CS.UnityEngine.Mathf.Pow(2, #str - i)
+			local p = 1 << (#str - i)
 			r = r | p
 		end
 	end

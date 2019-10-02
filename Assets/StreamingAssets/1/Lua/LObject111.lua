@@ -186,11 +186,11 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 				self.frame = self.frame + 1
 			elseif currentFrame.category == "Body" then
 				self:addEvent(currentFrame.category, 1, {id = currentFrame.id, direction = self.direction, x = currentFrame.x, y = currentFrame.y, width = currentFrame.width, height = currentFrame.height,
-															contactFilter = self.contactFilter, trigger = false})
+															bodyFlags = currentFrame.bodyFlags, layers = currentFrame.layers})
 				self.frame = self.frame + 1
 			elseif currentFrame.category == "Attack" then
 				self:addEvent(currentFrame.category, 1, {id = currentFrame.id, direction = self.direction, x = currentFrame.x, y = currentFrame.y, width = currentFrame.width, height = currentFrame.height,
-															contactFilter = self.contactFilter, trigger = true, damage = currentFrame.damage, fall = currentFrame.fall, defence = currentFrame.defence,
+															contactFilter = self.contactFilter, damage = currentFrame.damage, fall = currentFrame.fall, defence = currentFrame.defence,
 															frequency = currentFrame.frequency, directionX = currentFrame.directionX, directionY = currentFrame.directionY, ignoreFlag = false})
 				self.frame = self.frame + 1
 			elseif currentFrame.category == "Sound" then
@@ -329,26 +329,26 @@ function LObject:runFrame()
 		elseif e.category == "Body" then
 			if self.bodyArray[e.event.id] == nil then
 				self.bodyArray[e.event.id] = LColliderBDY:new(self.bdy_object)
-				self.bodyArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter, e.event.trigger)
+				self.bodyArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.bodyFlags, e.event.layers)
 			else
 				if e.event.width == 0 and e.event.height == 0 then
 					self.bodyArray[e.event.id]:deleteCollider()
 					self.bodyArray[e.event.id] = nil
 				else
-					self.bodyArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter, e.event.trigger)
+					self.bodyArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.bodyFlags, e.event.layers)
 				end
 			end
 		elseif e.category == "Attack" then
 			if self.attckArray[e.event.id] == nil then
 				self.attckArray[e.event.id] = LColliderATK:new(self.atk_object)
-				self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter, e.event.trigger,
+				self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter,
 															e.event.damage, e.event.fall, e.event.defence, e.event.frequency, e.event.directionX, e.event.directionY, e.event.ignoreFlag)
 			else
 				if e.event.width == 0 and e.event.height == 0 then
 					self.attckArray[e.event.id]:deleteCollider()
 					self.attckArray[e.event.id] = nil
 				else
-				self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter, e.event.trigger,
+				self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter,
 															e.event.damage, e.event.fall, e.event.defence, e.event.frequency, e.event.directionX, e.event.directionY, e.event.ignoreFlag)
 				end
 			end

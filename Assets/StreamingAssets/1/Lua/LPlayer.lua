@@ -1,12 +1,13 @@
 local utils = require "tool1_utils"
 
-LPlayer = {object = nil, keys = nil, commands = nil}
+LPlayer = {object = nil, camera = nil, keys = nil, commands = nil}
 LPlayer.__index = LPlayer
-function LPlayer:new(o)
+function LPlayer:new(o, c)
 	local self = {}
 	setmetatable(self, LPlayer)
 
 	self.object = o
+	self.camera = c
 
 	self.keys = {}
 
@@ -25,6 +26,9 @@ function LPlayer:new(o)
 	self:createKey("a", {CS.UnityEngine.KeyCode.Mouse0}) -- ¹¥»÷¼ü
 	self:createKey("b", {CS.UnityEngine.KeyCode.Mouse1}) -- ¹¥»÷¼ü
 	self:createKey("c", {CS.UnityEngine.KeyCode.Mouse2}) -- ¹¥»÷¼ü
+
+	self:createKey("j", {CS.UnityEngine.KeyCode.Space}) -- ÌøÔ¾¼ü
+--~ 	self:createKey("e", {CS.UnityEngine.KeyCode.E}) -- »¥¶¯¼ü
 
 	-- ¶¨Òå³åÍ»¼ü
 	self.keys["U"].antiKey = self.keys["D"] -- ÉÏÏÂ¶Ô³å
@@ -48,10 +52,26 @@ function LPlayer:new(o)
 
 
 	self.commands = {}
+	self.commands_sort = {}
 
 	self:createCommand(self.object.database[self.object.id].char.commands)
 
+	for i, v in pairs(self.commands) do
+		-- if v ~= nil then
+			table.insert(self.commands_sort, {key = v.level, value = v})
+		-- end
+	end
+
+	table.sort(self.commands_sort, function(a, b) -- levelµÍµÄÕÐÊ½·ÅºóÃæ
+		return a.key > b.key
+	end)
+
     return self
+end
+
+function LPlayer:followCharacter()
+	local charPos = self.object.gameObject.transform.position
+	self.camera.transform.position = CS.UnityEngine.Vector3(charPos.x, charPos.y, self.camera.transform.position.z)
 end
 
 function LPlayer:createKey(id, k)
@@ -280,7 +300,8 @@ function LPlayer:displayKeys()
 	for i, v in pairs(self.keys) do
 		CS.UnityEngine.GUILayout.Label(v.id .. ": " .. v.count .. "," .. v.state)
 	end
-	for i, v in pairs(self.commands) do
+	for i, vvv in pairs(self.commands_sort) do
+		local v = vvv.value
 		CS.UnityEngine.GUILayout.Label(v.name .. ": " .. v.count)
 	end
 end
@@ -297,10 +318,9 @@ function LPlayer:getIterateKeys(keysA, keysB)
 	return iterate
 end
 
-
-
 function LPlayer:judgeCommand()
-	for i, v in pairs(self.commands) do -- command
+	for i, vvv in pairs(self.commands_sort) do -- command
+		local v = vvv.value
 		if v.count <= #v.cmds then
 			local v2 = v.cmds[v.count]
 
@@ -416,6 +436,7 @@ function LPlayer:judgeCommand()
 			end
 		else
 			self.object:addEvent("Input", 0, 1, {level = v.level, name = v.name, direction = v.direction, frame = v.frame})
+--~ 			self.object:addEvent("Input", 1, {level = v.level, name = v.name, direction = v.direction, frame = v.frame})
 			v.count = 1
 			v.timeCount = 0
 			v.direction = 0

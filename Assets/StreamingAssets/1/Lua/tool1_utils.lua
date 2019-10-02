@@ -96,6 +96,9 @@ function utils.stringToIntNumber(str)
 end
 
 function utils.getRangeAB(str)
+	if str == "" or str == nil then
+		return nil, nil
+	end
 	local rA, rB = string.match(str, "(%-?%d+)~(%-?%d+)")
 	return tonumber(rA), tonumber(rB)
 end
@@ -105,13 +108,17 @@ function utils.getFrame(str)
 	return action, tonumber(frame) + 1
 end
 
-function utils.createObject(db, p, ac, id, f, x, y, dx, dy, k)
+function utils.createObject(db, p, m, ac, id, f, x, y, dx, dy, k)
 	local character = CS.UnityEngine.GameObject(id)
 	character.transform.position = CS.UnityEngine.Vector3(x, y, 0)
-	o = LObject:new(db, p, ac, id, f, character, dx, dy, k)
+	o = LObject:new(db, p, m, ac, id, f, character, dx, dy, k)
 
 	utils.addObject(character:GetInstanceID(), o)
 	return o
+end
+
+function utils.getObjects()
+	return objects
 end
 
 function utils.getObject(id)
@@ -139,7 +146,10 @@ function utils.displayObjectsInfo()
 end
 
 function utils.runObjectsFrame()
-    for i, v in pairs(objects) do
+	for i, v in pairs(objects) do
+		if v.AI ~= nil then
+			v.AI:judgeAI()
+		end
 		v:runFrame()
 	end
 end

@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &65028197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,9 +149,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02acb48ec6c2d624c950063ff0466005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: D:\unityproject\cdbtest\Jump.wav
+  path: D:\unityproject\cdbtest\temp\
+  files:
+  - Jump.wav
+  - punch.wav
+  - hit_l.wav
+  - hit_h.wav
+  - Sword.wav
+  - Tiger.wav
+  - Rha.wav
+  - m_pass.wav
+  - IonStormApproaching.wav
+  - sm_dmg_01.wav
+  - sm_dmg_02.wav
+  - sm_dmg_03.wav
+  - sm_fireWave.wav
+  - alchemy.wav
+  - sharpening.wav
   music: {fileID: 0}
-  ac: {fileID: 0}
+  ac: []
   position: 0
   samplerate: 44100
   frequency: 440
@@ -186,7 +202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &641811636
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -271,55 +287,6 @@ Transform:
   m_GameObject: {fileID: 641811635}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.6528, y: -2.074847, z: -183.20888}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &945509206
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 945509208}
-  - component: {fileID: 945509207}
-  m_Layer: 0
-  m_Name: GameObject (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &945509207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 945509206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02acb48ec6c2d624c950063ff0466005, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: D:\unityproject\cdbtest\Jump.wav
-  music: {fileID: 0}
-  ac: {fileID: 0}
-  position: 0
-  samplerate: 44100
-  frequency: 440
---- !u!4 &945509208
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 945509206}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -408,55 +375,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1215492294
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1215492296}
-  - component: {fileID: 1215492295}
-  m_Layer: 0
-  m_Name: GameObject (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1215492295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215492294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02acb48ec6c2d624c950063ff0466005, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: D:\unityproject\OpenACT\Assets\StreamingAssets\1\Resource\sfx\fire.wav
-  music: {fileID: 0}
-  ac: {fileID: 0}
-  position: 0
-  samplerate: 44100
-  frequency: 440
---- !u!4 &1215492296
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215492294}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1709363959
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +394,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1709363960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,5 +530,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

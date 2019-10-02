@@ -6,8 +6,9 @@ using System.IO;
 public class AudioTest : MonoBehaviour
 {
     public string path;
+    public string[] files;
     public AudioSource music;
-    public AudioClip ac;
+    public AudioClip[] ac;
     public int position = 0;
     public int samplerate = 44100;
     public float frequency = 440;
@@ -15,31 +16,38 @@ public class AudioTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ac = new AudioClip[files.Length];
+
         music = gameObject.AddComponent<AudioSource>();
         music.playOnAwake = false;
 
         //ac = AudioClip.Create("MySinusoid", samplerate * 2, 1, samplerate, true, OnAudioRead, OnAudioSetPosition);
         //music.clip = ac;
 
-        FileStream fs = new FileStream(path, FileMode.Open);
-        byte[] bt = new byte[fs.Length];
-        fs.Read(bt, 0, bt.Length);
-        fs.Close();
-
-        WWUtils.Audio.WAV wav = new WWUtils.Audio.WAV(bt);
-        Debug.Log(wav);
-        ac = AudioClip.Create("testSound", wav.SampleCount, wav.ChannelCount, wav.Frequency, false);
-        ac.SetData(wav.LeftChannel, 0);
-
-        string a = "";
-        for( int i = 0; i < wav.LeftChannel.Length; i++)
+        for (int i = 0; i < files.Length; i++)
         {
-            a += wav.LeftChannel[i].ToString() + "\n";
+            FileStream fs = new FileStream(path + files[i], FileMode.Open);
+            byte[] bt = new byte[fs.Length];
+            fs.Read(bt, 0, bt.Length);
+            fs.Close();
+
+            WWUtils.Audio.WAV wav = new WWUtils.Audio.WAV(bt);
+            Debug.Log(files[i] + wav);
+            ac[i] = AudioClip.Create("testSound", wav.SampleCount, wav.ChannelCount, wav.Frequency, false);
+            ac[i].SetData(wav.LeftChannel, 0);
+            //Debug.Log(files[i] + ac[i].length + wav);
+
+
+            //string a = "";
+            //for (int i2 = 0; i2 < wav.LeftChannel.Length; i2++)
+            //{
+            //    a += wav.LeftChannel[i2].ToString() + "\n";
+            //}
+
+            //File.WriteAllText(@"D:\unityproject\OpenACT\Assets\StreamingAssets\1\Resource\wocao2.txt", a);
         }
 
-        File.WriteAllText(@"D:\unityproject\OpenACT\Assets\StreamingAssets\1\Resource\wocao2.txt", a);
-
-        music.clip = ac;
+        //music.clip = ac;
     }
 
     // Update is called once per frame
@@ -50,9 +58,13 @@ public class AudioTest : MonoBehaviour
 
     void OnGUI()
     {
-        if (GUILayout.Button("play"))
+        for (int i = 0; i < files.Length; i++)
         {
-            music.Play();
+            if (GUILayout.Button(files[i]))
+            {
+                music.clip = ac[i];
+                music.Play();
+            }
         }
     }
 

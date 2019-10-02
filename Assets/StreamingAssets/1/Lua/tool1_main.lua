@@ -10,6 +10,7 @@ require "tool1_LGUIBox"
 require "tool1_LGUIWindow"
 
 require "tool1_LObject"
+local json = require "json"
 
 local filePath = CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/"
 
@@ -29,8 +30,9 @@ local toolWindowPos = {x = 0, y = 0}
 local settingsDB = {}
 local charactersDB = {}
 
-local texture2Ds = {}
+-- local texture2Ds = {}
 local pics = {}
+local palettes = {}
 
 local categorys = {}
 
@@ -328,18 +330,86 @@ function createToolWindow(cx, cy, partDetail)
 	return w
 end
 
-
+-- 通过制作好的图集，导入纹理，创建sprite
+function createSprites()
+	--~     for i, v in pairs(texture2Ds) do
+	--~         if pics[i] == nil then
+	--~             pics[i] = CS.UnityEngine.Sprite.Create(v, CS.UnityEngine.Rect(0, 0, v.width, v.height), CS.UnityEngine.Vector2(0, 1))
+	--~         end
+	--~ 	end
+	
+		local file = io.open(charactersDB.DBPath .. "wocao.png", "rb")
+		io.input(file)
+		local data = io.read("*a")
+		io.close(file)
+		texture2Ds = CS.UnityEngine.Texture2D(0, 0, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+		texture2Ds.filterMode = CS.UnityEngine.FilterMode.Point
+	
+		texture2Ds:LoadImage(data)
+	
+		local file2 = io.open(charactersDB.DBPath .. "wocao.json", "r")
+		io.input(file2)
+		local data2 = io.read("*a")
+		io.close(file2)
+	
+		local spriteData = json.decode(data2)
+	
+		for i, v in ipairs(spriteData) do
+			if pics[v.id] == nil then
+				pics[v.id] = CS.UnityEngine.Sprite.Create(texture2Ds, CS.UnityEngine.Rect(v.x, v.y, v.w, v.h), CS.UnityEngine.Vector2(0, 1))
+			end
+		end
+	end
+	
+	-- 导入调色板
+	function createPalettes()
+		for i, v in pairs(charactersDB.characters) do
+			if palettes[i] == nil then
+				palettes[i] = {}
+			end
+			for i2, v2 in pairs(v.char.palette) do
+	
+				local texture = CS.UnityEngine.Texture2D(256, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+				texture.filterMode = CS.UnityEngine.FilterMode.Point
+	
+				local count = 0
+				local file = io.open(charactersDB.DBPath .. v2.file, "r")
+				for line in file:lines() do
+					local r, g, b = string.match(line, "(%d+) (%d+) (%d+)")
+	--~ 				print(r, g, b)
+					if r ~= nil and g ~= nil and b ~=nil then
+						if count == 0 then
+							texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 0))
+						else
+							texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 1))
+						end
+						count = count + 1
+					end
+				end
+				io.close(file)
+				texture:Apply()
+	
+	
+				local sprite = CS.UnityEngine.Sprite.Create(texture, CS.UnityEngine.Rect(0, 0, texture.width, texture.height), CS.UnityEngine.Vector2(0, 1))
+	
+				local shader = CS.UnityEngine.Shader.Find("Sprites/Beat/Diffuse-Shadow")
+				local material = CS.UnityEngine.Material(shader)
+	
+	--~ 			local unityobject_child = CS.UnityEngine.GameObject("testtt")
+	--~ 			local sr = unityobject_child:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
+	--~ 			sr.sprite = sprite
+	--~ 			local m = unityobject_child:GetComponent(typeof(CS.UnityEngine.Renderer)).material
+	--~ 			m.shader = shader
+	--~ 			m:SetTexture("_Palette", texture)
+				material:SetTexture("_Palette", texture)
+	
+				table.insert(palettes[i], material)
+			end
+		end
+	end
 
 -- 读取frame的类别
 function localCategory()
-end
-
-function createSprites()
-    for i, v in pairs(texture2Ds) do
-        if pics[i] == nil then
-            pics[i] = CS.UnityEngine.Sprite.Create(v, CS.UnityEngine.Rect(0, 0, v.width, v.height), CS.UnityEngine.Vector2(0, 1))
-        end
-	end
 end
 
 -- 构建显示用角色
@@ -373,7 +443,8 @@ function createCharacterDisplay(c, f, i)
 		local script = character:AddComponent(typeof(CS.XLuaTest.LuaBehaviour))
 		local t = script.scriptEnv
 		local frame = f .. "-" .. i
-		t.object = tool1_LObject:new(charactersDB.characters, pics, c, frame, character, 0, 0)
+		print(character)
+		t.object = tool1_LObject:new(charactersDB.characters, pics, palettes[c][1], c, frame, character, 0, 0)
 
 --~ 		local pic = CS.UnityEngine.GameObject("pic")
 --~ 		pic.transform.parent = character.transform
@@ -889,9 +960,10 @@ function start()
 
     charactersDB = LCastleDBCharacter:new(filePath, "new.cdb")
 	charactersDB:readDB()
-	charactersDB:readIMG()
-	texture2Ds = charactersDB:loadIMGToTexture2Ds()
+	-- charactersDB:readIMG()
+	-- texture2Ds = charactersDB:loadIMGToTexture2Ds()
 	createSprites()
+	createPalettes()
 
 	localCategory()
 

@@ -61,10 +61,10 @@ function utils.getIntPart(x)
 end
 
 -- ·Ö¸î×Ö·û´®º¯Êý
-function utils.split( str,reps )
+function utils.split(str, reps)
     local resultStrList = {}
-    string.gsub(str,'[^'..reps..']+',function ( w )
-        table.insert(resultStrList,w)
+    string.gsub(str,'[^' .. reps .. ']+',function (w)
+        table.insert(resultStrList, w)
     end)
     return resultStrList
 end

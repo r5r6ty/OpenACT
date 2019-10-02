@@ -37,10 +37,12 @@ LObject = {database = nil,
 			velocity = nil,
 
 			gameObject = nil,
-			contactFilter = nil,
 
 			isWall = nil,
 			isOnGround = nil,
+			isCeiling = nil,
+			isElse = nil,
+			elseArray = nil,
 
 			rigidbody = nil,
 			spriteRenderer = nil,
@@ -59,11 +61,15 @@ LObject = {database = nil,
 			accvvvX = nil,
 			accvvvY = nil,
 
-			eventCoroutine = nil
+			eventCoroutine = nil,
+
+
+			AI = nil,
+			target = nil
 
 			}
 LObject.__index = LObject
-function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
+function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 	local self = {}
 	setmetatable(self, LObject)
 
@@ -91,8 +97,8 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 	self.fallingRR = self.database[self.id].char.fallingRecoveryRate
 	self.defencingRR = self.database[self.id].char.defencingRecoveryRate
 
-	self.falling = self.maxFalling
-	self.defencing = self.maxDefencing
+	self.falling = 1
+	self.defencing = 1
 
 	self.weight = self.database[self.id].char.weight
 
@@ -102,7 +108,10 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 	self.velocity = CS.UnityEngine.Vector2(vx, vy)
 
 	self.isWall = false
-	self.isOnGround = false
+	self.isCeiling = false
+	self.isOnGround = 1
+	self.isElse = 1
+	self.elseArray = {}
 
 
 	self.gameObject = go
@@ -110,10 +119,17 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 	self.attckArray = {}
 	self.bodyArray = {}
 
+	self.kind = k
+
 	self.pic_object = CS.UnityEngine.GameObject("pic")
 	self.pic_object.transform.parent = self.gameObject.transform
 	self.pic_object.transform.localPosition = CS.UnityEngine.Vector3.zero
 	self.spriteRenderer = self.pic_object:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
+	self.spriteRenderer.material = m
+
+	if self.kind == 3 then -- 非人物体暂定-20层
+		self.spriteRenderer.sortingOrder = 20
+	end
 
 	self.audioSource = self.gameObject:AddComponent(typeof(CS.UnityEngine.AudioSource))
 	self.audioSource.playOnAwake = false
@@ -122,9 +138,10 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 	self.atk_object.transform.parent = self.gameObject.transform
 	self.atk_object.transform.localPosition = CS.UnityEngine.Vector3.zero
 
-	self.bdy_object = CS.UnityEngine.GameObject("bdy")
+	self.bdy_object = CS.UnityEngine.GameObject("bdy[16]")
 	self.bdy_object.transform.parent = self.gameObject.transform
 	self.bdy_object.transform.localPosition = CS.UnityEngine.Vector3.zero
+	self.bdy_object.layer = 16 -- bdy的layer暂定16
 
 	self.rigidbody = self.gameObject:AddComponent(typeof(CS.UnityEngine.Rigidbody2D))
 	self.rigidbody.bodyType = CS.UnityEngine.RigidbodyType2D.Kinematic
@@ -135,11 +152,6 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 	self.rigidbody.gravityScale = 0
 --~ 	self.rigidbody.useAutoMass = true
 
-	self.contactFilter = CS.UnityEngine.ContactFilter2D()
-	self.contactFilter.useLayerMask = false
-	self.contactFilter.useTriggers = false
---~ 	self.contactFilter.layerMask = layerMask
-
 	self.eventQueue = {}
 
 	self.vvvX = nil
@@ -147,10 +159,11 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 	self.accvvvX = nil
 	self.accvvvY = nil
 
-	self.kind = k
+	self.AI = nil
+	self.target = nil
 
 
-	self.eventCoroutine = function(c, delay, w, event)
+	self.eventCoroutine = function(c, delay, w, event, this)
 		for i = 1, delay, 1 do
 			coroutine.yield(CS.UnityEngine.WaitForFixedUpdate())
 		end
@@ -163,71 +176,78 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 				self.pic_object.transform.localPosition = e.event.localPosition
 			elseif e.category == "Move" then
 				if e.event.compute == 0 then
---~ 					if e.event.velocityX ~= nil then
---~ 						self.velocity.x = e.event.velocityX * self.direction.x
---~ 					end
---~ 					if e.event.velocityY ~= nil then
---~ 						self.velocity.y = e.event.velocityY * self.direction.y
---~ 					end
 					self.vvvX = e.event.velocityX
 					self.vvvY = e.event.velocityY
-				else
---~ 					if e.event.velocityX ~= nil then
---~ 						self.velocity.x = self.velocity.x + e.event.velocityX
---~ 					end
---~ 					if e.event.velocityY ~= nil then
---~ 						self.velocity.y = self.velocity.y + e.event.velocityY
---~ 					end
+				elseif e.event.compute == 1 then
 					self.accvvvX = e.event.velocityX
 					self.accvvvY = e.event.velocityY
+				else
+					if self.elseArray[e.event.layers] ~= nil then
+						for i2, v2 in pairs(self.elseArray[e.event.layers]) do
+								self.rigidbody.position = CS.UnityEngine.Vector2(v2.bounds.center.x, v2.bounds.center.y)
+--~ 							self.rigidbody.position = CS.UnityEngine.Vector2(v2.transform.position.x, v2.transform.position.y)
+--~ 							self.gameObject.transform.position = v2.transform.position
+							break
+						end
+					end
 				end
 			elseif e.category == "Body" then
 				if self.bodyArray[e.event.id] == nil then
 					self.bodyArray[e.event.id] = LColliderBDY:new(self.bdy_object)
-					self.bodyArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter, e.event.trigger)
+					self.bodyArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.bodyFlags, e.event.layers)
 				else
 					if e.event.width == 0 and e.event.height == 0 then
 						self.bodyArray[e.event.id]:deleteCollider()
 						self.bodyArray[e.event.id] = nil
 					else
-						self.bodyArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter, e.event.trigger)
+						self.bodyArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.bodyFlags, e.event.layers)
 					end
 				end
 			elseif e.category == "Attack" then
 				if self.attckArray[e.event.id] == nil then
 					self.attckArray[e.event.id] = LColliderATK:new(self.atk_object)
-					self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter, e.event.trigger,
+					self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.attackFlags,
 																e.event.damage, e.event.fall, e.event.defence, e.event.frequency, e.event.directionX, e.event.directionY, e.event.ignoreFlag)
 				else
 					if e.event.width == 0 and e.event.height == 0 then
 						self.attckArray[e.event.id]:deleteCollider()
 						self.attckArray[e.event.id] = nil
 					else
-					self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.contactFilter, e.event.trigger,
+						self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.attackFlags,
 																e.event.damage, e.event.fall, e.event.defence, e.event.frequency, e.event.directionX, e.event.directionY, e.event.ignoreFlag)
 					end
 				end
 			elseif e.category == "Sound" then
 				self.audioSource.clip = self.audioClips[e.event.sfx]
+				-- local r = math.random() / 5
+				-- self.audioSource.pitch = 1 + r - 0.1
 				self.audioSource:Play()
 			elseif e.category == "Object" then
-				if e.event.worldPosition then
+				if e.event.isWorldPosition then
 
-					utils.createObject(self.database, self.pics, self.audioClips, self.id, e.event.nextFrame, e.event.x, e.event.y, 0, 0, 3)
+					utils.createObject(self.database, self.pics, self.spriteRenderer.material, self.audioClips, self.id, e.event.nextFrame, e.event.x, e.event.y, 0, 0, e.event.kind)
 				else
-					utils.createObject(self.database, self.pics, self.audioClips, self.id, e.event.nextFrame, self.rigidbody.position.x + e.event.x, self.rigidbody.position.y + e.event.y, 0, 0, 3)
+					utils.createObject(self.database, self.pics, self.spriteRenderer.material, self.audioClips, self.id, e.event.nextFrame, self.rigidbody.position.x + e.event.x, self.rigidbody.position.y + e.event.y, 0, 0, e.event.kind)
 				end
 			elseif e.category == "Command" then
-		--~ 			e.event()
+				if e.event.actFlag ~= nil then
+					if e.event.actFlag == 0 and self.isOnGround == 1 | 1 << tonumber(e.event.layers) then
+						e.event.active = true
+					elseif (e.event.actFlag == 2 and self.isElse == 1 | 1 << tonumber(e.event.layers)) then
+						e.event.active = true
+					end
+				else
+					e.event.active = true
+				end
 			elseif e.category == "Act" then
-				if (e.event.actFlag == 0 and self.isOnGround and self.velocity.y <= 0) or (e.event.actFlag == 1 and self.isWall) then
-					self.action, self.frame = utils.getFrame(e.event.nextFrame)
-					self:clearCollidersAndCommand()
-					self:stopAllEvent()
-					self:frameLoop()
---~ 					e.isOnce = true
---~ 					print("wawa")
-					break
+				if e.event.command == nil or e.event.command == "" then
+					if (e.event.actFlag == 0 and self.isOnGround ~= 1 and self.velocity.y <= 0) or (e.event.actFlag == 1 and self.isWall) or (e.event.actFlag == 2 and self.isElse == 1 | 1 << tonumber(e.event.layers)) then
+						self.action, self.frame = utils.getFrame(e.event.nextFrame)
+						self:clearCollidersAndCommand()
+						self:stopAllEvent()
+						self:frameLoop()
+						break
+					end
 				end
 			elseif e.category == "Warp" then
 				self.action, self.frame = utils.getFrame(e.event.nextFrame)
@@ -240,14 +260,20 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 			elseif e.category == "Hurt" then  -- 从这里开始和bd无关，是自定义event
 				self.HP = self.HP - e.event.damage
 				self.MP = self.MP - e.event.damage
-				self.falling = self.falling + e.event.fall
-				self.defencing = self.defencing + e.event.defence
-				if self.falling > self.maxFalling then
+				if self.HP <= 0 then
 					self.falling = self.maxFalling
-				end
-				if self.defencing > self.maxDefencing then
 					self.defencing = self.maxDefencing
+				else
+					self.falling = self.falling + e.event.fall
+					self.defencing = self.defencing + e.event.defence
+					if self.falling > self.maxFalling then
+						self.falling = self.maxFalling
+					end
+					if self.defencing > self.maxDefencing then
+						self.defencing = self.maxDefencing
+					end
 				end
+				self.target = e.event.attacker -- 切换目标
 			elseif e.category == "UpdatePostion" then
 				self.rigidbody.position = self.rigidbody.position + self.velocity * CS.UnityEngine.Time.deltaTime
 			elseif e.category == "HP" then
@@ -268,9 +294,9 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 					self.directionBuff.x = self.direction.x
 				end
 			elseif e.category == "Gravity" then
-				self.velocity = self.velocity + 0.5 * CS.UnityEngine.Physics2D.gravity * 1/60
+				self.velocity = self.velocity + 0.5 * CS.UnityEngine.Physics2D.gravity * 2/60
 			elseif e.category == "Flying" then
-				if (self.action == "standing" or self.action == "walking") and self.isOnGround == false and self.velocity.y < 0 then
+				if (self.action == "standing" or self.action == "walking") and self.isOnGround == 1 and self.velocity.y < 0 then
 					self.action = "jumping_flying"
 					self.frame = 0 + 1
 					self:clearCollidersAndCommand()
@@ -283,7 +309,7 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 				self.falling = self:toOne(self.falling, self.maxFalling, self.fallingRR)
 				self.defencing = self:toOne(self.defencing, self.maxDefencing, self.defencingRR)
 			elseif e.category == "Friction" then
-				if self.isOnGround then
+				if self.isOnGround ~= 1 then
 					local f = self.velocity * CS.UnityEngine.Vector2(1, 0) * 0.20 -- 摩擦系数
 					if self.velocity.x > 0 then
 						self.velocity = self.velocity - f
@@ -300,9 +326,10 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 				end
 			elseif e.category == "Input" then
 				for i2, v2 in ipairs(self.eventQueue) do
-					if v2.category == "Command" then
 
-						if (v2.event.rangeA ~= nil and v2.event.rangeB ~= nil and e.event.level >= v2.event.rangeA and e.event.level <= v2.event.rangeB) or (v2.event.name ~= nil and v2.event.name == e.event.name) then
+					if v2.category == "Command" and v2.event.active then
+
+						if (v2.event.rangeA ~= nil and v2.event.rangeB ~= nil and e.event.level >= v2.event.rangeA and e.event.level <= v2.event.rangeB) or (v2.event.command ~= nil and v2.event.command == e.event.name) then
 
 							self.action, self.frame = utils.getFrame(e.event.frame)
 							self:clearCollidersAndCommand()
@@ -322,39 +349,88 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 					end
 				end
 			elseif e.category == "Force" then
-				self.velocity = self.velocity + e.event.velocity
+				if e.event.compute == 0 then
+					self.velocity.x = 0
+					self.velocity.y = 0
+				end
+				self.velocity.x = self.velocity.x + e.event.velocity.x
+				if math.floor(self.falling + 0.5) >= 70 then
+					self.velocity.y = self.velocity.y + e.event.velocity.y
+				end
 			elseif e.category == "Injured" then
 				if #self.database[self.id].char.reactions > 0 and self.kind == 0 then
 					local ttt = {}
 					local round = math.floor(self.falling + 0.5)
+					if self.HP <= 0 then
+						round = 100
+					end
 					for i, v in pairs(self.database[self.id].char.reactions) do
 						local rA, rB = utils.getRangeAB(v.fallingRange)
 			--~ 				print(round, rA, rB)
-						if round >= rA and round <= rB then
-							table.insert(ttt, {action = v.reactionAction, frame = v.reactionFrame})
+
+						
+						local d = (e.event.dir * self.direction.x + 1) / 2 + 1
+						-- print(self.direction.x, d)
+
+						-- print(d)
+						if round >= rA and round <= rB and v.direction & d == d then
+							table.insert(ttt, v.reactionFrame)
+							-- print(v.direction)
 						end
 					end
 					if #ttt > 0 then
+						
 			--~ 						local r = CS.Tools.Instance:RandomRangeInt(1, 101)
 			--~ 						if r >= 1 and r <= 80 then
 			--~ 							r = 1
 			--~ 						elseif r >= 81 and r <= 100 then
 			--~ 							r = 2
 			--~ 						end
-						local r = 1
+						local r = CS.Tools.Instance:RandomRangeInt(1, #ttt + 1)
 			--~ 							print(#ttt, r)
-						self.action = ttt[r].action
-						self.frame = ttt[r].frame + 1
+						self.action, self.frame = utils.getFrame(ttt[r])
 						self:clearCollidersAndCommand()
 						self:stopAllEvent()
 						self:frameLoop()
 					end
 				end
 			elseif e.category == "Collision" then
+			elseif e.category == "FindTarget" then
+				if self.target == nil then
+					local temp = {}
+					for i, v in pairs(utils.getObjects()) do
+						if v ~= nil and v.kind == 0 and v ~= self and v.HP > 0 then
+							table.insert(temp, v)
+						end
+					end
+					self.target = temp[CS.Tools.Instance:RandomRangeInt(1, #temp + 1)]
+				else
+					if self.target.HP <= 0 then
+						self.target = nil
+					end
+				end
+			elseif e.category == "Dead" then
+				if self.HP <= 0 then
+					for i2, v2 in ipairs(self.eventQueue) do
+						if (v2.category == "Sprite" and v2.temp == 70) then
+							self:stopAllEvent()
 
+							break
+						end
+					end
+					for i3, v3 in pairs(self.bodyArray) do
+						if v3.filter.layerMask.value & 65536 == 65536 then
+							local lll = CS.UnityEngine.LayerMask()
+							lll.value = v3.filter.layerMask.value & ~(1 << 16)
+							v3.filter.layerMask = lll
+							-- print(v3.filter.layerMask.value, 1 << 16)
+						end
+					end
+				end
 			end
 			coroutine.yield(CS.UnityEngine.WaitForFixedUpdate())
 		end
+		this.isEnd = true
 --~ 		coroutine.yield(false)
 --~ 		print(e.category, "a?")
 	end
@@ -367,6 +443,9 @@ function LObject:new(db, ps, ac, id, f, go, vx, vy, k)
 		self:addEvent("Friction", 0, 999999, nil)
 		self:addEvent("FlipX", 0, 999999, nil)
 --~ 		self:addEvent("Collision", 0, 999999, nil)
+
+		self:addEvent("FindTarget", 0, 999999, nil) -- 搜敌
+		self:addEvent("Dead", 0, 999999, nil) -- 搜敌
 	end
 
 --~ 	self:addEvent("UpdatePostion", 0, 999999, nil)
@@ -399,13 +478,13 @@ function LObject:frameLoop()
 		elseif currentFrame.category == "Move" then
 --~ 			self.vvvX = currentFrame.directionX
 --~ 			self.vvvY = currentFrame.directionY
-			self:addEvent(currentFrame.category, delayC, 1, {velocityX = currentFrame.directionX, velocityY = currentFrame.directionY, compute = currentFrame.compute})
+			self:addEvent(currentFrame.category, delayC, 1, {velocityX = currentFrame.directionX, velocityY = currentFrame.directionY, compute = currentFrame.compute, layers = currentFrame.layers})
 		elseif currentFrame.category == "Body" then
 			self:addEvent(currentFrame.category, delayC, 1, {id = currentFrame.id, direction = self.direction, x = currentFrame.x, y = currentFrame.y, width = currentFrame.width, height = currentFrame.height,
-														contactFilter = self.contactFilter, trigger = false})
+														bodyFlags = currentFrame.bodyFlags, layers = currentFrame.layers})
 		elseif currentFrame.category == "Attack" then
 			self:addEvent(currentFrame.category, delayC, 1, {id = currentFrame.id, direction = self.direction, x = currentFrame.x, y = currentFrame.y, width = currentFrame.width, height = currentFrame.height,
-														contactFilter = self.contactFilter, trigger = true, damage = currentFrame.damage, fall = currentFrame.fall, defence = currentFrame.defence,
+														attackFlags = nil, damage = currentFrame.damage, fall = currentFrame.fall, defence = currentFrame.defence,
 														frequency = currentFrame.frequency, directionX = currentFrame.directionX, directionY = currentFrame.directionY, ignoreFlag = false})
 		elseif currentFrame.category == "Sound" then
 			self:addEvent(currentFrame.category, delayC, 1, {sfx = currentFrame.sfx})
@@ -413,9 +492,9 @@ function LObject:frameLoop()
 			self:addEvent(currentFrame.category, delayC, 1, {x = currentFrame.x, y = currentFrame.y, nextFrame = currentFrame.nextFrame})
 		elseif currentFrame.category == "Command" then
 			local rA, rB = utils.getRangeAB(currentFrame.range)
-			self:addEvent(currentFrame.category, delayC, 999999, {name = currentFrame.command, rangeA = rA, rangeB = rB})
+			self:addEvent(currentFrame.category, delayC, 999999, {command= currentFrame.command, rangeA = rA, rangeB = rB, actFlag = currentFrame.actFlag, layers = currentFrame.layers, active = false})
 		elseif currentFrame.category == "Act" then
-			self:addEvent(currentFrame.category, delayC, 999999, {actFlag = currentFrame.actFlag, nextFrame = currentFrame.nextFrame})
+			self:addEvent(currentFrame.category, delayC, 999999, {actFlag = currentFrame.actFlag, layers = currentFrame.layers, command = currentFrame.command, nextFrame = currentFrame.nextFrame})
 		elseif currentFrame.category == "Warp" then
 			self:addEvent(currentFrame.category, delayC, 1, {nextFrame = currentFrame.nextFrame})
 --~ 				self.vvvX = nil
@@ -454,13 +533,14 @@ function LObject:runFrame()
 
 	self.rigidbody.position = self.rigidbody.position + self.velocity * CS.UnityEngine.Time.deltaTime
 
+	self.elseArray = {}
 	-- 碰撞检测
 	local g = false
 	for i, v in pairs(self.bodyArray) do
-		local gg, cc, ww = v:BDYFixedUpdate(self.velocity, self.weight)
-		if gg then
+		local gg, cc, ww, ee, eeaa = v:BDYFixedUpdate(self.velocity, self.weight)
+		if gg ~= 1 then
 			if g == false then
-				self.isOnGround = true
+				self.isOnGround = gg
 				self.velocity.y = 0
 				g = true
 			end
@@ -470,17 +550,27 @@ function LObject:runFrame()
 			self.velocity.x = 0
 		end
 		if cc then
+			self.isCeiling = cc
 			self.velocity.y = 0
+		end
+		self.isElse = ee
+
+		for i2, v2 in pairs(eeaa) do
+			if self.elseArray[i2] == nil then
+				self.elseArray[i2] = {}
+			end
+			for i3, v3 in pairs(v2) do
+				self.elseArray[i2][i3] = v3
+			end
 		end
 	end
 	if g == false then
-		self.isOnGround = false
+		self.isOnGround = 1
 	end
 
-	local myID = self.gameObject:GetInstanceID()
 	-- 攻击检测
 	for i, v in pairs(self.attckArray) do
-		v:ATKFixedUpdate(self.direction, myID)
+		v:ATKFixedUpdate(self.direction, self)
 	end
 
 --~ 	self.velocity = self.velocity + 0.5 * CS.UnityEngine.Physics2D.gravity * CS.UnityEngine.Time.deltaTime
@@ -494,25 +584,34 @@ function LObject:runFrame()
 --~ 	local a =  CS.UnityEngine.Vector3(self.rigidbody.position.x, self.rigidbody.position.y, 0)
 --~ 	local b =  CS.UnityEngine.Vector3(self.velocity.x, self.velocity.y, 0)
 --~ 	CS.UnityEngine.Debug.DrawLine(a, a + b, CS.UnityEngine.Color.blue)
+
+	for i = #self.eventQueue, 1, -1 do
+		if self.eventQueue[i].isEnd then
+			cs_coroutine.stop(self.eventQueue[i].coroutine)
+			table.remove(self.eventQueue, i)
+		end
+	end
 end
 
 function LObject:updatePic()
 end
 
 function LObject:displayInfo()
---~ 	if self.kind ~= 3 then
---~ 		local xy = CS.UnityEngine.Camera.main:WorldToScreenPoint(self.gameObject.transform.position)
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300, 200, 100), "x: " .. math.floor(self.velocity.x + 0.5) .. "y: " .. math.floor(self.velocity.y))
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 20, 200, 100), "hp: " .. math.floor(self.HP + 0.5))
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 30, 200, 100), "mp: " .. math.floor(self.MP + 0.5))
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 40, 200, 100), "action: " .. self.action)
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 50, 200, 100), "frame: " .. self.frame)
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 70, 200, 100), "g: " .. tostring(self.isOnGround))
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 80, 200, 100), "w: " .. tostring(self.isWall))
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 90, 200, 100), "f: " .. math.floor(self.falling + 0.5))
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 100, 200, 100), "d: " .. math.floor(self.defencing + 0.5))
---~ 		CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 110, 200, 100), "e: " .. #self.eventQueue)
---~ 	end
+	-- if self.kind ~= 3 then
+	-- 	local xy = CS.UnityEngine.Camera.main:WorldToScreenPoint(self.gameObject.transform.position)
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300, 200, 100), "x: " .. math.floor(self.velocity.x + 0.5) .. "y: " .. math.floor(self.velocity.y))
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 20, 200, 100), "hp: " .. math.floor(self.HP + 0.5))
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 30, 200, 100), "mp: " .. math.floor(self.MP + 0.5))
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 40, 200, 100), "action: " .. self.action)
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 50, 200, 100), "frame: " .. self.frame)
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 60, 200, 100), "g: " .. tostring(self.isOnGround))
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 70, 200, 100), "w: " .. tostring(self.isWall))
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 80, 200, 100), "c: " .. tostring(self.isCeiling))
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 90, 200, 100), "e: " .. tostring(self.isElse))
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 100, 200, 100), "f: " .. math.floor(self.falling + 0.5))
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 110, 200, 100), "d: " .. math.floor(self.defencing + 0.5))
+	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 120, 200, 100), "event: " .. #self.eventQueue)
+	-- end
 end
 
 
@@ -577,12 +676,13 @@ end
 
 -- 加协程来执行逻辑
 function LObject:addEvent(c, d, w, e)
-
-	local a = cs_coroutine.start(self.eventCoroutine, c, d, w, e)
 	local event = {}
+	local a = cs_coroutine.start(self.eventCoroutine, c, d, w, e, event)
+	event.isEnd = false
 	event.category = c
 	event.coroutine = a
 	event.event = e
+	event.temp = d
 	table.insert(self.eventQueue, event)
 	return event
 end
@@ -591,7 +691,7 @@ end
 function LObject:stopAllEvent()
 	for i = #self.eventQueue, 1, -1 do
 		local v = self.eventQueue[i]
-		if v.category ~= "Flying" and v.category ~= "Gravity" and v.category ~= "HPMPFallingDefecing" and v.category ~= "Friction" and v.category ~= "FlipX" and v.category ~= "UpdatePostion" and v.category ~= "Collision" then
+		if v.category ~= "Flying" and v.category ~= "Gravity" and v.category ~= "HPMPFallingDefecing" and v.category ~= "Friction" and v.category ~= "FlipX" and v.category ~= "UpdatePostion" and v.category ~= "Collision" and v.category ~= "FindTarget" and v.category ~= "Dead" then
 			if v.coroutine ~= nil then
 				cs_coroutine.stop(v.coroutine)
 			end
