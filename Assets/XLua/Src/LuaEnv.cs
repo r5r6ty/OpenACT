@@ -111,8 +111,8 @@ namespace XLua
                 DoString(init_xlua, "Init");
                 init_xlua = null;
 
-#if !UNITY_SWITCH || UNITY_EDITOR
-                AddBuildin("socket.core", StaticLuaCallbacks.LoadSocketCore);
+#if (!UNITY_SWITCH && !UNITY_WEBGL) || UNITY_EDITOR
+            AddBuildin("socket.core", StaticLuaCallbacks.LoadSocketCore);
                 AddBuildin("socket", StaticLuaCallbacks.LoadSocketCore);
 #endif
 

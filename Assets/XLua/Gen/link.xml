@@ -459,6 +459,11 @@
 		
 	</assembly>
 
+	<assembly fullname="UnityEngine.WebGLModule">
+	    <type fullname="UnityEngine.WebGLInput" preserve="all"/>
+		
+	</assembly>
+
 	<assembly fullname="UnityEngine.WindModule">
 	    <type fullname="UnityEngine.WindZone" preserve="all"/>
 		

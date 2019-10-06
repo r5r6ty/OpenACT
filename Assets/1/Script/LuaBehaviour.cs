@@ -70,6 +70,7 @@ namespace XLuaTest
             // 找到指定文件
             fileName = GameLoader.Getluapath() + fileName.Replace('.', '/') + ".lua";
             print(fileName);
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
             if (File.Exists(fileName))
             {
                 return File.ReadAllBytes(fileName);
@@ -78,6 +79,18 @@ namespace XLuaTest
             {
                 return null;
             }
+#else
+            WWW www = new WWW(fileName);
+            while (!www.isDone)
+            {
+                if (www.error != null && www.error != "")
+                {
+                    print(www.error);
+                    return null;
+                }
+            }
+            return www.bytes;
+#endif
         }
 
         void Awake()

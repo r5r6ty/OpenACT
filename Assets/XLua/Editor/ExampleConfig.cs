@@ -294,6 +294,7 @@ public static class ExampleConfig
                 new List<string>(){ "UnityEngine.AudioSettings", "GetSpatializerPluginNames"},
                 new List<string>(){ "UnityEngine.AnimatorControllerParameter", "name"},
                 new List<string>(){ "UnityEngine.CanvasRenderer", "UnityEngine.CanvasRenderer.OnRequestRebuild"},
+                new List<string>(){ "UnityEngine.AudioSettings", "SetSpatializerPluginName" },
             };
 
 #if UNITY_2018_1_OR_NEWER

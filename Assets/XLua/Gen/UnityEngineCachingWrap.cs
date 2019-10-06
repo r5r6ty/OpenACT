@@ -39,8 +39,6 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetCachedVersions", _m_GetCachedVersions_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "IsVersionCached", _m_IsVersionCached_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "MarkAsUsed", _m_MarkAsUsed_xlua_st_);
-            Utils.RegisterFunc(L, Utils.CLS_IDX, "SetNoBackupFlag", _m_SetNoBackupFlag_xlua_st_);
-            Utils.RegisterFunc(L, Utils.CLS_IDX, "ResetNoBackupFlag", _m_ResetNoBackupFlag_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "AddCache", _m_AddCache_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetCacheAt", _m_GetCacheAt_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetCacheByPath", _m_GetCacheByPath_xlua_st_);
@@ -324,88 +322,6 @@ namespace XLua.CSObjectWrap
             }
             
             return LuaAPI.luaL_error(L, "invalid arguments to UnityEngine.Caching.MarkAsUsed!");
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_SetNoBackupFlag_xlua_st_(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-            
-			    int gen_param_count = LuaAPI.lua_gettop(L);
-            
-                if(gen_param_count == 1&& translator.Assignable<UnityEngine.CachedAssetBundle>(L, 1)) 
-                {
-                    UnityEngine.CachedAssetBundle _cachedBundle;translator.Get(L, 1, out _cachedBundle);
-                    
-                    UnityEngine.Caching.SetNoBackupFlag( _cachedBundle );
-                    
-                    
-                    
-                    return 0;
-                }
-                if(gen_param_count == 2&& (LuaAPI.lua_isnil(L, 1) || LuaAPI.lua_type(L, 1) == LuaTypes.LUA_TSTRING)&& translator.Assignable<UnityEngine.Hash128>(L, 2)) 
-                {
-                    string _url = LuaAPI.lua_tostring(L, 1);
-                    UnityEngine.Hash128 _hash;translator.Get(L, 2, out _hash);
-                    
-                    UnityEngine.Caching.SetNoBackupFlag( _url, _hash );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-            return LuaAPI.luaL_error(L, "invalid arguments to UnityEngine.Caching.SetNoBackupFlag!");
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_ResetNoBackupFlag_xlua_st_(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-            
-			    int gen_param_count = LuaAPI.lua_gettop(L);
-            
-                if(gen_param_count == 1&& translator.Assignable<UnityEngine.CachedAssetBundle>(L, 1)) 
-                {
-                    UnityEngine.CachedAssetBundle _cachedBundle;translator.Get(L, 1, out _cachedBundle);
-                    
-                    UnityEngine.Caching.ResetNoBackupFlag( _cachedBundle );
-                    
-                    
-                    
-                    return 0;
-                }
-                if(gen_param_count == 2&& (LuaAPI.lua_isnil(L, 1) || LuaAPI.lua_type(L, 1) == LuaTypes.LUA_TSTRING)&& translator.Assignable<UnityEngine.Hash128>(L, 2)) 
-                {
-                    string _url = LuaAPI.lua_tostring(L, 1);
-                    UnityEngine.Hash128 _hash;translator.Get(L, 2, out _hash);
-                    
-                    UnityEngine.Caching.ResetNoBackupFlag( _url, _hash );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-            return LuaAPI.luaL_error(L, "invalid arguments to UnityEngine.Caching.ResetNoBackupFlag!");
             
         }
         

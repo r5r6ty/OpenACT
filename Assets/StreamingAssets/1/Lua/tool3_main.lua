@@ -5,10 +5,6 @@ local json = require "json"
 require "LObject"
 require "LPlayer"
 
-
-
-local filePath = CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/"
-
 -- local charactersDB = {}
 
 -- local texture2Ds = {}
@@ -35,11 +31,11 @@ function start()
 	print("lua start...")
 	print("injected object", LMainCamera)
 	
-	local data = castleDB:new(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/data/", "data.cdb")
+	local data = castleDB:new(utils.resourcePathDataPath, "data.cdb")
 	data:readDB()
 	for i, v in ipairs(data:getLines("data")) do
 		local p = utils.split(v.file, "/")
-		local cdb = LCastleDBCharacter:new(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/data/" .. p[1] .. "/", p[2])
+		local cdb = LCastleDBCharacter:new(utils.resourcePathDataPath .. p[1] .. "/", p[2])
 		cdb:readDB()
 
 		local t, s = createSprites(cdb)
@@ -66,7 +62,7 @@ function start()
 	ppCamera.orthographicSize = CS.UnityEngine.Screen.height / 2 / 100 / zoom * scale
 
 
-	tool2_castleDB.new(filePath, "data2.cdb")
+	tool2_castleDB.new(utils.resourcePath, "data2.cdb")
 
 
 --~ 	-- »­¸ö²âÊÔµØÍ¼
@@ -207,21 +203,16 @@ function createSprites(db)
 --~ 	end
 	local p = utils.split(db.DBFile, ".")
 
-	local file = io.open(db.DBPath .. p[1] .. ".png", "rb")
-	io.input(file)
-	local data = io.read("*a")
-	io.close(file)
+	local data = utils.openFileBytes(db.DBPath .. p[1] .. ".png")
+
 	local texture2D = CS.UnityEngine.Texture2D(0, 0, CS.UnityEngine.TextureFormat.RGBA32, false, false)
 	texture2D.filterMode = CS.UnityEngine.FilterMode.Point
 
 	texture2D:LoadImage(data)
 
-	local file2 = io.open(db.DBPath .. p[1] .. ".json", "r")
-	io.input(file2)
-	local data2 = io.read("*a")
-	io.close(file2)
+	local str = utils.openFileText(db.DBPath .. p[1] .. ".json")
 
-	local spriteData = json.decode(data2)
+	local spriteData = json.decode(str)
 
 	local pic = {}
     for i, v in ipairs(spriteData) do
@@ -242,10 +233,27 @@ function createPalettes(db)
 		texture.filterMode = CS.UnityEngine.FilterMode.Point
 
 		local count = 0
-		local file = io.open(db.DBPath .. v.file, "r")
-		for line in file:lines() do
-			local r, g, b = string.match(line, "(%d+) (%d+) (%d+)")
---~ 				print(r, g, b)
+-- 		local file = io.open(db.DBPath .. v.file, "r")
+-- 		for line in file:lines() do
+-- 			local r, g, b = string.match(line, "(%d+) (%d+) (%d+)")
+-- --~ 				print(r, g, b)
+-- 			if r ~= nil and g ~= nil and b ~=nil then
+-- 				if count == 0 then
+-- 					texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 0))
+-- 				else
+-- 					texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 1))
+-- 				end
+-- 				count = count + 1
+-- 			end
+-- 		end
+-- 		io.close(file)
+
+
+		local str = utils.openFileText(db.DBPath .. v.file)
+
+		local p = utils.split(str, "\n")
+		for i2, v2 in ipairs(p) do
+			local r, g, b = string.match(v2, "(%d+) (%d+) (%d+)")
 			if r ~= nil and g ~= nil and b ~=nil then
 				if count == 0 then
 					texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 0))
@@ -255,7 +263,7 @@ function createPalettes(db)
 				count = count + 1
 			end
 		end
-		io.close(file)
+
 		texture:Apply()
 
 
@@ -335,10 +343,7 @@ end
 function createAudioClips(db)
 	local audioClips = {}
     for i, v in ipairs(db:getLines("sounds")) do
-		local file = io.open(db.DBPath .. v.file, "rb")
-		io.input(file)
-		local data = io.read("*a")
-		io.close(file)
+		local data = utils.openFileBytes(db.DBPath .. v.file)
 
 		local bytes = {}
 

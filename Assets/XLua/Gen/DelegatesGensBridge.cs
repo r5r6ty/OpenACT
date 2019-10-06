@@ -483,11 +483,6 @@ namespace XLua
 			    return new UnityEngine.Font.FontTextureRebuildCallback(__Gen_Delegate_Imp5);
 			}
 		
-		    if (type == typeof(UnityEngine.CanvasRenderer.OnRequestRebuild))
-			{
-			    return new UnityEngine.CanvasRenderer.OnRequestRebuild(__Gen_Delegate_Imp5);
-			}
-		
 		    if (type == typeof(UnityEngine.Canvas.WillRenderCanvases))
 			{
 			    return new UnityEngine.Canvas.WillRenderCanvases(__Gen_Delegate_Imp5);

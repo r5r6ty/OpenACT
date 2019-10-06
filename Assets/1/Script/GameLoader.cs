@@ -26,7 +26,9 @@ public class GameLoader : MonoBehaviour
     void Awake()
     {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-        luapath = Application.dataPath + "/" + folder + "/";
+    luapath = Application.dataPath + "/" + folder + "/";
+#else
+    luapath = folder + "/";
 #endif
 
         foreach (Object s in prefabs)

@@ -6,7 +6,7 @@
 
 require "castleDB"
 require "tool2_tileRoom"
-local utils = require "tool2_utils"
+local utils = require "tool1_utils"
 
 local tool2_castleDB = {}            -- Public namespace
 
@@ -69,7 +69,7 @@ function loadTile(data, tiles, flag)
     for i, v in ipairs(data) do
 		local ff = v["icon"]["file"]
         if dataBase.textures[ff] == nil then
-            dataBase.textures[ff] = utils.LoadImageToTexture2D(castleDBInstance.DBPath .. ff)
+            dataBase.textures[ff] = utils.LoadImageToTexture2DByPath(castleDBInstance.DBPath .. ff)
         end
         -- 用texture生成sprite
         local s = utils.CreateSprite(dataBase.textures[ff], v["icon"]["x"], v["icon"]["y"], v["icon"]["size"])
@@ -238,7 +238,7 @@ function loadTileSet(index)
 				-- 读取texture和sprite
 				local ff = v["tile"]["file"]
 				if dataBase.textures[ff] == nil then
-					dataBase.textures[ff] = utils.LoadImageToTexture2D(castleDBInstance.DBPath .. ff)
+					dataBase.textures[ff] = utils.LoadImageToTexture2DByPath(castleDBInstance.DBPath .. ff)
 				end
 				local s = utils.CreateSprite(dataBase.textures[ff], v["tile"]["x"], v["tile"]["y"], v["tile"]["size"])
 				table.insert(dataBase.tiles, s)

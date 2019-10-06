@@ -25,10 +25,9 @@ function castleDB:new(path, file)
 end
 
 function castleDB:readDB()
-    local file = io.open(self.DBPath .. self.DBFile, "r")
-    io.input(file)
-    local str = io.read("*a")
-    io.close(file)
+
+	local str = utils.openFileText(self.DBPath .. self.DBFile)
+
     self.DBData = json.decode(str)
 
 	self.DBSheets = {}
@@ -55,10 +54,8 @@ function castleDB:readIMG()
 		self.IMGFile = string.sub(self.DBFile, 1, idx - 1) .. ".img"
 	end
 
-    local file = io.open(self.DBPath .. self.IMGFile, "r")
-    io.input(file)
-    local str = io.read("*a")
-    io.close(file)
+    local str = utils.openFileText(self.DBPath .. self.DBFile)
+
     self.IMGData = json.decode(str)
 
 	print(self.DBPath .. self.IMGFile .. ": json read!")
@@ -104,10 +101,8 @@ end
 
 
 function LCastleDBCharacter:readDB()
-    local file = io.open(self.DBPath .. self.DBFile, "r")
-    io.input(file)
-    local str = io.read("*a")
-    io.close(file)
+	local str = utils.openFileText(self.DBPath .. self.DBFile)
+
     self.DBData = json.decode(str)
 
 	self.DBSheets = {}
