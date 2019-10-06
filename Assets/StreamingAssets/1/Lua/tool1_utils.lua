@@ -13,8 +13,8 @@ utils.resourcePathDataPath = CS.UnityEngine.Application.dataPath .. "/StreamingA
 local luaPath = CS.GameLoader.Getluapath()
 if string.find(luaPath, "http") then
 	utils.platform = "WebGL"
-	utils.resourcePath = luaPath .. "/StreamingAssets/1/Resource/"
-	utils.resourcePathDataPath = luaPath .. "/StreamingAssets/1/Resource/data/"
+	utils.resourcePath = string.gsub(asdasd, "Lua", "Resource")
+	utils.resourcePathDataPath = string.gsub(asdasd, "Lua", "Resource/data")
 end
 
 local LDatas = {}
