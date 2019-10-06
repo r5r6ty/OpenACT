@@ -1,6 +1,7 @@
 local utils = require "tool1_utils"
+local cs_coroutine = (require 'cs_coroutine')
 
-LPlayer = {object = nil, camera = nil, keys = nil, commands = nil}
+LPlayer = {object = nil, camera = nil, keys = nil, commands = nil, keysDownCount = nil, coroutine = nil, events = nil}
 LPlayer.__index = LPlayer
 function LPlayer:new(o, c)
 	local self = {}
@@ -10,6 +11,7 @@ function LPlayer:new(o, c)
 	self.camera = c
 
 	self.keys = {}
+	self.keysDownCount = 0
 
 
 	-- 创建按键映射
@@ -54,7 +56,7 @@ function LPlayer:new(o, c)
 	self.commands = {}
 	self.commands_sort = {}
 
-	self:createCommand(self.object.database[self.object.id].char.commands)
+	self:createCommand(self.object.database:getLines("commands"))
 
 	for i, v in pairs(self.commands) do
 		-- if v ~= nil then
@@ -63,8 +65,151 @@ function LPlayer:new(o, c)
 	end
 
 	table.sort(self.commands_sort, function(a, b) -- level低的招式放后面
-		return a.key > b.key
+		if a.key ~= nil and b.key ~= nil then
+			return a.key > b.key
+		end
 	end)
+
+	self.events = {}
+	self.coroutine = function(command)
+		local v = command
+		while true do
+			if v.count <= #v.cmds then
+				local v2 = v.cmds[v.count]
+
+		--~ 		print(v.name .. v.count)
+
+				local success = false
+				local rev = false
+				local rok = 0
+				local ok = 0
+				for i3, v3 in ipairs(v2.keys) do -- keys
+					local myKey = nil
+					local myReverseKey = nil
+					if v.direction == -1 and v3.reverseKey ~= nil then
+						myKey = v3.reverseKey
+						myReverseKey = v3
+					else
+						myKey = v3
+						myReverseKey = v3.reverseKey
+					end
+	--~ 				print(v2.kind)
+					if v3.reverseKey ~= nil then
+						rev = true
+					end
+					if v2.kind == 0 then
+						-- print(myKey.state)
+						if myKey.state == 1 then -- 刚按下
+							ok = ok + 1
+						else
+							if myReverseKey ~= nil and v.direction == 0 then
+								if myReverseKey.state == 1 then -- 反向刚按下
+									ok = ok + 1
+									rok = rok - 1
+								end
+							end
+						end
+					elseif v2.kind == 1 then
+						if myKey.state == 2 then -- 按住
+							ok = ok + 1
+						else
+							if myReverseKey ~= nil and v.direction == 0 then
+								if myReverseKey.state == 2 then -- 反向按住
+									ok = ok + 1
+									rok = rok - 1
+								end
+							end
+						end
+					elseif v2.kind == 2 then
+						if myKey.state == 3 then -- 刚放开
+							ok = ok + 1
+						else
+							if myReverseKey ~= nil and v.direction == 0 then
+								if myReverseKey.state == 3 then -- 反向刚放开
+									ok = ok + 1
+									rok = rok - 1
+								end
+							end
+						end
+					elseif v2.kind == 3 then -- 上一次按键和这一次按键之中不能掺杂其他的按键
+						if myKey.state == 1 then
+							ok = ok + 1
+						else
+							if myReverseKey ~= nil and v.direction == 0 then
+								if myReverseKey.state == 1 then
+									ok = ok + 1
+									rok = rok - 1
+								else
+									for i3, v3 in pairs(self.keys) do
+										if v3 ~= myReverseKey and (v3.state == 1 or v3.state == 2) then
+											v.timeCount = v.time
+										end
+									end
+								end
+							else
+								for i3, v3 in pairs(self.keys) do
+									if v3 ~= myKey and (v3.state == 1 or v3.state == 2) then
+										v.timeCount = v.time
+									end
+								end
+							end
+						end
+					end
+				end
+
+				if ok >= #v2.keys then
+					if v.direction == 0 and rev == true then
+						if rok < 0 then
+							v.direction = -1
+						else
+							v.direction = 1
+						end
+					end
+					success = true
+				else
+					-- if v.cmds[v.count - 1] ~= nil then
+					-- 	local iterate = LPlayer:getIterateKeys(v2.keys, v.cmds[v.count - 1].keys)
+					-- 	local ok2 = 0
+
+					-- 	print(#iterate)
+
+					-- 	for i4, v4 in ipairs(iterate) do -- keys
+					-- 		if v4.count > 0 then
+					-- 			ok2 = ok2 + 1
+					-- 		end
+
+					-- 	end
+
+					-- 	if ok2 < #iterate then
+					-- 		v.count = 1
+					-- 		v.timeCount = 0
+					-- 		v.direction = 0
+					-- 	end
+					-- end
+				end
+				if success then
+					v.count = v.count + 1
+					v.timeCount = 0
+				else
+					if v.timeCount >= v.time then
+						v.count = 1
+						v.timeCount = 0
+						v.direction = 0
+					end
+				end
+				if v.count > 1 then
+					v.timeCount = v.timeCount + 1
+				end
+			else
+				self.object:addEvent("Input", 0, 1, {level = v.level, name = v.name, direction = v.direction, action = v.action, frame = v.frame, mp = v.mp})
+		--~ 			self.object:addEvent("Input", 1, {level = v.level, name = v.name, direction = v.direction, frame = v.frame})
+				v.count = 1
+				v.timeCount = 0
+				v.direction = 0
+			end
+			coroutine.yield(CS.UnityEngine.WaitForEndOfFrame())
+		end
+	end
 
     return self
 end
@@ -97,26 +242,30 @@ function LPlayer:createCommand(c)
 			command.level = v.level
 			command.cmds = self:createCMD(v.command)
 			command.time = v.time
+			command.action = v.action
 			command.frame = v.frame
 			command.count = 1
 			command.timeCount = 0
 			command.direction = 0
+			command.mp = v.mp
 
 			self.commands[command.name] = command
 		end
 	end
 end
 
-function LPlayer:createCMD(c)
+function LPlayer:createCMD(c_str)
 	local cmds = {}
+	local c = utils.split(c_str, ",")
 	for i, v in ipairs(c) do
 		local cmd = {}
 		cmd.kind = 0
 		cmd.keys = {}
 		local found = false
 		-- 看看是什么按键
+		local k = string.match(v, "(%a+)")
 		for i2, v2 in pairs(self.keys) do
-			if utils.isStringAContainB(v.key, v2.id) then
+			if utils.isStringAContainB(k, v2.id) then
 				table.insert(cmd.keys, self.keys[v2.id])
 				found = true
 				break
@@ -124,20 +273,18 @@ function LPlayer:createCMD(c)
 		end
 		-- 如果没找到，用+号分开看看
 		if found == false then
-			local str = utils.split(c, "+")
+			local str = utils.split(v, "+")
 			for i = 1, #str, 1 do
 				table.insert(cmds.keys, self.keys[string.sub(str, i, i)])
 			end
 		end
 		-- 特殊功能加上
-		if v.kind ~= nil and v.kind ~= "" then
-			if v.kind == "/" then -- 按住
-				cmd.kind = 1
-			elseif v.kind == "~" then -- 放开
-				cmd.kind = 2
-			elseif v.kind == ">" then -- 上一次按键和这一次按键之中不能掺杂其他的按键
-				cmd.kind = 3
-			end
+		if string.find(v, "/") then -- 按住
+			cmd.kind = 1
+		elseif string.find(v, "~") then -- 放开
+			cmd.kind = 2
+		elseif string.find(v, ">") then -- 上一次按键和这一次按键之中不能掺杂其他的按键
+			cmd.kind = 3
 		end
 		table.insert(cmds, cmd)
 	end
@@ -148,14 +295,16 @@ function LPlayer:input()
 	for i, v in pairs(self.keys) do
 		if self:isKeyDown(v.keys) then
 			for i2, v2 in pairs(self.keys) do -- 如果有一个键按下，其他键都算放开
-				v2.count = 0
+				if v2.id ~= v.id then
+					if v2.count == 0 then -- 如果之前没按，现在就是没按
+						v2.state = 0
+					elseif v2.count == 1 then -- 如果之前刚按下，现在就是刚放开
+						v2.state = 3
+					elseif v.count > 1 then -- 如果之前是按住，现在就是刚放开
+						v2.state = 3
+					end
 
-				if v2.count == 0 then -- 如果之前没按，现在就是没按
-					v2.state = 0
-				elseif v2.count == 1 then -- 如果之前刚按下，现在就是刚放开
-					v2.state = 3
-				elseif v.count > 1 then -- 如果之前是按住，现在就是刚放开
-					v2.state = 3
+					v2.count = 0
 				end
 			end
 
@@ -172,23 +321,24 @@ function LPlayer:input()
 				if self:isKey(v.antiKey.keys) then
 					v.count = 0
 					v.antiKey.count = 0
-				end
 
-				if v.count == 0 then -- 如果之前没按，现在就是没按
-					v.state = 0
-				elseif v.count == 1 then -- 如果之前刚按下，现在就是刚放开
-					v.state = 3
-				elseif v.count > 1 then -- 如果之前是按住，现在就是刚放开
-					v.state = 3
-				end
-				if v.antiKey.count == 0 then -- 如果之前没按，现在就是没按
-					v.antiKey.state = 0
-				elseif v.antiKey.count == 1 then -- 如果之前刚按下，现在就是刚放开
-					v.antiKey.state = 3
-				elseif vantiKey..count > 1 then -- 如果之前是按住，现在就是刚放开
-					v.antiKey.state = 3
+					if v.count == 0 then -- 如果之前没按，现在就是没按
+						v.state = 0
+					elseif v.count == 1 then -- 如果之前刚按下，现在就是刚放开
+						v.state = 3
+					elseif v.count > 1 then -- 如果之前是按住，现在就是刚放开
+						v.state = 3
+					end
+					if v.antiKey.count == 0 then -- 如果之前没按，现在就是没按
+						v.antiKey.state = 0
+					elseif v.antiKey.count == 1 then -- 如果之前刚按下，现在就是刚放开
+						v.antiKey.state = 3
+					elseif vantiKey..count > 1 then -- 如果之前是按住，现在就是刚放开
+						v.antiKey.state = 3
+					end
 				end
 			end
+			
 		elseif self:isKey(v.keys) then
 			if v.count == 0 then -- 如果之前没按，现在就是刚按下
 				v.state = 1
@@ -222,15 +372,19 @@ function LPlayer:input()
 			end
 		elseif self:isKeyUp(v.keys) then
 			for i2, v2 in pairs(self.keys) do -- 如果有一个键放开，其他键都算放开
-				if v2.count == 0 then -- 如果之前没按，现在就是没按
-					v2.state = 0
-				elseif v2.count == 1 then -- 如果之前刚按下，现在就是刚放开
-					v2.state = 3
-				elseif v.count > 1 then -- 如果之前是按住，现在就是刚放开
-					v2.state = 3
+				if v2 ~= v then
+					if v2.count == 0 then -- 如果之前没按，现在就是没按
+						v2.state = 0
+					elseif v2.count == 1 then -- 如果之前刚按下，现在就是刚放开
+						v2.state = 3
+					elseif v.count > 1 then -- 如果之前是按住，现在就是刚放开
+						v2.state = 3
+					end
+
+					v2.count = 0
 				end
 			end
-		else
+
 			if v.count == 0 then -- 如果之前没按，现在就是没按
 				v.state = 0
 			elseif v.count == 1 then -- 如果之前刚按下，现在就是刚放开
@@ -239,6 +393,9 @@ function LPlayer:input()
 				v.state = 3
 			end
 
+			v.count = 0
+		else
+			v.state = 0
 			v.count = 0
 		end
 	end
@@ -261,6 +418,7 @@ function LPlayer:isKey(keys)
 	local c = 0
 	for i = 1, #keys, 1 do
 		if CS.UnityEngine.Input.GetKey(keys[i]) then
+		-- if CS.UnityEngine.Event.current.keyCode == keys[i] and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.KeyDown then
 			c = c + 1
 		end
 	end
@@ -274,7 +432,8 @@ function LPlayer:isKeyUp(keys)
 	local c = 0
 	for i = 1, #keys, 1 do
 		if CS.UnityEngine.Input.GetKeyUp(keys[i]) then
-			c = c + 1
+		-- if CS.UnityEngine.Event.current.keyCode == keys[i] and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.KeyUp then
+		c = c + 1
 		end
 	end
 	if c == #keys then
@@ -290,7 +449,7 @@ function LPlayer:isAnyKeyDown(key)
 				return true
 			end
 		else
-			print("wa!!!!!!!!!!!!!!!!!!!")
+			print("LPlayer:isAnyKeyDown   wa!!!!!!!!!!!!!!!!!!!")
 		end
 	end
 	return false
@@ -308,9 +467,11 @@ end
 
 function LPlayer:getIterateKeys(keysA, keysB)
 	local iterate = {}
-	for i, v in ipairs(keysA) do
+	for i, v in ipairs(keysA) do -- .keys
 		for i2, v2 in ipairs(keysB) do
+			-- print(v.id, v2.id)
 			if v == v2 then
+				-- print(v.id, v2.id)
 				table.insert(iterate, v)
 			end
 		end
@@ -345,6 +506,7 @@ function LPlayer:judgeCommand()
 					rev = true
 				end
 				if v2.kind == 0 then
+					-- print(myKey.state)
 					if myKey.state == 1 then -- 刚按下
 						ok = ok + 1
 					else
@@ -367,15 +529,26 @@ function LPlayer:judgeCommand()
 						end
 					end
 				elseif v2.kind == 2 then
-					if myKey.state == 3 then -- 刚放开
+					-- v.direction = self.object.direction.x
+					if self.object.direction.x == -1 and v3.reverseKey ~= nil then
+						myKey = v3.reverseKey
+						myReverseKey = v3
+						rev = true
+						v.direction = -1
+					end
+					if myKey.state == 0 or myKey.state == 3 then -- 刚放开
+						print(myKey.id)
 						ok = ok + 1
-					else
-						if myReverseKey ~= nil and v.direction == 0 then
-							if myReverseKey.state == 3 then -- 反向刚放开
-								ok = ok + 1
-								rok = rok - 1
-							end
+						if rev then
+							rok = rok - 1
 						end
+					else
+						-- if myReverseKey ~= nil and v.direction == 0 then
+						-- 	if myReverseKey.state == 3 then -- 反向刚放开
+						-- 		ok = ok + 1
+						-- 		rok = rok - 1
+						-- 	end
+						-- end
 					end
 				elseif v2.kind == 3 then -- 上一次按键和这一次按键之中不能掺杂其他的按键
 					if myKey.state == 1 then
@@ -385,6 +558,18 @@ function LPlayer:judgeCommand()
 							if myReverseKey.state == 1 then
 								ok = ok + 1
 								rok = rok - 1
+							else
+								for i3, v3 in pairs(self.keys) do
+									if v3 ~= myReverseKey and (v3.state == 1 or v3.state == 2) then
+										v.timeCount = v.time
+									end
+								end
+							end
+						else
+							for i3, v3 in pairs(self.keys) do
+								if v3 ~= myKey and (v3.state == 1 or v3.state == 2) then
+									v.timeCount = v.time
+								end
 							end
 						end
 					end
@@ -401,25 +586,25 @@ function LPlayer:judgeCommand()
 				end
 				success = true
 			else
-				if v.cmds[v.count - 1] ~= nil then
-					local iterate = LPlayer:getIterateKeys(v2.keys, v.cmds[v.count - 1].keys)
-					local ok2 = 0
+				-- if v.cmds[v.count - 1] ~= nil then
+				-- 	local iterate = LPlayer:getIterateKeys(v2.keys, v.cmds[v.count - 1].keys)
+				-- 	local ok2 = 0
 
+				-- 	print(#iterate)
 
+				-- 	for i4, v4 in ipairs(iterate) do -- keys
+				-- 		if v4.count > 0 then
+				-- 			ok2 = ok2 + 1
+				-- 		end
 
-					for i4, v4 in ipairs(iterate) do -- keys
-						if v4.count > 0 then
-							ok2 = ok2 + 1
-						end
+				-- 	end
 
-					end
-
-					if ok2 < #iterate then
-						v.count = 1
-						v.timeCount = 0
-						v.direction = 0
-					end
-				end
+				-- 	if ok2 < #iterate then
+				-- 		v.count = 1
+				-- 		v.timeCount = 0
+				-- 		v.direction = 0
+				-- 	end
+				-- end
 			end
 			if success then
 				v.count = v.count + 1
@@ -435,11 +620,25 @@ function LPlayer:judgeCommand()
 				v.timeCount = v.timeCount + 1
 			end
 		else
-			self.object:addEvent("Input", 0, 1, {level = v.level, name = v.name, direction = v.direction, frame = v.frame})
---~ 			self.object:addEvent("Input", 1, {level = v.level, name = v.name, direction = v.direction, frame = v.frame})
+			self.object:addEvent("Input", 0, 1, {level = v.level, name = v.name, direction = v.direction, action = v.action, frame = v.frame, mp = v.mp})
+	--~ 			self.object:addEvent("Input", 1, {level = v.level, name = v.name, direction = v.direction, frame = v.frame})
 			v.count = 1
 			v.timeCount = 0
 			v.direction = 0
 		end
+	end
+end
+
+function LPlayer:addEvent(command)
+	local event = {}
+	local a = cs_coroutine.start(self.coroutine, command)
+	event.coroutine = a
+	table.insert(self.events, event)
+	return event
+end
+
+function LPlayer:judgeCommand2()
+	for i, v in pairs(self.commands_sort) do -- command
+		self:addEvent(v.value)
 	end
 end

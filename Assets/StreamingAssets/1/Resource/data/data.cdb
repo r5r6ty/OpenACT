@@ -1,0 +1,27 @@
+{
+	"sheets": [
+		{
+			"name": "data",
+			"columns": [
+				{
+					"typeStr": "3",
+					"name": "id"
+				},
+				{
+					"typeStr": "13",
+					"name": "file"
+				}
+			],
+			"lines": [
+				{
+					"id": 9,
+					"file": "Cha/Cha.cdb"
+				}
+			],
+			"separators": [],
+			"props": {}
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}

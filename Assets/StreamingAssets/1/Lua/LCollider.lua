@@ -108,7 +108,7 @@ function LColliderBDY:BDYFixedUpdate(velocity, weight)
 					right = true
 				end
 			elseif go.name ~= "test" and object2 ~= nil then -- 是游戏object，则只允许左右进行碰撞
-				if object2.HP > 0 then
+				if object2.vars["HP"] > 0 then
 					left = true
 					right = true
 				end
@@ -184,7 +184,7 @@ function LColliderBDY:BDYFixedUpdate(velocity, weight)
 					end
 
 					if velocity.x ~= 0 and object2 ~= nil and offset_x ~= 0 and object2.isWall == false then
-						local rate = weight / object2.weight / 2
+						local rate = weight / object2:getVar("weight") / 2
 						if rate > 1 then
 							rate = 1
 						end
@@ -228,7 +228,7 @@ function LColliderBDY:BDYFixedUpdate(velocity, weight)
 	return isGround, isCeiling, isWall, isElse, elseArray
 end
 
-LColliderATK = {damage = nil, frequency = nil, frequencyCounter = 0, velocity = nil}
+LColliderATK = {damage = nil, frequency = nil, velocity = nil, fall = nil, defence = nil, ignoreObjects = nil, var = nil}
 setmetatable(LColliderATK, LCollider)
 LColliderATK.__index = LColliderATK
 function LColliderATK:new(go)
@@ -244,13 +244,15 @@ function LColliderATK:new(go)
 	self.fall = nil
 	self.defence = nil
 	self.ignoreObjects = {}
+	
+	self.var = nil
 
 
 	return self
 end
 
 -- 设置collider
-function LColliderATK:setCollider(dir, x, y, width, height, flag, dmg, fal, def, f, dx, dy, ignoreFlag)
+function LColliderATK:setCollider(dir, x, y, width, height, flag, dmg, fal, def, f, dx, dy, ignoreFlag, v)
 	self.offset = CS.UnityEngine.Vector2((x + width / 2) / 100, -(y + height / 2) / 100)
 	self.size = CS.UnityEngine.Vector2(width / 100, height / 100)
 	self.collider.offset = self.offset-- * dir
@@ -273,6 +275,8 @@ function LColliderATK:setCollider(dir, x, y, width, height, flag, dmg, fal, def,
 	if ignoreFlag then
 		self.ignoreObjects = {}
 	end
+
+	self.var = v
 end
 
 -- 检测攻击
@@ -298,19 +302,19 @@ function LColliderATK:ATKFixedUpdate(dir, myObj)
 					local cd2d = self.collider:Distance(k)
 					local sparkPosition = CS.UnityEngine.Vector2(cd2d.pointA.x + cd2d.pointB.x, cd2d.pointA.y + cd2d.pointB.y) / 2
 
-					if object.falling + self.fall >= 70 then
-						object:addEvent("Object", 0, 1, {isWorldPosition = true, x = sparkPosition.x, y = sparkPosition.y, nextFrame = "spark_b-0", kind = 3})
+					local menseki = utils.getBoundsIntersectsArea(self.collider.bounds, k.bounds)
+
+					if object.vars["falling"] + self.fall >= 70 then
+						object:addEvent("Object", 0, 1, {isWorldPosition = true, x = sparkPosition.x + math.random() * menseki.x / 2 - menseki.x / 4, y = sparkPosition.y + math.random() * menseki.x / 2 - menseki.y / 4, action = "spark_b", frame = 0, kind = 3})
 					else
-						object:addEvent("Object", 0, 1, {isWorldPosition = true, x = sparkPosition.x, y = sparkPosition.y, nextFrame = "spark-0", kind = 3})
+						object:addEvent("Object", 0, 1, {isWorldPosition = true, x = sparkPosition.x + math.random() * menseki.x / 2 - menseki.x / 2, y = sparkPosition.y + math.random() * menseki.x / 2 - menseki.y / 4, action = "spark", frame = 0, kind = 3})
 					end
 
 
-					object:addEvent("Hurt", 0, 1, {damage = self.damage, fall = self.fall, defence = self.defence, attacker = myObj})
+					object:addEvent("Hurt", 0, 1, {damage = self.damage, fall = self.fall, defence = self.defence, attacker = myObj, var = self.var})
 					object:addEvent("Force", 0, 1, {velocity = self.velocity * dir, compute = 0})
 					-- print(d)
 					object:addEvent("Injured", 0, 1, {dir = dir.x})
-
-					local menseki = utils.getBoundsIntersectsArea(self.collider.bounds, k.bounds) / 2
 
 					ishit = true
 

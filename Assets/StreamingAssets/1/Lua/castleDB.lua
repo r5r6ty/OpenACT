@@ -6,6 +6,7 @@
 
 local json = require "json"
 local utils = require 'tool1_utils'
+require "LAI"
 
 castleDB = {DBPath = nil, DBFile = nil, DBData = nil, IMGFile = nil, IMGData = nil, DBSheets = nil}
 castleDB.__index = castleDB
@@ -36,7 +37,7 @@ function castleDB:readDB()
             self.DBSheets[v.name] = v
         end
 	end
-	print("castleDB: json read!")
+	print(self.DBPath .. self.DBFile .. ": json read!")
 end
 
 function castleDB:writeDB()
@@ -45,7 +46,7 @@ function castleDB:writeDB()
 	file:write(data)
 	file:close()
 
-	print("castleDB: json wrote!")
+	print(self.DBPath .. self.DBFile .. ": json wrote!")
 end
 
 function castleDB:readIMG()
@@ -60,7 +61,7 @@ function castleDB:readIMG()
     io.close(file)
     self.IMGData = json.decode(str)
 
-	print("castleDB: json read!")
+	print(self.DBPath .. self.IMGFile .. ": json read!")
 end
 
 function castleDB:writeIMG()
@@ -69,7 +70,7 @@ function castleDB:writeIMG()
 	file:write(data)
 	file:close()
 
-	print("castleDB: json wrote!")
+	print(self.DBPath .. self.IMGFile .. ": json wrote!")
 end
 
 -- ¶ÁÈ¡imagesÖÐµÄpic
@@ -88,7 +89,7 @@ function castleDB:getLines(name)
 end
 
 
-LCastleDBCharacter = {characters = nil}
+LCastleDBCharacter = {characters = nil, AI = nil}
 setmetatable(LCastleDBCharacter, castleDB)
 LCastleDBCharacter.__index = LCastleDBCharacter
 function LCastleDBCharacter:new(path, file)
@@ -96,7 +97,8 @@ function LCastleDBCharacter:new(path, file)
 	self = castleDB:new(path, file)
 	setmetatable(self, LCastleDBCharacter)
 
-	self.characters = {}
+	self.characters = nil
+	self.AI = nil
 	return self
 end
 
@@ -114,14 +116,13 @@ function LCastleDBCharacter:readDB()
             self.DBSheets[v.name] = v
         end
 	end
-	print("castleDB: json read!")
+	print(self.DBPath .. self.DBFile .. ": json read!")
 
 
-    for i2, v2 in pairs(self:getLines("characters")) do
-		self.characters[v2.id] = {}
-		self.characters[v2.id].char = v2
-		for i3, v3 in pairs(v2.actions) do
-			self.characters[v2.id][v3.action] = v3
-		end
+	self.characters = {}
+	for i, v in ipairs(self:getLines("actions")) do
+		self.characters[v.name] = v.frames
 	end
+
+	self.AI = LAI:new(self)
 end

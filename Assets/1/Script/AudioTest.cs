@@ -37,7 +37,6 @@ public class AudioTest : MonoBehaviour
             ac[i].SetData(wav.LeftChannel, 0);
             //Debug.Log(files[i] + ac[i].length + wav);
 
-
             //string a = "";
             //for (int i2 = 0; i2 < wav.LeftChannel.Length; i2++)
             //{

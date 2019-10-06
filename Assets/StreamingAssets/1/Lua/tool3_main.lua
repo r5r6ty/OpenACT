@@ -4,18 +4,17 @@ tool2_castleDB = require "tool2_castleDB"
 local json = require "json"
 require "LObject"
 require "LPlayer"
-require "LAI"
 
 
 
 local filePath = CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/"
 
-local charactersDB = {}
+-- local charactersDB = {}
 
-local texture2Ds = {}
-local pics = {}
-local audioClips = {}
-local palettes = {}
+-- local texture2Ds = {}
+-- local pics = {}
+-- local audioClips = {}
+-- local palettes = {}
 
 --~ local testtest = {}
 
@@ -29,18 +28,39 @@ local mychar = nil
 
 local player = nil
 
+local ps = {}
+local psCount = 0
+
 function start()
 	print("lua start...")
-    print("injected object", LMainCamera)
+	print("injected object", LMainCamera)
+	
+	local data = castleDB:new(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/data/", "data.cdb")
+	data:readDB()
+	for i, v in ipairs(data:getLines("data")) do
+		local p = utils.split(v.file, "/")
+		local cdb = LCastleDBCharacter:new(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/data/" .. p[1] .. "/", p[2])
+		cdb:readDB()
 
-    charactersDB = LCastleDBCharacter:new(filePath, "new.cdb")
-	charactersDB:readDB()
+		local t, s = createSprites(cdb)
+		local ac = createAudioClips(cdb)
+		local pal = createPalettes(cdb)
+
+		local p2 = utils.split(p[2], ".")
+		utils.setIDData(v.id, {name = p2[1], db = cdb, textrue2ds = t, pics = s, audioClips = ac, palettes = pal})
+	end
+
+	utils.createHPMP()
+	
+
+    -- charactersDB = LCastleDBCharacter:new(filePath, "new.cdb")
+	-- charactersDB:readDB()
 --~ 	charactersDB:readIMG()
 --~ 	texture2Ds = charactersDB:loadIMGToTexture2Ds()
-	createSprites()
-	createAudioClips()
+	-- createSprites()
+	-- createAudioClips()
 
-	createPalettes()
+	-- createPalettes()
 
 	local ppCamera = LMainCamera:GetComponent(typeof(CS.UnityEngine.Camera))
 	ppCamera.orthographicSize = CS.UnityEngine.Screen.height / 2 / 100 / zoom * scale
@@ -129,21 +149,38 @@ function start()
 
 	player = LPlayer:new(mychar, LMainCamera) -- LMainCamera:GetComponent(typeof(CS.UnityEngine.Camera))
 
+	player:judgeCommand2()
+
 end
 
 
 function update()
-
+	player:followCharacter()
+	player:input()
+	-- player:judgeCommand()
 end
 
 function fixedupdate()
-	player:followCharacter()
-	player:input()
-	player:judgeCommand()
 	utils.runObjectsFrame()
 end
 
 function ongui()
+	if CS.UnityEngine.Event.current.keyCode == CS.UnityEngine.KeyCode.KeypadEnter and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.KeyDown then
+		psCount = psCount + 1
+		if psCount > #ps then
+			psCount = 1
+		end
+		-- print(psCount)
+		player.object = utils.getObject(ps[psCount])
+	end
+
+	if CS.UnityEngine.Event.current.keyCode == CS.UnityEngine.KeyCode.Q and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.KeyDown then
+		for i, v in ipairs(ps) do
+			local o = utils.getObject(v)
+			o.vars["HP"] = o.vars["maxHP"]
+		end
+	end
+
 --~ 	if CS.UnityEngine.GUI.Button(CS.UnityEngine.Rect(0, 0, 80, 20), "reverse") then
 --~ 		mychar.direction.x = mychar.direction.x * -1
 --~ 	end
@@ -162,69 +199,70 @@ function ongui()
 end
 
 -- 通过制作好的图集，导入纹理，创建sprite
-function createSprites()
+function createSprites(db)
 --~     for i, v in pairs(texture2Ds) do
 --~         if pics[i] == nil then
 --~             pics[i] = CS.UnityEngine.Sprite.Create(v, CS.UnityEngine.Rect(0, 0, v.width, v.height), CS.UnityEngine.Vector2(0, 1))
 --~         end
 --~ 	end
+	local p = utils.split(db.DBFile, ".")
 
-	local file = io.open(charactersDB.DBPath .. "wocao.png", "rb")
+	local file = io.open(db.DBPath .. p[1] .. ".png", "rb")
 	io.input(file)
 	local data = io.read("*a")
 	io.close(file)
-	texture2Ds = CS.UnityEngine.Texture2D(0, 0, CS.UnityEngine.TextureFormat.RGBA32, false, false)
-	texture2Ds.filterMode = CS.UnityEngine.FilterMode.Point
+	local texture2D = CS.UnityEngine.Texture2D(0, 0, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+	texture2D.filterMode = CS.UnityEngine.FilterMode.Point
 
-	texture2Ds:LoadImage(data)
+	texture2D:LoadImage(data)
 
-	local file2 = io.open(charactersDB.DBPath .. "wocao.json", "r")
+	local file2 = io.open(db.DBPath .. p[1] .. ".json", "r")
 	io.input(file2)
 	local data2 = io.read("*a")
 	io.close(file2)
 
 	local spriteData = json.decode(data2)
 
+	local pic = {}
     for i, v in ipairs(spriteData) do
-        if pics[v.id] == nil then
-            pics[v.id] = CS.UnityEngine.Sprite.Create(texture2Ds, CS.UnityEngine.Rect(v.x, v.y, v.w, v.h), CS.UnityEngine.Vector2(0, 1))
+        if pic[v.id] == nil then
+            pic[v.id] = CS.UnityEngine.Sprite.Create(texture2D, CS.UnityEngine.Rect(v.x, v.y, v.w, v.h), CS.UnityEngine.Vector2(0, 1))
         end
 	end
+
+	return texture2D, pic
 end
 
 -- 导入调色板
-function createPalettes()
-    for i, v in pairs(charactersDB.characters) do
-		if palettes[i] == nil then
-			palettes[i] = {}
-		end
-		for i2, v2 in pairs(v.char.palette) do
+function createPalettes(db)
+	local palettes = {}
+	for i, v in ipairs(db:getLines("palettes")) do
 
-			local texture = CS.UnityEngine.Texture2D(256, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
-			texture.filterMode = CS.UnityEngine.FilterMode.Point
+		local texture = CS.UnityEngine.Texture2D(256, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+		texture.filterMode = CS.UnityEngine.FilterMode.Point
 
-			local count = 0
-			local file = io.open(charactersDB.DBPath .. v2.file, "r")
-			for line in file:lines() do
-				local r, g, b = string.match(line, "(%d+) (%d+) (%d+)")
+		local count = 0
+		local file = io.open(db.DBPath .. v.file, "r")
+		for line in file:lines() do
+			local r, g, b = string.match(line, "(%d+) (%d+) (%d+)")
 --~ 				print(r, g, b)
-				if r ~= nil and g ~= nil and b ~=nil then
-					if count == 0 then
-						texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 0))
-					else
-						texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 1))
-					end
-					count = count + 1
+			if r ~= nil and g ~= nil and b ~=nil then
+				if count == 0 then
+					texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 0))
+				else
+					texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 1))
 				end
+				count = count + 1
 			end
-			io.close(file)
-			texture:Apply()
+		end
+		io.close(file)
+		texture:Apply()
 
 
-			local sprite = CS.UnityEngine.Sprite.Create(texture, CS.UnityEngine.Rect(0, 0, texture.width, texture.height), CS.UnityEngine.Vector2(0, 1))
+		-- local sprite = CS.UnityEngine.Sprite.Create(texture, CS.UnityEngine.Rect(0, 0, texture.width, texture.height), CS.UnityEngine.Vector2(0, 1))
 
-			local shader = CS.UnityEngine.Shader.Find("Sprites/Beat/Diffuse-Shadow")
-			local material = CS.UnityEngine.Material(shader)
+		local shader = CS.UnityEngine.Shader.Find("Sprites/Beat/Diffuse-Shadow")
+		local material = CS.UnityEngine.Material(shader)
 
 --~ 			local unityobject_child = CS.UnityEngine.GameObject("testtt")
 --~ 			local sr = unityobject_child:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
@@ -232,31 +270,36 @@ function createPalettes()
 --~ 			local m = unityobject_child:GetComponent(typeof(CS.UnityEngine.Renderer)).material
 --~ 			m.shader = shader
 --~ 			m:SetTexture("_Palette", texture)
-			material:SetTexture("_Palette", texture)
+		material:SetTexture("_Palette", texture)
 
-			table.insert(palettes[i], material)
-		end
+		table.insert(palettes, material)
 	end
+	return palettes
 end
 
 function createTEstObject()
-
+	local sid = nil
 	local p = nil
-    for i = 2, 2, 1 do
+    for i = 8, 1, -1 do
 
 		-- p = utils.createObject(charactersDB.characters, pics, palettes["ljokp"][1], audioClips, "ljokp", "standing-0", i / 2, 0, 0, 0, 0)
 		-- p.direction.x = CS.Tools.Instance:RandomRangeInt(0, 2) * 2 - 1
 
-		p = utils.createObject(charactersDB.characters, pics, palettes["Cha"][(i - 1) % 4 + 1], audioClips, "Cha", "standing-0", 2 / 2, 0, 0, 0, 0)
+		p, sid = utils.createObject(9, "standing", 0, 2 / 2, 0, 0, 0, 0)
+		table.insert(ps, sid)
+		utils.setPalette(p, (i - 1) % 4 + 1)
+
 		-- p.direction.x = CS.Tools.Instance:RandomRangeInt(0, 2) * 2 - 1
-		-- p.AI = LAI:new(p)
+		-- p.AI = true
 	end
+	-- p.AI = false
 
 	-- p = utils.createObject(charactersDB.characters, pics, palettes["Cha"][1], audioClips, "Cha", "standing-0", 2 / 2, 0, 0, 0, 0)
 	-- p.direction.x = CS.Tools.Instance:RandomRangeInt(0, 2) * 2 - 1
 
 
-	p = utils.createObject(charactersDB.characters, pics, palettes["Cha"][1], audioClips, "Cha", "standing-0", 0, 0, 0, 0, 0)
+	-- p, sid = utils.createObject(9, "standing", 0, 0, 0, 0, 0, 0)
+	-- table.insert(ps, sid)
 	-- p.direction.x = CS.Tools.Instance:RandomRangeInt(0, 2) * 2 - 1
 	-- p.AI = LAI:new(p)
 
@@ -268,6 +311,7 @@ function createTEstObject()
 
 --~ 	createObject("songrunhe", "hdas-0", 3, 0, 0, 0)
 
+	psCount = #ps
 	return p
 end
 
@@ -288,9 +332,10 @@ function bytesToFloat(firstByte, secondByte)
 	end
 end
 
-function createAudioClips()
-    for i, v in ipairs(charactersDB:getLines("sounds")) do
-		local file = io.open(charactersDB.DBPath .. v.file, "rb")
+function createAudioClips(db)
+	local audioClips = {}
+    for i, v in ipairs(db:getLines("sounds")) do
+		local file = io.open(db.DBPath .. v.file, "rb")
 		io.input(file)
 		local data = io.read("*a")
 		io.close(file)
@@ -371,6 +416,7 @@ function createAudioClips()
 
 --~ 			testtest[v.id] = audioSource
 	end
+	return audioClips
 end
 
 

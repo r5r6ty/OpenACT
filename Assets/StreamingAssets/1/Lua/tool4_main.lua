@@ -25,20 +25,21 @@ function printProg(line, totalLine)
 	print(line .. " of " .. totalLine)
 end
 
-local filePath = CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/"
-
-local charactersDB = {}
-
-
 function start()
 
-    charactersDB = LCastleDBCharacter:new(filePath, "new.cdb")
-	charactersDB:readDB()
-	charactersDB:readIMG()
+	local data = castleDB:new(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/data/", "data.cdb")
+	data:readDB()
+	for i, v in ipairs(data:getLines("data")) do
+		local p = utils.split(v.file, "/")
+		local cdb = LCastleDBCharacter:new(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/data/" .. p[1] .. "/", p[2])
+		cdb:readDB()
+		cdb:readIMG()
 
 --~ 	createSpriteAtlas()
 
-	createSpriteAtlas2()
+		createSpriteAtlas2(cdb)
+	end
+
 
 end
 
@@ -91,7 +92,7 @@ function loadImageToTexture2D_R8(b64str)
 	local depth = ihdr.bitDepth
 	local stream = imStr
 
-	print(depth, colorType, ihdr.width, ihdr.height)
+	-- print(depth, colorType, ihdr.width, ihdr.height)
 	if depth ~= 8 or colorType ~= 3 then
 		return nil
 	end
@@ -361,10 +362,10 @@ function createSpriteAtlas()
 
 end
 
-function createSpriteAtlas2()
+function createSpriteAtlas2(db)
 	local textures = {}
 	local textureNames = {}
-	for i, v in pairs(charactersDB.IMGData) do
+	for i, v in pairs(db.IMGData) do
 
 
 	    local t = loadImageToTexture2D_R8(v) -- utils.loadImageToTexture2D(v)
@@ -412,11 +413,12 @@ function createSpriteAtlas2()
 --~ 	file:write(byte)
 --~ 	file:close()
 
-	CS.System.IO.File.WriteAllBytes(filePath .. "wocao.png", texture:EncodeToPNG())
+	local p2 = utils.split(db.DBFile, ".")
+	CS.System.IO.File.WriteAllBytes(db.DBPath .. p2[1] .. ".png", texture:EncodeToPNG())
 
-	CS.System.IO.File.WriteAllBytes(filePath .. "wocao.json", json.encode(textureNames))
+	CS.System.IO.File.WriteAllBytes(db.DBPath .. p2[1] .. ".json", json.encode(textureNames))
 
-
+	print("completed!")
 end
 
 function compare(bigTex, x, y, w, h)

@@ -15,18 +15,6 @@ tool1_LObject = {database = nil,
 			delay = nil,
 			delayCounter = nil,
 
-			HP = nil,
-			MP = nil,
-			maxHP = nil,
-			maxMP = nil,
-			HPRR = nil,
-			MPRR = nil,
-			falling = nil,
-			fallingRR = nil,
-			defence = nil,
-			defenceRR = nil,
-			weight = nil,
-
 			direction = nil,
 			directionBuff = nil,
 
@@ -71,24 +59,6 @@ function tool1_LObject:new(db, ps, m, id, f, go, vx, vy)
 --~ 	self.counter = self.frame + 1
 	self.delay = 0
 	self.delayCounter = 0
-
-	self.maxHP = self.database[self.id].char.maxHP
-	self.maxMP = self.database[self.id].char.maxMP
-	self.HP = self.maxHP
-	self.MP = self.maxMP
-
-	self.HPRR = self.database[self.id].char.HPRecoveryRate
-	self.MPRR = self.database[self.id].char.MPRecoveryRate
-
-	self.maxFalling = self.database[self.id].char.maxFalling
-	self.maxDefencing = self.database[self.id].char.maxDefencing
-	self.fallingRR = self.database[self.id].char.fallingRecoveryRate
-	self.defencingRR = self.database[self.id].char.defencingRecoveryRate
-
-	self.falling = self.maxFalling
-	self.defencing = self.maxDefencing
-
-	self.weight = self.database[self.id].char.weight
 
 	self.direction = CS.UnityEngine.Vector2(1, -1)
 	self.directionBuff = CS.UnityEngine.Vector2(1, -1)
@@ -154,11 +124,6 @@ function tool1_LObject:reversePic()
 end
 
 function tool1_LObject:runFrame()
-	self.HP = self:toMaxvalue(self.HP, self.maxHP, self.HPRR)
-	self.MP = self:toMaxvalue(self.MP, self.maxMP, self.MPRR)
-	self.falling = self:toOne(self.falling, self.maxFalling, self.fallingRR)
-	self.defencing = self:toOne(self.defencing, self.maxDefencing, self.defencingRR)
-
 	-- ·´Ïò²Ù×÷
 	if self.directionBuff.x ~= self.direction.x then -- self.directionBuff.y ~= self.direction.y
 --~ 		for i, v in pairs(self.bodyArray) do
@@ -211,8 +176,8 @@ function tool1_LObject:runFrame()
 
 
 
-	for i = self.frame, #self.database[self.id][self.action].frames, 1 do
-		local currentFrame = self.database[self.id][self.action].frames[i]
+	for i = self.frame, #self.database.characters[self.action], 1 do
+		local currentFrame = self.database.characters[self.action][i]
 		if currentFrame.category == "Sprite" then
 			self.spriteRenderer.sprite = self.pics[currentFrame.pic]
 			self.pic_object.transform.localPosition = CS.UnityEngine.Vector3(currentFrame.x / 100, -currentFrame.y / 100, 0)
@@ -230,17 +195,6 @@ function tool1_LObject:updatePic()
 end
 
 function tool1_LObject:display()
-	-- local xy = CS.UnityEngine.Camera.main:WorldToScreenPoint(self.gameObject.transform.position)
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300, 200, 100), "x: " .. self.velocity.x .. "y: " .. self.velocity.y)
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 20, 200, 100), "hp: " .. self.HP)
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 30, 200, 100), "mp: " .. self.MP)
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 40, 200, 100), "action: " .. self.action)
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 50, 200, 100), "frame: " .. self.frame)
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 60, 200, 100), "command: " .. #self.commandQueue)
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 70, 200, 100), "g: " .. tostring(self.isOnGround))
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 80, 200, 100), "w: " .. tostring(self.isWall))
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 90, 200, 100), "f: " .. self.falling)
-	-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 100, 200, 100), "d: " .. self.defencing)
 end
 
 

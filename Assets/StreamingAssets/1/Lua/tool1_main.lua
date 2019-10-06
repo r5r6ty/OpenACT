@@ -28,11 +28,11 @@ local toolWindowPos = {x = 0, y = 0}
 
 
 local settingsDB = {}
-local charactersDB = {}
+-- local charactersDB = {}
 
 -- local texture2Ds = {}
-local pics = {}
-local palettes = {}
+-- local pics = {}
+-- local palettes = {}
 
 local categorys = {}
 
@@ -331,69 +331,70 @@ function createToolWindow(cx, cy, partDetail)
 end
 
 -- 通过制作好的图集，导入纹理，创建sprite
-function createSprites()
+function createSprites(db)
 	--~     for i, v in pairs(texture2Ds) do
 	--~         if pics[i] == nil then
 	--~             pics[i] = CS.UnityEngine.Sprite.Create(v, CS.UnityEngine.Rect(0, 0, v.width, v.height), CS.UnityEngine.Vector2(0, 1))
 	--~         end
 	--~ 	end
+		local p = utils.split(db.DBFile, ".")
 	
-		local file = io.open(charactersDB.DBPath .. "wocao.png", "rb")
+		local file = io.open(db.DBPath .. p[1] .. ".png", "rb")
 		io.input(file)
 		local data = io.read("*a")
 		io.close(file)
-		texture2Ds = CS.UnityEngine.Texture2D(0, 0, CS.UnityEngine.TextureFormat.RGBA32, false, false)
-		texture2Ds.filterMode = CS.UnityEngine.FilterMode.Point
+		local texture2D = CS.UnityEngine.Texture2D(0, 0, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+		texture2D.filterMode = CS.UnityEngine.FilterMode.Point
 	
-		texture2Ds:LoadImage(data)
+		texture2D:LoadImage(data)
 	
-		local file2 = io.open(charactersDB.DBPath .. "wocao.json", "r")
+		local file2 = io.open(db.DBPath .. p[1] .. ".json", "r")
 		io.input(file2)
 		local data2 = io.read("*a")
 		io.close(file2)
 	
 		local spriteData = json.decode(data2)
 	
+		local pic = {}
 		for i, v in ipairs(spriteData) do
-			if pics[v.id] == nil then
-				pics[v.id] = CS.UnityEngine.Sprite.Create(texture2Ds, CS.UnityEngine.Rect(v.x, v.y, v.w, v.h), CS.UnityEngine.Vector2(0, 1))
+			if pic[v.id] == nil then
+				pic[v.id] = CS.UnityEngine.Sprite.Create(texture2D, CS.UnityEngine.Rect(v.x, v.y, v.w, v.h), CS.UnityEngine.Vector2(0, 1))
 			end
 		end
+	
+		return texture2D, pic
 	end
 	
 	-- 导入调色板
-	function createPalettes()
-		for i, v in pairs(charactersDB.characters) do
-			if palettes[i] == nil then
-				palettes[i] = {}
-			end
-			for i2, v2 in pairs(v.char.palette) do
+	function createPalettes(db)
+		local palettes = {}
+		for i, v in ipairs(db:getLines("palettes")) do
 	
-				local texture = CS.UnityEngine.Texture2D(256, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
-				texture.filterMode = CS.UnityEngine.FilterMode.Point
+			local texture = CS.UnityEngine.Texture2D(256, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+			texture.filterMode = CS.UnityEngine.FilterMode.Point
 	
-				local count = 0
-				local file = io.open(charactersDB.DBPath .. v2.file, "r")
-				for line in file:lines() do
-					local r, g, b = string.match(line, "(%d+) (%d+) (%d+)")
+			local count = 0
+			local file = io.open(db.DBPath .. v.file, "r")
+			for line in file:lines() do
+				local r, g, b = string.match(line, "(%d+) (%d+) (%d+)")
 	--~ 				print(r, g, b)
-					if r ~= nil and g ~= nil and b ~=nil then
-						if count == 0 then
-							texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 0))
-						else
-							texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 1))
-						end
-						count = count + 1
+				if r ~= nil and g ~= nil and b ~=nil then
+					if count == 0 then
+						texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 0))
+					else
+						texture:SetPixel(count, 0, CS.UnityEngine.Color(r / 255, g / 255, b / 255, 1))
 					end
+					count = count + 1
 				end
-				io.close(file)
-				texture:Apply()
+			end
+			io.close(file)
+			texture:Apply()
 	
 	
-				local sprite = CS.UnityEngine.Sprite.Create(texture, CS.UnityEngine.Rect(0, 0, texture.width, texture.height), CS.UnityEngine.Vector2(0, 1))
+			-- local sprite = CS.UnityEngine.Sprite.Create(texture, CS.UnityEngine.Rect(0, 0, texture.width, texture.height), CS.UnityEngine.Vector2(0, 1))
 	
-				local shader = CS.UnityEngine.Shader.Find("Sprites/Beat/Diffuse-Shadow")
-				local material = CS.UnityEngine.Material(shader)
+			local shader = CS.UnityEngine.Shader.Find("Sprites/Beat/Diffuse-Shadow")
+			local material = CS.UnityEngine.Material(shader)
 	
 	--~ 			local unityobject_child = CS.UnityEngine.GameObject("testtt")
 	--~ 			local sr = unityobject_child:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
@@ -401,11 +402,11 @@ function createSprites()
 	--~ 			local m = unityobject_child:GetComponent(typeof(CS.UnityEngine.Renderer)).material
 	--~ 			m.shader = shader
 	--~ 			m:SetTexture("_Palette", texture)
-				material:SetTexture("_Palette", texture)
+			material:SetTexture("_Palette", texture)
 	
-				table.insert(palettes[i], material)
-			end
+			table.insert(palettes, material)
 		end
+		return palettes
 	end
 
 -- 读取frame的类别
@@ -442,9 +443,9 @@ function createCharacterDisplay(c, f, i)
 		-- 给object挂上LuaBehaviour组件
 		local script = character:AddComponent(typeof(CS.XLuaTest.LuaBehaviour))
 		local t = script.scriptEnv
-		local frame = f .. "-" .. i
+		local frame = f.name .. "-" .. i
 		print(character)
-		t.object = tool1_LObject:new(charactersDB.characters, pics, palettes[c][1], c, frame, character, 0, 0)
+		t.object = tool1_LObject:new(c.db, c.pics, c.palettes[1], c.name, frame, character, 0, 0)
 
 --~ 		local pic = CS.UnityEngine.GameObject("pic")
 --~ 		pic.transform.parent = character.transform
@@ -460,7 +461,7 @@ function createCharacterDisplay(c, f, i)
 		displayObject = t.object
 		displayingCharacterObject = character
 
-		local defFrame = charactersDB.characters[currentCharacter][currentAction].frames
+		local defFrame = currentAction.frames
 		t.myDrawField = {}
 
 
@@ -537,8 +538,7 @@ function createCharacterEditor()
             setting[p] = v
         end
 	end
-
-	local characters = charactersDB:getLines("characters")
+ 
 	-- 工具窗口
 	local toolsBarSetting = setting["ToolsBar"]
 	local toolsBarWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "ToolsBar", toolsBarSetting.x, toolsBarSetting.y, toolsBarSetting.w, toolsBarSetting.h, true, nil)
@@ -638,34 +638,38 @@ function createCharacterEditor()
 	-- 角色窗口
 	local charactersSetting = setting["Characters"]
 	local characterWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "Characters", charactersSetting.x, charactersSetting.y, charactersSetting.w, charactersSetting.h, true, nil)
- 	characterWindow:addToStacks(LGUIWindowStack)
+	characterWindow:addToStacks(LGUIWindowStack)
 
-	for i, v in pairs(characters) do
-		local p = LGUIButton:new(utils.createid(LGUIWindowStack), characterWindow, "", v.id, 10, 20 + (i - 1)  * 20, 80, 20)
-		characterWindow:addGUIpart(p)
 
-		table.insert(p.eventFunc, function()
+	local count = 0
+	for i, v in pairs(utils.GetLDatas()) do
+		if v ~= nil then
+			local p = LGUIButton:new(utils.createid(LGUIWindowStack), characterWindow, "", v.name .. i, 10, 20 + count  * 20, 80, 20)
+			characterWindow:addGUIpart(p)
 
-			if currentCharacter ~= v then
-				if displayingCharacterObject ~= nil then
-					CS.UnityEngine.GameObject.Destroy(displayingCharacterObject)
+			table.insert(p.eventFunc, function()
+
+				if currentCharacter ~= v then
+					if displayingCharacterObject ~= nil then
+						CS.UnityEngine.GameObject.Destroy(displayingCharacterObject)
+					end
+					currentCharacter = v
+					currentAction = nil
+					currentFrame = nil
 				end
-				currentCharacter = v.id
-				currentAction = nil
-				currentFrame = nil
-			end
-		end)
+			end)
+			count = count + 1
+		end
 	end
 
 	-- 角色信息窗口
 	local characterInfoSetting = setting["CharacterInfo"]
 	local characterInfoWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "CharacterInfo", characterInfoSetting.x, characterInfoSetting.y, characterInfoSetting.w, characterInfoSetting.h, true, nil)
- 	characterInfoWindow:addToStacks(LGUIWindowStack)
+	characterInfoWindow:addToStacks(LGUIWindowStack)
 
 	-- 帧信息窗口
 	local FrameInfoSetting = setting["FrameInfo"]
-	local frameInfoWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "FrameInfo", FrameInfoSetting.x, FrameInfoSetting.y, FrameInfoSetting.w, FrameInfoSetting.h, true, nil)
- 	frameInfoWindow:addToStacks(LGUIWindowStack)
+	local frameInfoWindow = LGUIWindow:new(utils.createid(LGUIWindowStack), "FrameInfo", FrameInfoSetting.x, FrameInfoSetting.y, FrameInfoSetting.w, FrameInfoSetting.h, true, nil) 	frameInfoWindow:addToStacks(LGUIWindowStack)
 
 	frameInfoWindow.temp = currentFrame
 	-- 给窗口加入事件
@@ -676,7 +680,7 @@ function createCharacterEditor()
 				frameInfoWindow.guiParts[i] = nil
 			end
 			if currentFrame ~= nil then
-				local frame = charactersDB.characters[currentCharacter][currentAction].frames[currentFrame + 1]
+				local frame = currentAction.frames[currentFrame + 1]
 				-- 开始
 
 				if frame.category == "Sprite" then
@@ -816,7 +820,7 @@ function createCharacterEditor()
 			frameInfoWindow.temp = currentFrame
 		else
 			if currentFrame ~= nil then
-				local frame = charactersDB.characters[currentCharacter][currentAction].frames[currentFrame + 1]
+				local frame = currentAction.frames[currentFrame + 1]
 				if frame.category == "Sprite" then
 					-- 右键拖拽移动frame的centerX和centerY
 					if frame ~= nil then
@@ -899,13 +903,14 @@ function createCharacterEditor()
 				actionsScrollView.guiParts[i] = nil
 			end
 			local countH = 0
-			for i, v in ipairs(charactersDB.characters[currentCharacter].char.actions) do
-				local p = LGUIButton:new(utils.createid(LGUIWindowStack), actionsScrollView, "", v.action, 10, 0 + (i - 1)  * 20, 80, 20)
+
+			for i, v in ipairs(currentCharacter.db:getLines("actions")) do
+				local p = LGUIButton:new(utils.createid(LGUIWindowStack), actionsScrollView, "", v.name, 10, 0 + (i - 1)  * 20, 80, 20)
 				actionsScrollView:addGUIpart(p)
 
 		 		table.insert(p.eventFunc, function()
 					currentFrame = 0
-					currentAction = v.action
+					currentAction = v
 					createCharacterDisplay(currentCharacter, currentAction, 0)
 		 		end)
 				countH = countH + 20
@@ -933,7 +938,7 @@ function createCharacterEditor()
 				framesScrollView.guiParts[i] = nil
 			end
 			local countW = 0
-			for i, v in ipairs(charactersDB.characters[currentCharacter][currentAction].frames) do
+			for i, v in ipairs(currentAction.frames) do
 				local p = LGUIButton:new(utils.createid(LGUIWindowStack), framesScrollView, "", (i - 1) .. "\n" .. v.category, (i - 1) * 50, 0, 50, 50)
 				framesScrollView:addGUIpart(p)
 
@@ -958,12 +963,20 @@ function start()
     settingsDB = castleDB:new(filePath, "setting.cdb")
     settingsDB:readDB()
 
-    charactersDB = LCastleDBCharacter:new(filePath, "new.cdb")
-	charactersDB:readDB()
+	local data = castleDB:new(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/data/", "data.cdb")
+	data:readDB()
+	for i, v in ipairs(data:getLines("data")) do
+		local p = utils.split(v.file, "/")
+		local cdb = LCastleDBCharacter:new(CS.UnityEngine.Application.dataPath .. "/StreamingAssets/1/Resource/data/" .. p[1] .. "/", p[2])
+		cdb:readDB()
 	-- charactersDB:readIMG()
 	-- texture2Ds = charactersDB:loadIMGToTexture2Ds()
-	createSprites()
-	createPalettes()
+		local t, s = createSprites(cdb)
+		local pal = createPalettes(cdb)
+
+		local p2 = utils.split(p[2], ".")
+		utils.setIDData(v.id, {name = p2[1], db = cdb, textrue2ds = t, pics = s, audioClips = nil, palettes = pal})
+	end
 
 	localCategory()
 
@@ -1084,18 +1097,19 @@ function ongui()
 	end
 
 	if CS.UnityEngine.Event.current.keyCode == CS.UnityEngine.KeyCode.KeypadEnter and CS.UnityEngine.Event.current.type == CS.UnityEngine.EventType.KeyDown then
+		
 		-- 复制原来的.cdb文件做备份
-		local file2 = io.open(filePath .. "new.cdb", "r")
+		local file2 = io.open(currentCharacter.db.DBPath .. currentCharacter.name .. ".cdb", "r")
 		io.input(file2)
 		local file2_context = io.read("*a")
 		io.close(file2)
-		local file3 = io.open(filePath .. "new.cdb.bak", "w")
+		local file3 = io.open(currentCharacter.db.DBPath .. currentCharacter.name .. ".cdb.bak", "w")
 		file3:write(file2_context)
 		file3:close()
 
 
 		-- 写入原来的.cdb文件
-		charactersDB:writeDB()
+		currentCharacter.db:writeDB()
 	end
 
 

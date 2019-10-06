@@ -77,8 +77,7 @@ public static class ExampleConfig
             List<string> namespaces = new List<string>() // 在这里添加名字空间
             {
                 "UnityEngine",
-                "UnityEngine.UI",
-                "UnityEngine.GUI"
+                "UnityEngine.UI"
             };
             var unityTypes = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                               where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
@@ -132,7 +131,7 @@ public static class ExampleConfig
                     }
                 }
             }
-            return delegate_types.Distinct().ToList();
+            return delegate_types.Where(t => t.BaseType == typeof(MulticastDelegate) && !hasGenericParameter(t) && !delegateHasEditorRef(t)).Distinct().ToList();
         }
     }
     //--------------end 纯lua编程配置参考----------------------------
@@ -143,71 +142,71 @@ public static class ExampleConfig
     //{
     //    get
     //    {
-    //        return (from type in Assembly.Load("Assembly-CSharp").GetExportedTypes()
-    //                           where type.Namespace == null || !type.Namespace.StartsWith("XLua")
-    //                           select type);
+    //        return (from type in Assembly.Load("Assembly-CSharp").GetTypes()
+    //                where type.Namespace == null || !type.Namespace.StartsWith("XLua")
+    //                select type);
     //    }
     //}
     //--------------begin 热补丁自动化配置-------------------------
-    //static bool hasGenericParameter(Type type)
-    //{
-    //    if (type.IsGenericTypeDefinition) return true;
-    //    if (type.IsGenericParameter) return true;
-    //    if (type.IsByRef || type.IsArray)
-    //    {
-    //        return hasGenericParameter(type.GetElementType());
-    //    }
-    //    if (type.IsGenericType)
-    //    {
-    //        foreach (var typeArg in type.GetGenericArguments())
-    //        {
-    //            if (hasGenericParameter(typeArg))
-    //            {
-    //                return true;
-    //            }
-    //        }
-    //    }
-    //    return false;
-    //}
+    static bool hasGenericParameter(Type type)
+    {
+        if (type.IsGenericTypeDefinition) return true;
+        if (type.IsGenericParameter) return true;
+        if (type.IsByRef || type.IsArray)
+        {
+            return hasGenericParameter(type.GetElementType());
+        }
+        if (type.IsGenericType)
+        {
+            foreach (var typeArg in type.GetGenericArguments())
+            {
+                if (hasGenericParameter(typeArg))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-    //static bool typeHasEditorRef(Type type)
-    //{
-    //    if (type.Namespace != null && (type.Namespace == "UnityEditor" || type.Namespace.StartsWith("UnityEditor.")))
-    //    {
-    //        return true;
-    //    }
-    //    if (type.IsNested)
-    //    {
-    //        return typeHasEditorRef(type.DeclaringType);
-    //    }
-    //    if (type.IsByRef || type.IsArray)
-    //    {
-    //        return typeHasEditorRef(type.GetElementType());
-    //    }
-    //    if (type.IsGenericType)
-    //    {
-    //        foreach (var typeArg in type.GetGenericArguments())
-    //        {
-    //            if (typeHasEditorRef(typeArg))
-    //            {
-    //                return true;
-    //            }
-    //        }
-    //    }
-    //    return false;
-    //}
+    static bool typeHasEditorRef(Type type)
+    {
+        if (type.Namespace != null && (type.Namespace == "UnityEditor" || type.Namespace.StartsWith("UnityEditor.")))
+        {
+            return true;
+        }
+        if (type.IsNested)
+        {
+            return typeHasEditorRef(type.DeclaringType);
+        }
+        if (type.IsByRef || type.IsArray)
+        {
+            return typeHasEditorRef(type.GetElementType());
+        }
+        if (type.IsGenericType)
+        {
+            foreach (var typeArg in type.GetGenericArguments())
+            {
+                if (typeHasEditorRef(typeArg))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-    //static bool delegateHasEditorRef(Type delegateType)
-    //{
-    //    if (typeHasEditorRef(delegateType)) return true;
-    //    var method = delegateType.GetMethod("Invoke");
-    //    if (method == null)
-    //    {
-    //        return false;
-    //    }
-    //    if (typeHasEditorRef(method.ReturnType)) return true;
-    //    return method.GetParameters().Any(pinfo => typeHasEditorRef(pinfo.ParameterType));
-    //}
+    static bool delegateHasEditorRef(Type delegateType)
+    {
+        if (typeHasEditorRef(delegateType)) return true;
+        var method = delegateType.GetMethod("Invoke");
+        if (method == null)
+        {
+            return false;
+        }
+        if (typeHasEditorRef(method.ReturnType)) return true;
+        return method.GetParameters().Any(pinfo => typeHasEditorRef(pinfo.ParameterType));
+    }
 
     // 配置某Assembly下所有涉及到的delegate到CSharpCallLua下，Hotfix下拿不准那些delegate需要适配到lua function可以这么配置
     //[CSharpCallLua]
@@ -296,4 +295,35 @@ public static class ExampleConfig
                 new List<string>(){ "UnityEngine.AnimatorControllerParameter", "name"},
                 new List<string>(){ "UnityEngine.CanvasRenderer", "UnityEngine.CanvasRenderer.OnRequestRebuild"},
             };
+
+#if UNITY_2018_1_OR_NEWER
+    [BlackList]
+    public static Func<MemberInfo, bool> MethodFilter = (memberInfo) =>
+    {
+        if (memberInfo.DeclaringType.IsGenericType && memberInfo.DeclaringType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+        {
+            if (memberInfo.MemberType == MemberTypes.Constructor)
+            {
+                ConstructorInfo constructorInfo = memberInfo as ConstructorInfo;
+                var parameterInfos = constructorInfo.GetParameters();
+                if (parameterInfos.Length > 0)
+                {
+                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(parameterInfos[0].ParameterType))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (memberInfo.MemberType == MemberTypes.Method)
+            {
+                var methodInfo = memberInfo as MethodInfo;
+                if (methodInfo.Name == "TryAdd" || methodInfo.Name == "Remove" && methodInfo.GetParameters().Length == 2)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+#endif
 }

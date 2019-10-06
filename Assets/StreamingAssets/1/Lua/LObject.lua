@@ -12,6 +12,7 @@ LObject = {database = nil,
 			pics = nil,
 			audioClips = nil,
 			id = nil,
+			palette = nil,
 			action = nil,
 			currentFrame = nil,
 			counter = nil,
@@ -19,17 +20,6 @@ LObject = {database = nil,
 			delayCounter = nil,
 
 			kind = nil,
-			HP = nil,
-			MP = nil,
-			maxHP = nil,
-			maxMP = nil,
-			HPRR = nil,
-			MPRR = nil,
-			falling = nil,
-			fallingRR = nil,
-			defence = nil,
-			defenceRR = nil,
-			weight = nil,
 
 			direction = nil,
 			directionBuff = nil,
@@ -65,11 +55,12 @@ LObject = {database = nil,
 
 
 			AI = nil,
-			target = nil
+			target = nil,
+			vars = nil
 
 			}
 LObject.__index = LObject
-function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
+function LObject:new(db, ps, m, p, ac, id, a, f, go, vx, vy, k)
 	local self = {}
 	setmetatable(self, LObject)
 
@@ -77,30 +68,36 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
     self.pics = ps
 	self.audioClips = ac
 	self.id = id
-	local act, frm = utils.getFrame(f)
-	self.action = act
-	self.frame = frm
+	-- local act, frm = utils.getFrame(f)
+	self.action = a
+	self.frame = f + 1
 --~ 	self.counter = self.frame + 1
 	self.delay = 0
 	self.delayCounter = 0
 
-	self.maxHP = self.database[self.id].char.maxHP
-	self.maxMP = self.database[self.id].char.maxMP
-	self.HP = self.maxHP
-	self.MP = self.maxMP
+	self.vars = {}
+	for _i, _v in ipairs(self.database:getLines("vars")) do
+		self.vars[_v.name] = _v.default
+		-- print(_v.name, self.vars[_v.name])
+	end
 
-	self.HPRR = self.database[self.id].char.HPRecoveryRate
-	self.MPRR = self.database[self.id].char.MPRecoveryRate
+	-- self.maxHP = self.database[self.id].char.maxHP
+	-- self.maxMP = self.database[self.id].char.maxMP
+	-- self.HP = self.maxHP
+	-- self.MP = self.maxMP
 
-	self.maxFalling = self.database[self.id].char.maxFalling
-	self.maxDefencing = self.database[self.id].char.maxDefencing
-	self.fallingRR = self.database[self.id].char.fallingRecoveryRate
-	self.defencingRR = self.database[self.id].char.defencingRecoveryRate
+	-- self.HPRR = self.database[self.id].char.HPRecoveryRate
+	-- self.MPRR = self.database[self.id].char.MPRecoveryRate
 
-	self.falling = 1
-	self.defencing = 1
+	-- self.maxFalling = self.database[self.id].char.maxFalling
+	-- self.maxDefencing = self.database[self.id].char.maxDefencing
+	-- self.fallingRR = self.database[self.id].char.fallingRecoveryRate
+	-- self.defencingRR = self.database[self.id].char.defencingRecoveryRate
 
-	self.weight = self.database[self.id].char.weight
+	-- self.falling = 1
+	-- self.defencing = 1
+
+	-- self.weight = self.database[self.id].char.weight
 
 	self.direction = CS.UnityEngine.Vector2(1, -1)
 	self.directionBuff = CS.UnityEngine.Vector2(1, -1)
@@ -126,6 +123,7 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 	self.pic_object.transform.localPosition = CS.UnityEngine.Vector3.zero
 	self.spriteRenderer = self.pic_object:AddComponent(typeof(CS.UnityEngine.SpriteRenderer))
 	self.spriteRenderer.material = m
+	self.palette = p
 
 	if self.kind == 3 then -- 非人物体暂定-20层
 		self.spriteRenderer.sortingOrder = 20
@@ -159,8 +157,9 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 	self.accvvvX = nil
 	self.accvvvY = nil
 
-	self.AI = nil
+	self.AI = false
 	self.target = nil
+
 
 
 	self.eventCoroutine = function(c, delay, w, event, this)
@@ -207,14 +206,14 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 				if self.attckArray[e.event.id] == nil then
 					self.attckArray[e.event.id] = LColliderATK:new(self.atk_object)
 					self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.attackFlags,
-																e.event.damage, e.event.fall, e.event.defence, e.event.frequency, e.event.directionX, e.event.directionY, e.event.ignoreFlag)
+																e.event.damage, e.event.fall, e.event.defence, e.event.frequency, e.event.directionX, e.event.directionY, e.event.ignoreFlag, e.event.var)
 				else
 					if e.event.width == 0 and e.event.height == 0 then
 						self.attckArray[e.event.id]:deleteCollider()
 						self.attckArray[e.event.id] = nil
 					else
 						self.attckArray[e.event.id]:setCollider(e.event.direction, e.event.x, e.event.y, e.event.width, e.event.height, e.event.attackFlags,
-																e.event.damage, e.event.fall, e.event.defence, e.event.frequency, e.event.directionX, e.event.directionY, e.event.ignoreFlag)
+																e.event.damage, e.event.fall, e.event.defence, e.event.frequency, e.event.directionX, e.event.directionY, e.event.ignoreFlag, e.event.var)
 					end
 				end
 			elseif e.category == "Sound" then
@@ -225,9 +224,9 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 			elseif e.category == "Object" then
 				if e.event.isWorldPosition then
 
-					utils.createObject(self.database, self.pics, self.spriteRenderer.material, self.audioClips, self.id, e.event.nextFrame, e.event.x, e.event.y, 0, 0, e.event.kind)
+					utils.createObject(self.id, e.event.action, e.event.frame, e.event.x, e.event.y, 0, 0, e.event.kind)
 				else
-					utils.createObject(self.database, self.pics, self.spriteRenderer.material, self.audioClips, self.id, e.event.nextFrame, self.rigidbody.position.x + e.event.x, self.rigidbody.position.y + e.event.y, 0, 0, e.event.kind)
+					utils.createObject(self.id, e.event.action, e.event.frame, self.rigidbody.position.x + e.event.x, self.rigidbody.position.y + e.event.y, 0, 0, e.event.kind)
 				end
 			elseif e.category == "Command" then
 				if e.event.actFlag ~= nil then
@@ -242,7 +241,8 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 			elseif e.category == "Act" then
 				if e.event.command == nil or e.event.command == "" then
 					if (e.event.actFlag == 0 and self.isOnGround ~= 1 and self.velocity.y <= 0) or (e.event.actFlag == 1 and self.isWall) or (e.event.actFlag == 2 and self.isElse == 1 | 1 << tonumber(e.event.layers)) then
-						self.action, self.frame = utils.getFrame(e.event.nextFrame)
+						self.action = e.event.action
+						self.frame = e.event.frame + 1
 						self:clearCollidersAndCommand()
 						self:stopAllEvent()
 						self:frameLoop()
@@ -250,40 +250,85 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 					end
 				end
 			elseif e.category == "Warp" then
-				self.action, self.frame = utils.getFrame(e.event.nextFrame)
+				self.action = e.event.action
+				self.frame = e.event.frame + 1
 				self:clearCollidersAndCommand()
 				self:stopAllEvent()
 				self:frameLoop()
+			elseif e.category == "Set" then
+				if e.event.operator & 16 == 16 then
+					self.vars[e.event.var] = e.event.value
+				end
+			elseif e.category == "Palette" then
+				for i = #self.eventQueue, 1, -1 do
+					local v = self.eventQueue[i]
+					if v ~= this and v.category == "Palette"then
+						if v.coroutine ~= nil then
+							cs_coroutine.stop(v.coroutine)
+						end
+						table.remove(self.eventQueue, i)
+					end
+				end
+				if e.event.value == nil then
+					utils.setPalette(self, self.palette)
+				else
+					local vvv = tonumber(e.event.value)
+					if vvv then
+						utils.setPalette(self, vvv)
+					else
+						local t = CS.UnityEngine.Texture2D(256, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+						t.filterMode = CS.UnityEngine.FilterMode.Point
+
+						local pixels = self.spriteRenderer.material:GetTexture("_Palette"):GetPixels()
+						t:SetPixels(pixels)
+						local colors = e.event.value
+						for i2, v2 in ipairs(colors) do
+							local r = pixels[v2.index].r - v2.color.r / 255
+							local g = pixels[v2.index].g - v2.color.g / 255
+							local b = pixels[v2.index].b - v2.color.b / 255
+							local a = pixels[v2.index].a - v2.color.a / 255
+							t:SetPixel(v2.index, 1, CS.UnityEngine.Color(pixels[v2.index].r - r * i / w, pixels[v2.index].g - g * i / w, pixels[v2.index].b - b * i / w, pixels[v2.index].a - a * i / w))
+						end
+						t:Apply()
+
+						self.spriteRenderer.material:SetTexture("_Palette", t)
+					end
+				end
 			elseif e.category == "End" then
 				utils.destroyObject(self.gameObject:GetInstanceID())
 				self:stopAllEvent()
 			elseif e.category == "Hurt" then  -- 从这里开始和bd无关，是自定义event
-				self.HP = self.HP - e.event.damage
-				self.MP = self.MP - e.event.damage
-				if self.HP <= 0 then
-					self.falling = self.maxFalling
-					self.defencing = self.maxDefencing
+				local hhh = self.vars[e.event.var]
+				self.vars[e.event.var] = self.vars[e.event.var] - e.event.damage
+				-- self.vars["MP"] = self.vars["MP"] - e.event.damage
+				if self.vars[e.event.var] <= 0 then
+					self.vars[e.event.var] = 0
+					self.vars["falling"] = self.vars["maxFalling"]
+					self.vars["defencing"] = self.vars["maxDefencing"]
 				else
-					self.falling = self.falling + e.event.fall
-					self.defencing = self.defencing + e.event.defence
-					if self.falling > self.maxFalling then
-						self.falling = self.maxFalling
+					self.vars["falling"] = self.vars["falling"] + e.event.fall
+					self.vars["defencing"] = self.vars["maxDefencing"] + e.event.defence
+					if self.vars["falling"] > self.vars["maxFalling"] then
+						self.vars["falling"] = self.vars["maxFalling"]
 					end
-					if self.defencing > self.maxDefencing then
-						self.defencing = self.maxDefencing
+					if self.vars["defencing"] > self.vars["maxDefencing"] then
+						self.vars["defencing"] = self.vars["maxDefencing"]
 					end
 				end
 				self.target = e.event.attacker -- 切换目标
+				if hhh > 0 and self.vars[e.event.var] == 0 then
+					e.event.attacker.vars["kill"] = e.event.attacker.vars["kill"] + 1
+				end
 			elseif e.category == "UpdatePostion" then
 				self.rigidbody.position = self.rigidbody.position + self.velocity * CS.UnityEngine.Time.deltaTime
-			elseif e.category == "HP" then
-				self.HP = self.HP + e.event.damage
-			elseif e.category == "MP" then
-				self.MP = self.MP + e.event.damage
-			elseif e.category == "Falling" then
-				self.falling = self.falling + e.event.fall
-			elseif e.category == "Defecing" then
-				self.defencing = self.defencing + e.event.defence
+			-- elseif e.category == "HP" then
+			-- 	self.HP = self.HP + e.event.damage
+			-- elseif e.category == "MP" then
+			-- 	self.MP = self.MP + e.event.damage
+			-- elseif e.category == "Falling" then
+			-- 	self.falling = self.falling + e.event.fall
+			-- elseif e.category == "Defecing" then
+			-- 	self.defencing = self.defencing + e.event.defence
 			elseif e.category == "FlipX" then -- 反向操作
 				if self.directionBuff.x ~= self.direction.x then
 					if self.direction.x == -1 then
@@ -296,7 +341,7 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 			elseif e.category == "Gravity" then
 				self.velocity = self.velocity + 0.5 * CS.UnityEngine.Physics2D.gravity * 2/60
 			elseif e.category == "Flying" then
-				if (self.action == "standing" or self.action == "walking") and self.isOnGround == 1 and self.velocity.y < 0 then
+				if (self.action == "standing" or self.action == "walking" or self.action == "running") and self.isOnGround == 1 and self.velocity.y < 0 then
 					self.action = "jumping_flying"
 					self.frame = 0 + 1
 					self:clearCollidersAndCommand()
@@ -304,10 +349,12 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 					self:frameLoop()
 				end
 			elseif e.category == "HPMPFallingDefecing" then
-				self.HP = self:toMaxvalue(self.HP, self.maxHP, self.HPRR)
-				self.MP = self:toMaxvalue(self.MP, self.maxMP, self.MPRR)
-				self.falling = self:toOne(self.falling, self.maxFalling, self.fallingRR)
-				self.defencing = self:toOne(self.defencing, self.maxDefencing, self.defencingRR)
+				if self.vars["HP"] > 0 then
+					self.vars["HP"] = self:toMaxvalue(self.vars["HP"], self.vars["maxHP"], self.vars["HPRecoveryRate"])
+					self.vars["MP"] = self:toMaxvalue(self.vars["MP"], self.vars["maxMP"], self.vars["MPRecoveryRate"] + (self.vars["MPRecoveryRate"] * (1 - self.vars["HP"] / self.vars["maxHP"])))
+				end
+				self.vars["falling"] = self:toOne(self.vars["falling"], self.vars["maxFalling"], self.vars["fallingRecoveryRate"])
+				self.vars["defencing"] = self:toOne(self.vars["defencing"], self.vars["maxDefencing"], self.vars["defencingRecoveryRate"])
 			elseif e.category == "Friction" then
 				if self.isOnGround ~= 1 then
 					local f = self.velocity * CS.UnityEngine.Vector2(1, 0) * 0.20 -- 摩擦系数
@@ -327,11 +374,13 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 			elseif e.category == "Input" then
 				for i2, v2 in ipairs(self.eventQueue) do
 
-					if v2.category == "Command" and v2.event.active then
+					if v2.category == "Command" and v2.event.active and self.vars["MP"] >= e.event.mp then
 
-						if (v2.event.rangeA ~= nil and v2.event.rangeB ~= nil and e.event.level >= v2.event.rangeA and e.event.level <= v2.event.rangeB) or (v2.event.command ~= nil and v2.event.command == e.event.name) then
+						if (v2.event.rangeA ~= nil and v2.event.rangeB ~= nil and e.event.level ~= nil and e.event.level >= v2.event.rangeA and e.event.level <= v2.event.rangeB) or (v2.event.command ~= nil and v2.event.command == e.event.name) then
 
-							self.action, self.frame = utils.getFrame(e.event.frame)
+							self.vars["MP"] = self.vars["MP"] - e.event.mp
+							self.action = e.event.action
+							self.frame = e.event.frame + 1
 							self:clearCollidersAndCommand()
 							self:stopAllEvent()
 							self:frameLoop()
@@ -354,17 +403,18 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 					self.velocity.y = 0
 				end
 				self.velocity.x = self.velocity.x + e.event.velocity.x
-				if math.floor(self.falling + 0.5) >= 70 then
+				if math.floor(self.vars["falling"] + 0.5) >= 70 then
 					self.velocity.y = self.velocity.y + e.event.velocity.y
 				end
 			elseif e.category == "Injured" then
-				if #self.database[self.id].char.reactions > 0 and self.kind == 0 then
+				local reactions = self.database:getLines("reactions")
+				if #reactions > 0 and self.kind == 0 then
 					local ttt = {}
-					local round = math.floor(self.falling + 0.5)
-					if self.HP <= 0 then
+					local round = math.floor(self.vars["falling"] + 0.5)
+					if self.vars["HP"] <= 0 then
 						round = 100
 					end
-					for i, v in pairs(self.database[self.id].char.reactions) do
+					for i, v in pairs(reactions) do
 						local rA, rB = utils.getRangeAB(v.fallingRange)
 			--~ 				print(round, rA, rB)
 
@@ -374,7 +424,7 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 
 						-- print(d)
 						if round >= rA and round <= rB and v.direction & d == d then
-							table.insert(ttt, v.reactionFrame)
+							table.insert(ttt, {action = v.action, frame = v.frame})
 							-- print(v.direction)
 						end
 					end
@@ -388,7 +438,8 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 			--~ 						end
 						local r = CS.Tools.Instance:RandomRangeInt(1, #ttt + 1)
 			--~ 							print(#ttt, r)
-						self.action, self.frame = utils.getFrame(ttt[r])
+						self.action = ttt[r].action
+						self.frame = ttt[r].frame + 1
 						self:clearCollidersAndCommand()
 						self:stopAllEvent()
 						self:frameLoop()
@@ -399,34 +450,34 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 				if self.target == nil then
 					local temp = {}
 					for i, v in pairs(utils.getObjects()) do
-						if v ~= nil and v.kind == 0 and v ~= self and v.HP > 0 then
+						if v ~= nil and v.kind == 0 and v ~= self and v.vars["HP"] > 0 then
 							table.insert(temp, v)
 						end
 					end
 					self.target = temp[CS.Tools.Instance:RandomRangeInt(1, #temp + 1)]
 				else
-					if self.target.HP <= 0 then
+					if self.target.vars["HP"] <= 0 then
 						self.target = nil
 					end
 				end
-			elseif e.category == "Dead" then
-				if self.HP <= 0 then
-					for i2, v2 in ipairs(self.eventQueue) do
-						if (v2.category == "Sprite" and v2.temp == 70) then
-							self:stopAllEvent()
+			-- elseif e.category == "Dead" then
+			-- 	if self.vars["HP"] <= 0 then
+			-- 		for i2, v2 in ipairs(self.eventQueue) do
+			-- 			if (v2.category == "Sprite" and v2.temp == 70) then
+			-- 				self:stopAllEvent()
 
-							break
-						end
-					end
-					for i3, v3 in pairs(self.bodyArray) do
-						if v3.filter.layerMask.value & 65536 == 65536 then
-							local lll = CS.UnityEngine.LayerMask()
-							lll.value = v3.filter.layerMask.value & ~(1 << 16)
-							v3.filter.layerMask = lll
-							-- print(v3.filter.layerMask.value, 1 << 16)
-						end
-					end
-				end
+			-- 				break
+			-- 			end
+			-- 		end
+			-- 		for i3, v3 in pairs(self.bodyArray) do
+			-- 			if v3.filter.layerMask.value & 65536 == 65536 then
+			-- 				local lll = CS.UnityEngine.LayerMask()
+			-- 				lll.value = v3.filter.layerMask.value & ~(1 << 16)
+			-- 				v3.filter.layerMask = lll
+			-- 				-- print(v3.filter.layerMask.value, 1 << 16)
+			-- 			end
+			-- 		end
+			-- 	end
 			end
 			coroutine.yield(CS.UnityEngine.WaitForFixedUpdate())
 		end
@@ -445,7 +496,7 @@ function LObject:new(db, ps, m, ac, id, f, go, vx, vy, k)
 --~ 		self:addEvent("Collision", 0, 999999, nil)
 
 		self:addEvent("FindTarget", 0, 999999, nil) -- 搜敌
-		self:addEvent("Dead", 0, 999999, nil) -- 搜敌
+		-- self:addEvent("Dead", 0, 999999, nil) -- 搜敌
 	end
 
 --~ 	self:addEvent("UpdatePostion", 0, 999999, nil)
@@ -465,12 +516,13 @@ function LObject:frameLoop()
 
 --~ 	while self.delayCounter == 0 do
 	local delayC = 0
-	for i = self.frame, #self.database[self.id][self.action].frames, 1 do
+	for i = self.frame, #self.database.characters[self.action], 1 do
 --~ 		if self.frame > #self.database[self.id][self.action].frames then
 --~ 			self.frame = 1
 --~ 			self:clearCollidersAndCommand()
 --~ 		end
-		local currentFrame = self.database[self.id][self.action].frames[i]
+
+		local currentFrame = self.database.characters[self.action][i]
 
 		if currentFrame.category == "Sprite" and currentFrame.wait > 0 then
 			self:addEvent(currentFrame.category, delayC, 1, {sprite = self.pics[currentFrame.pic], localPosition = CS.UnityEngine.Vector3(currentFrame.x / 100, -currentFrame.y / 100, 0)})
@@ -485,30 +537,50 @@ function LObject:frameLoop()
 		elseif currentFrame.category == "Attack" then
 			self:addEvent(currentFrame.category, delayC, 1, {id = currentFrame.id, direction = self.direction, x = currentFrame.x, y = currentFrame.y, width = currentFrame.width, height = currentFrame.height,
 														attackFlags = nil, damage = currentFrame.damage, fall = currentFrame.fall, defence = currentFrame.defence,
-														frequency = currentFrame.frequency, directionX = currentFrame.directionX, directionY = currentFrame.directionY, ignoreFlag = false})
+														frequency = currentFrame.frequency, directionX = currentFrame.directionX, directionY = currentFrame.directionY, ignoreFlag = false, var = currentFrame.var})
 		elseif currentFrame.category == "Sound" then
 			self:addEvent(currentFrame.category, delayC, 1, {sfx = currentFrame.sfx})
 		elseif currentFrame.category == "Object" then
-			self:addEvent(currentFrame.category, delayC, 1, {x = currentFrame.x, y = currentFrame.y, nextFrame = currentFrame.nextFrame})
+			self:addEvent(currentFrame.category, delayC, 1, {x = currentFrame.x, y = currentFrame.y, action = currentFrame.action, frame = currentFrame.frame})
 		elseif currentFrame.category == "Command" then
 			local rA, rB = utils.getRangeAB(currentFrame.range)
 			self:addEvent(currentFrame.category, delayC, 999999, {command= currentFrame.command, rangeA = rA, rangeB = rB, actFlag = currentFrame.actFlag, layers = currentFrame.layers, active = false})
 		elseif currentFrame.category == "Act" then
-			self:addEvent(currentFrame.category, delayC, 999999, {actFlag = currentFrame.actFlag, layers = currentFrame.layers, command = currentFrame.command, nextFrame = currentFrame.nextFrame})
+			self:addEvent(currentFrame.category, delayC, 999999, {actFlag = currentFrame.actFlag, layers = currentFrame.layers, command = currentFrame.command, action = currentFrame.action, frame = currentFrame.frame})
 		elseif currentFrame.category == "Warp" then
-			self:addEvent(currentFrame.category, delayC, 1, {nextFrame = currentFrame.nextFrame})
+			if currentFrame.operator == nil or currentFrame.var == nil or currentFrame.value == nil then
+				self:addEvent(currentFrame.category, delayC, 1, {action = currentFrame.action, frame = currentFrame.frame})
+				break
+			else
+				local r = false
+				if currentFrame.operator & 32 == 32 then
+					r = self.vars[currentFrame.var] == currentFrame.value
+				end
+				if currentFrame.operator & 128 == 128 then
+					r = self.vars[currentFrame.var] > currentFrame.value
+				end
+				if r then
+					self:addEvent(currentFrame.category, delayC, 1, {action = currentFrame.action, frame = currentFrame.frame})
+					break
+				end
+			end
+
+			
 --~ 				self.vvvX = nil
 --~ 				self.vvvY = nil
-			break
+			-- if currentFrame.command == nil or currentFrame.fall == nil then
+				-- break
+			-- end
 		elseif currentFrame.category == "End" then
 			self:addEvent(currentFrame.category, delayC, 1, nil)
 			break
-		else
-
+		elseif currentFrame.category == "Set" then
+			self:addEvent(currentFrame.category, delayC, 1, {operator = currentFrame.operator, var = currentFrame.var, value = currentFrame.value})
+		elseif currentFrame.category == "Palette" then
+			self:addEvent(currentFrame.category, delayC, currentFrame.wait, {value = currentFrame.value})
 		end
 	end
 --~ 	self.delayCounter = self.delayCounter + 1
---~ 	print("endloop")
 end
 
 function LObject:runFrame()
@@ -537,7 +609,7 @@ function LObject:runFrame()
 	-- 碰撞检测
 	local g = false
 	for i, v in pairs(self.bodyArray) do
-		local gg, cc, ww, ee, eeaa = v:BDYFixedUpdate(self.velocity, self.weight)
+		local gg, cc, ww, ee, eeaa = v:BDYFixedUpdate(self.velocity, self:getVar("weight"))
 		if gg ~= 1 then
 			if g == false then
 				self.isOnGround = gg
@@ -597,26 +669,38 @@ function LObject:updatePic()
 end
 
 function LObject:displayInfo()
-	-- if self.kind ~= 3 then
-	-- 	local xy = CS.UnityEngine.Camera.main:WorldToScreenPoint(self.gameObject.transform.position)
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300, 200, 100), "x: " .. math.floor(self.velocity.x + 0.5) .. "y: " .. math.floor(self.velocity.y))
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 20, 200, 100), "hp: " .. math.floor(self.HP + 0.5))
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 30, 200, 100), "mp: " .. math.floor(self.MP + 0.5))
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 40, 200, 100), "action: " .. self.action)
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 50, 200, 100), "frame: " .. self.frame)
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 60, 200, 100), "g: " .. tostring(self.isOnGround))
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 70, 200, 100), "w: " .. tostring(self.isWall))
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 80, 200, 100), "c: " .. tostring(self.isCeiling))
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 90, 200, 100), "e: " .. tostring(self.isElse))
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 100, 200, 100), "f: " .. math.floor(self.falling + 0.5))
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 110, 200, 100), "d: " .. math.floor(self.defencing + 0.5))
-	-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 120, 200, 100), "event: " .. #self.eventQueue)
-	-- end
+	if self.kind ~= 3 then
+		local xy = CS.UnityEngine.Camera.main:WorldToScreenPoint(self.gameObject.transform.position)
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300, 200, 100), "x: " .. math.floor(self.velocity.x + 0.5) .. "y: " .. math.floor(self.velocity.y))
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 20, 200, 100), "hp: " .. math.floor(self.HP + 0.5))
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 30, 200, 100), "mp: " .. math.floor(self.MP + 0.5))
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 40, 200, 100), "action: " .. self.action)
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 50, 200, 100), "frame: " .. self.frame)
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 60, 200, 100), "g: " .. tostring(self.isOnGround))
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 70, 200, 100), "w: " .. tostring(self.isWall))
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 80, 200, 100), "c: " .. tostring(self.isCeiling))
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 90, 200, 100), "e: " .. tostring(self.isElse))
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 100, 200, 100), "f: " .. math.floor(self.falling + 0.5))
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 110, 200, 100), "d: " .. math.floor(self.defencing + 0.5))
+		-- CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + 120, 200, 100), "event: " .. #self.eventQueue)
+
+		-- local g = 0
+		-- for i, v in pairs(self.vars) do
+		-- 	CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x, -xy.y + 300 + g * 10, 200, 100), i .. ": " .. tostring(v))
+		-- 	g = g + 1
+		-- end
+		if self.vars["kill"] > 1 then
+			CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x - 13, -xy.y + 415, 200, 100), self.vars["kill"] .. " kills")
+		else
+			CS.UnityEngine.GUI.Label(CS.UnityEngine.Rect(xy.x - 13, -xy.y + 415, 200, 100), self.vars["kill"] .. " kill")
+		end
+		utils.drawHPMP(xy.x, -xy.y + 435, self.vars["HP"] / self.vars["maxHP"], self.vars["MP"] / self.vars["maxMP"], self.vars["falling"] / self.vars["maxFalling"], self.vars["defencing"] / self.vars["maxDefencing"])
+	end
 end
 
 
 function LObject:runCommand()
-	for i, v in pairs(self.database[self.id].char.commands) do
+	for i, v in pairs(self.database:getLines("commands")) do
 
 	end
 end
@@ -691,7 +775,7 @@ end
 function LObject:stopAllEvent()
 	for i = #self.eventQueue, 1, -1 do
 		local v = self.eventQueue[i]
-		if v.category ~= "Flying" and v.category ~= "Gravity" and v.category ~= "HPMPFallingDefecing" and v.category ~= "Friction" and v.category ~= "FlipX" and v.category ~= "UpdatePostion" and v.category ~= "Collision" and v.category ~= "FindTarget" and v.category ~= "Dead" then
+		if v.category ~= "Palette" and v.category ~= "Flying" and v.category ~= "Gravity" and v.category ~= "HPMPFallingDefecing" and v.category ~= "Friction" and v.category ~= "FlipX" and v.category ~= "UpdatePostion" and v.category ~= "Collision" and v.category ~= "FindTarget" and v.category ~= "Dead" then
 			if v.coroutine ~= nil then
 				cs_coroutine.stop(v.coroutine)
 			end
@@ -702,4 +786,8 @@ end
 
 function LObject:deleteEvent(event)
 
+end
+
+function LObject:getVar(n)
+	return self.vars[n]
 end

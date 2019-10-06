@@ -1291,7 +1291,10 @@ namespace XLua.CSObjectWrap
         
         
             translator.DelayWrapLoader(typeof(ExampleGenConfig), ExampleGenConfigWrap.__Register);
-       
+        
+        
+            translator.DelayWrapLoader(typeof(AudioTest), AudioTestWrap.__Register);
+        
         
             translator.DelayWrapLoader(typeof(GameLoader), GameLoaderWrap.__Register);
         

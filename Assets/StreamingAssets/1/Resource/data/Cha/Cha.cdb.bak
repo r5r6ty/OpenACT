@@ -1,0 +1,3494 @@
+{
+	"sheets": [
+		{
+			"columns": [
+				{
+					"name": "name",
+					"typeStr": "0"
+				},
+				{
+					"opt": true,
+					"name": "default",
+					"typeStr": "16"
+				}
+			],
+			"lines": [
+				{
+					"default": 500,
+					"name": "HP"
+				},
+				{
+					"default": 500,
+					"name": "maxHP"
+				},
+				{
+					"default": 0.03,
+					"name": "HPRecoveryRate"
+				},
+				{
+					"default": 500,
+					"name": "MP"
+				},
+				{
+					"default": 500,
+					"name": "maxMP"
+				},
+				{
+					"default": 0.1,
+					"name": "MPRecoveryRate"
+				},
+				{
+					"default": 1,
+					"name": "falling"
+				},
+				{
+					"default": 100,
+					"name": "maxFalling"
+				},
+				{
+					"default": 0.25,
+					"name": "fallingRecoveryRate"
+				},
+				{
+					"default": 1,
+					"name": "defencing"
+				},
+				{
+					"default": 100,
+					"name": "maxDefencing"
+				},
+				{
+					"default": 0.25,
+					"name": "defencingRecoveryRate"
+				},
+				{
+					"default": 49,
+					"name": "weight"
+				},
+				{
+					"default": 0,
+					"name": "nekoForm"
+				},
+				{
+					"name": "kill",
+					"default": 0
+				}
+			],
+			"name": "vars",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "file",
+					"typeStr": "13"
+				},
+				{
+					"name": "color",
+					"typeStr": "11"
+				}
+			],
+			"lines": [
+				{
+					"color": 16711680,
+					"file": "palettes/p1.pal"
+				},
+				{
+					"color": 16755694,
+					"file": "palettes/p2.pal"
+				},
+				{
+					"color": 16639,
+					"file": "palettes/p3.pal"
+				},
+				{
+					"color": 0,
+					"file": "palettes/p4.pal"
+				}
+			],
+			"name": "palettes",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "name",
+					"typeStr": "0"
+				},
+				{
+					"name": "frames",
+					"typeStr": "8"
+				}
+			],
+			"lines": [
+				{
+					"frames": [
+						{
+							"value": 1,
+							"operator": 32,
+							"frame": 0,
+							"var": "nekoForm",
+							"action": "standing_neko",
+							"category": "Warp"
+						},
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"actFlag": 2,
+							"layers": "4",
+							"command": "climbLadderUP",
+							"category": "Command"
+						},
+						{
+							"range": "0~100",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -80,
+							"pic": "0a3130b12ce434d2264d57b8d9006d35",
+							"wait": 55,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"y": -80,
+							"pic": "0a3130b12ce434d2264d57b8d9006d35",
+							"wait": 55,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"action": "standing",
+							"frame": 0,
+							"category": "Warp"
+						}
+					],
+					"name": "standing"
+				},
+				{
+					"frames": [
+						{
+							"value": 0,
+							"operator": 32,
+							"frame": 0,
+							"var": "nekoForm",
+							"action": "standing",
+							"category": "Warp"
+						},
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"actFlag": 2,
+							"layers": "4",
+							"command": "climbLadderUP",
+							"category": "Command"
+						},
+						{
+							"range": "300~400",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -63,
+							"pic": "0a11823aed2075eb8bc88dab474cea74",
+							"wait": 5,
+							"x": -23,
+							"category": "Sprite"
+						},
+						{
+							"y": -63,
+							"pic": "1aba94d4f9bacd0ce4ada2e1cc5a7fca",
+							"wait": 5,
+							"x": -31,
+							"category": "Sprite"
+						},
+						{
+							"y": -63,
+							"pic": "d264d6550bae366502d2536eabd99db9",
+							"x": -25,
+							"wait": 5,
+							"category": "Sprite"
+						},
+						{
+							"y": -63,
+							"pic": "0d1f867e1b3c8ce3d45f08f8504bbb46",
+							"x": -23,
+							"wait": 5,
+							"category": "Sprite"
+						},
+						{
+							"y": -63,
+							"pic": "cbe8220467d5d97e40218976ccf81a64",
+							"x": -18,
+							"wait": 5,
+							"category": "Sprite"
+						},
+						{
+							"y": -63,
+							"pic": "29024f4a06c3b26a3262a08c8ef3478b",
+							"x": -13,
+							"wait": 5,
+							"category": "Sprite"
+						},
+						{
+							"y": -71,
+							"pic": "6179d810a725d13ae53978deed0f9796",
+							"x": -12,
+							"wait": 5,
+							"category": "Sprite"
+						},
+						{
+							"y": -65,
+							"pic": "38f305d2283c929b3fc1a1e587896442",
+							"x": -12,
+							"wait": 5,
+							"category": "Sprite"
+						},
+						{
+							"y": -65,
+							"pic": "dcf6daf2021322b66dc390749a45d6d7",
+							"x": -15,
+							"wait": 5,
+							"category": "Sprite"
+						},
+						{
+							"y": -64,
+							"pic": "48b7faa174720a9cc6cb910040507021",
+							"x": -19,
+							"wait": 5,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "standing_neko"
+				},
+				{
+					"frames": [
+						{
+							"range": "%-1~-1",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"range": "1~100",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"actFlag": 2,
+							"layers": "4",
+							"command": "climbLadderUP",
+							"category": "Command"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionX": 3.5
+						},
+						{
+							"y": -79,
+							"pic": "058c440ea8b10ba6b5de12e28c316862",
+							"wait": 5,
+							"x": -17,
+							"category": "Sprite"
+						},
+						{
+							"y": -79,
+							"pic": "ac96fe9c3b9873f780493841a04d76ba",
+							"wait": 5,
+							"x": -16,
+							"category": "Sprite"
+						},
+						{
+							"y": -80,
+							"pic": "49268d06843217ee9991f6edfcdc920d",
+							"wait": 5,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"y": -81,
+							"pic": "32d1ca239f154be9f5ebc629cddf455b",
+							"wait": 5,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"y": -80,
+							"pic": "b300efdf40a2680e4dfe940cd9f89856",
+							"wait": 5,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"y": -79,
+							"pic": "c4bfd00c34d7aa7042eec08b315b0e81",
+							"wait": 5,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"y": -79,
+							"pic": "603143a240fb6599723dafa85366a1ea",
+							"wait": 5,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"y": -80,
+							"pic": "62efad137ce6fdeeca899140f5f75152",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -81,
+							"pic": "582897b11f5e5ea7050583f4c5eae40d",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -80,
+							"pic": "d854e20235b18d1d4e1331fe7ac3b04c",
+							"wait": 5,
+							"x": -16,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "walking",
+							"category": "Warp"
+						}
+					],
+					"name": "walking"
+				},
+				{
+					"name": "running",
+					"frames": [
+						{
+							"range": "%-1~-1",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"range": "1~100",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"actFlag": 2,
+							"layers": "4",
+							"command": "climbLadderUP",
+							"category": "Command"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionX": 3.5
+						},
+						{
+							"y": -79,
+							"pic": "c72e9b2064065a246ab2ebaf719a4c5a",
+							"wait": 5,
+							"x": -17,
+							"category": "Sprite"
+						},
+						{
+							"y": -79,
+							"pic": "58c784631e1830c98eb96fe37b0d8f80",
+							"wait": 5,
+							"x": -16,
+							"category": "Sprite"
+						},
+						{
+							"y": -80,
+							"pic": "cfdc501dce0b3491b533bee6d77cea85",
+							"wait": 5,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"y": -81,
+							"pic": "d364699dfc92383288c7c0b8b005267a",
+							"wait": 5,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"y": -80,
+							"pic": "faf4f953e2ad265f308c75e0ca7ab258",
+							"wait": 5,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"y": -79,
+							"pic": "5df0b16f3b24029db755cec73213fe76",
+							"wait": 5,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"y": -79,
+							"pic": "8c06a155cc921d285a138d1cbf2a2ee2",
+							"wait": 5,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"y": -80,
+							"pic": "344b92ab0fc11270af71660258e28b7a",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -81,
+							"pic": "c0fe8a193b22d31b777db07b73a2d9f1",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -80,
+							"pic": "a680857115ac7bb7aa33c3abbdf04b1d",
+							"wait": 5,
+							"x": -16,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "walking",
+							"category": "Warp"
+						}
+					]
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -76,
+							"pic": "5512ddb90a4c0c56c76bac806fb35ba4",
+							"wait": 10,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"y": -70,
+							"pic": "cacce8da016f1b54cfae46339b306917",
+							"wait": 10,
+							"x": -18,
+							"category": "Sprite"
+						},
+						{
+							"y": -65,
+							"pic": "2f3f73eb12d673f32174af6b3e82e6e4",
+							"wait": 10,
+							"x": -20,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "injured_f"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -67,
+							"pic": "d1da6aceaa80a46f8fbbc1463a7d51a2",
+							"wait": 10,
+							"x": -22,
+							"category": "Sprite"
+						},
+						{
+							"y": -59,
+							"pic": "9e759b9d9e239bfef5666e5d801e629e",
+							"wait": 10,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"y": -54,
+							"pic": "b7be2dab3219fe71d26df850c281208f",
+							"wait": 10,
+							"x": -12,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "injured_b"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -73,
+							"pic": "04404dc183e5036a45a678e71996cc28",
+							"wait": 5,
+							"x": -16,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "jump",
+							"category": "Sound"
+						},
+						{
+							"command": "jumpx2",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"compute": 1,
+							"directionY": -9,
+							"category": "Move"
+						},
+						{
+							"y": -83,
+							"pic": "ed2ecdc2de3dc873eb41a50db677042b",
+							"wait": 15,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "jumping_flying",
+							"category": "Warp"
+						}
+					],
+					"name": "jumping"
+				},
+				{
+					"frames": [
+						{
+							"range": "200~200",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"command": "jumpx2",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"actFlag": 0,
+							"frame": 0,
+							"action": "landing",
+							"category": "Act"
+						},
+						{
+							"actFlag": 2,
+							"layers": "4",
+							"command": "climbLadderUP",
+							"category": "Act"
+						},
+						{
+							"actFlag": 2,
+							"layers": "4",
+							"command": "climbLadderDown",
+							"category": "Act"
+						},
+						{
+							"y": -73,
+							"pic": "c2c9d6da726234ae795399c4313ec29b",
+							"wait": 15,
+							"x": -16,
+							"category": "Sprite"
+						},
+						{
+							"y": -77,
+							"pic": "16cf0c322ab18e33ebe86ed4820f98db",
+							"wait": 90,
+							"x": -20,
+							"category": "Sprite"
+						}
+					],
+					"name": "jumping_flying"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 30,
+							"y": -24,
+							"height": 24,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -15,
+							"category": "Body"
+						},
+						{
+							"actFlag": 0,
+							"action": "lying_f",
+							"frame": 0,
+							"category": "Act"
+						},
+						{
+							"y": -48,
+							"pic": "293099edeecc07bf7ca67934c6ebf15d",
+							"wait": 15,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"y": -29,
+							"pic": "07fd378011d1614b3e37ba0c9116c432",
+							"wait": 15,
+							"x": -35,
+							"category": "Sprite"
+						},
+						{
+							"y": -50,
+							"pic": "e83fbc96b74e56250ae7648bba588d34",
+							"wait": 15,
+							"x": -30,
+							"category": "Sprite"
+						}
+					],
+					"name": "falling_f"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 30,
+							"y": -24,
+							"height": 24,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -15,
+							"category": "Body"
+						},
+						{
+							"actFlag": 0,
+							"action": "lying_b",
+							"frame": 0,
+							"category": "Act"
+						},
+						{
+							"y": -37,
+							"pic": "30902de2fe5a40fcc6af862c74a047a2",
+							"wait": 15,
+							"x": -27,
+							"category": "Sprite"
+						},
+						{
+							"y": -24,
+							"pic": "4e15882eaa25309ac482b622df9e0334",
+							"wait": 15,
+							"x": -34,
+							"category": "Sprite"
+						},
+						{
+							"y": -45,
+							"pic": "1b021dcf1707b6eb15f00dd2678c5232",
+							"wait": 15,
+							"x": -21,
+							"category": "Sprite"
+						}
+					],
+					"name": "falling_b"
+				},
+				{
+					"frames": [
+						{
+							"sfx": "fall",
+							"category": "Sound"
+						},
+						{
+							"width": 48,
+							"y": -15,
+							"height": 15,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -24,
+							"category": "Body"
+						},
+						{
+							"y": -17,
+							"pic": "d10173bad3b8c5cb286b2b8747b70abb",
+							"wait": 5,
+							"x": -39,
+							"category": "Sprite"
+						},
+						{
+							"y": -29,
+							"pic": "07fd378011d1614b3e37ba0c9116c432",
+							"wait": 5,
+							"x": -38,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "fall",
+							"category": "Sound"
+						},
+						{
+							"y": -17,
+							"pic": "d10173bad3b8c5cb286b2b8747b70abb",
+							"wait": 60,
+							"x": -39,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standUp",
+							"category": "Warp",
+							"var": "HP",
+							"operator": 128,
+							"value": 0
+						},
+						{
+							"category": "Body",
+							"x": -24,
+							"y": -15,
+							"width": 48,
+							"height": 15,
+							"id": 0,
+							"bodyFlags": 7,
+							"layers": "0,16"
+						},
+						{
+							"category": "Sprite",
+							"pic": "d10173bad3b8c5cb286b2b8747b70abb",
+							"wait": 1,
+							"x": -39,
+							"y": -17
+						},
+						{
+							"category": "Warp",
+							"action": "lying_f",
+							"frame": 6
+						}
+					],
+					"name": "lying_f"
+				},
+				{
+					"frames": [
+						{
+							"sfx": "fall",
+							"category": "Sound"
+						},
+						{
+							"width": 48,
+							"y": -15,
+							"height": 15,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -24,
+							"category": "Body"
+						},
+						{
+							"y": -14,
+							"pic": "2eb48e933c24e6fb4b96856c74d7e730",
+							"wait": 5,
+							"x": -41,
+							"category": "Sprite"
+						},
+						{
+							"y": -24,
+							"pic": "4e15882eaa25309ac482b622df9e0334",
+							"wait": 5,
+							"x": -34,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "fall",
+							"category": "Sound"
+						},
+						{
+							"y": -14,
+							"pic": "2eb48e933c24e6fb4b96856c74d7e730",
+							"wait": 60,
+							"x": -41,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standUp",
+							"category": "Warp",
+							"operator": 128,
+							"var": "HP",
+							"value": 0
+						},
+						{
+							"category": "Body",
+							"x": -24,
+							"y": -15,
+							"width": 48,
+							"height": 15,
+							"id": 0,
+							"bodyFlags": 7,
+							"layers": "0,16"
+						},
+						{
+							"category": "Sprite",
+							"pic": "2eb48e933c24e6fb4b96856c74d7e730",
+							"wait": 1,
+							"x": -41,
+							"y": -14
+						},
+						{
+							"category": "Warp",
+							"action": "lying_b",
+							"frame": 6
+						}
+					],
+					"name": "lying_b"
+				},
+				{
+					"name": "standUp",
+					"frames": [
+						{
+							"width": 23,
+							"y": -40,
+							"height": 40,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -10,
+							"category": "Body"
+						},
+						{
+							"y": -39,
+							"pic": "96806bf53819ed2d49adf6427edc3390",
+							"wait": 5,
+							"x": -19,
+							"category": "Sprite"
+						},
+						{
+							"y": -63,
+							"pic": "0ec11f1f360fb54d2c383fdab3d0d4d3",
+							"wait": 5,
+							"x": -17,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					]
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"operator": 16,
+							"category": "Set",
+							"value": 1,
+							"var": "nekoForm"
+						},
+						{
+							"wait": 3000,
+							"value": [
+								{
+									"index": 40,
+									"color": {
+										"b": 255,
+										"a": 255,
+										"r": 255,
+										"g": 255
+									}
+								},
+								{
+									"index": 41,
+									"color": {
+										"b": 255,
+										"a": 255,
+										"r": 239,
+										"g": 239
+									}
+								},
+								{
+									"index": 42,
+									"color": {
+										"b": 247,
+										"a": 255,
+										"r": 198,
+										"g": 198
+									}
+								},
+								{
+									"index": 43,
+									"color": {
+										"b": 239,
+										"a": 255,
+										"r": 173,
+										"g": 173
+									}
+								},
+								{
+									"index": 50,
+									"color": {
+										"b": 14,
+										"a": 255,
+										"r": 255,
+										"g": 202
+									}
+								}
+							],
+							"category": "Palette"
+						},
+						{
+							"y": -77,
+							"pic": "1c701b3cad2b3c535b6fd089f19dcf0f",
+							"wait": 5,
+							"x": -11,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "defence"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"operator": 16,
+							"category": "Set",
+							"value": 0,
+							"var": "nekoForm"
+						},
+						{
+							"wait": 1,
+							"category": "Palette"
+						},
+						{
+							"y": -77,
+							"pic": "1c701b3cad2b3c535b6fd089f19dcf0f",
+							"wait": 5,
+							"x": -11,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "defence2"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -79,
+							"pic": "e26f9031ba273381d0bd42c9e247e69c",
+							"wait": 5,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "punch",
+							"category": "Sound"
+						},
+						{
+							"compute": 1,
+							"layers": "0",
+							"category": "Move",
+							"directionX": 0.5
+						},
+						{
+							"directionY": -3,
+							"id": 1,
+							"defence": 70,
+							"category": "Attack",
+							"frequency": 10,
+							"y": -67,
+							"fall": 20,
+							"directionX": 2.5,
+							"height": 12,
+							"damage": 50,
+							"width": 34,
+							"x": 3,
+							"var": "HP"
+						},
+						{
+							"y": -78,
+							"pic": "cdec3696aeed3e35c3bd8fed95cb22b2",
+							"wait": 5,
+							"x": -16,
+							"category": "Sprite"
+						},
+						{
+							"directionY": 0,
+							"id": 1,
+							"defence": 0,
+							"category": "Attack",
+							"frequency": 0,
+							"y": 0,
+							"fall": 0,
+							"directionX": 0,
+							"height": 0,
+							"damage": 0,
+							"width": 0,
+							"x": 0
+						},
+						{
+							"y": -78,
+							"pic": "b0d3e1e1c6785dc9c80a6d4b74dc48f3",
+							"wait": 5,
+							"x": -14,
+							"category": "Sprite"
+						},
+						{
+							"y": -78,
+							"pic": "041720b150a7a4c280756f0633b4efb0",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "punching_l"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -78,
+							"pic": "f3ab833c02969cf34667d94a738810dc",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -76,
+							"pic": "6198b041626a2f9ff59051a49d2deb4e",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "punch",
+							"category": "Sound"
+						},
+						{
+							"compute": 1,
+							"layers": "0",
+							"category": "Move",
+							"directionX": 0.5
+						},
+						{
+							"directionY": -3,
+							"id": 1,
+							"defence": 70,
+							"category": "Attack",
+							"frequency": 10,
+							"y": -64,
+							"fall": 35,
+							"directionX": 4.5,
+							"height": 11,
+							"damage": 100,
+							"width": 33,
+							"x": 11,
+							"var": "HP"
+						},
+						{
+							"y": -73,
+							"pic": "2fd889d0c0cefba7a90b71af9607fd2f",
+							"wait": 5,
+							"x": -12,
+							"category": "Sprite"
+						},
+						{
+							"directionY": 0,
+							"id": 1,
+							"defence": 0,
+							"category": "Attack",
+							"frequency": 0,
+							"y": 0,
+							"fall": 0,
+							"directionX": 0,
+							"height": 0,
+							"damage": 0,
+							"width": 0,
+							"x": 0
+						},
+						{
+							"y": -74,
+							"pic": "a68dbcd6d9f98e3859bf011d46fc467f",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -73,
+							"pic": "dd6932d39748f1439ff7aa63779a38bd",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -73,
+							"pic": "2d7e72a1ed73e4a1a6539f36d4a268b0",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -76,
+							"pic": "de0f38d0e24b73603b26a372b545fd26",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -78,
+							"pic": "5e113fc5b6ac61f8c8ba0aceda89581f",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "punching_h"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -74,
+							"pic": "3e9c4121ae352fdfc4fe2b3d33ddb95e",
+							"wait": 5,
+							"x": -12,
+							"category": "Sprite"
+						},
+						{
+							"y": -65,
+							"pic": "e90535bc07d8e867b0f7f27efdb56376",
+							"wait": 5,
+							"x": -12,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "punch",
+							"category": "Sound"
+						},
+						{
+							"compute": 1,
+							"layers": "0",
+							"category": "Move",
+							"directionX": 1.5
+						},
+						{
+							"directionY": -6,
+							"id": 1,
+							"defence": 70,
+							"category": "Attack",
+							"frequency": 10,
+							"y": -57,
+							"fall": 35,
+							"directionX": 1,
+							"height": 15,
+							"damage": 50,
+							"width": 30,
+							"x": 2,
+							"var": "HP"
+						},
+						{
+							"y": -70,
+							"pic": "978080cf623e2d6120dd8e2f2520900e",
+							"wait": 5,
+							"x": -12,
+							"category": "Sprite"
+						},
+						{
+							"directionY": 0,
+							"id": 1,
+							"defence": 0,
+							"category": "Attack",
+							"frequency": 0,
+							"y": 0,
+							"fall": 0,
+							"directionX": 0,
+							"height": 0,
+							"damage": 0,
+							"width": 0,
+							"x": 0
+						},
+						{
+							"y": -77,
+							"pic": "d553b40537b2697ed0374814c98e8c07",
+							"wait": 5,
+							"x": -11,
+							"category": "Sprite"
+						},
+						{
+							"y": -78,
+							"pic": "3a4c31dcbf59be2c5fbc4077e14c6310",
+							"wait": 5,
+							"x": -11,
+							"category": "Sprite"
+						},
+						{
+							"y": -77,
+							"pic": "1c701b3cad2b3c535b6fd089f19dcf0f",
+							"wait": 5,
+							"x": -11,
+							"category": "Sprite"
+						},
+						{
+							"y": -65,
+							"pic": "6505404fdeba8ddc40f7569d93b938d5",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"y": -68,
+							"pic": "058c568eb72068775dfbaba6d72fc6f4",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "punch",
+							"category": "Sound"
+						},
+						{
+							"compute": 1,
+							"layers": "0",
+							"category": "Move",
+							"directionX": 2
+						},
+						{
+							"directionY": -10,
+							"id": 1,
+							"defence": 70,
+							"category": "Attack",
+							"frequency": 10,
+							"y": -62,
+							"fall": 70,
+							"directionX": 1,
+							"height": 31,
+							"damage": 100,
+							"width": 37,
+							"x": 4,
+							"var": "HP"
+						},
+						{
+							"y": -55,
+							"pic": "fc4c356513af997f839f255705106984",
+							"wait": 5,
+							"x": -9,
+							"category": "Sprite"
+						},
+						{
+							"directionY": 0,
+							"id": 1,
+							"defence": 0,
+							"category": "Attack",
+							"frequency": 0,
+							"y": 0,
+							"fall": 0,
+							"directionX": 0,
+							"height": 0,
+							"damage": 0,
+							"width": 0,
+							"x": 0
+						},
+						{
+							"y": -72,
+							"pic": "0840e2687c2028719ef29421290d06e5",
+							"wait": 5,
+							"x": -3,
+							"category": "Sprite"
+						},
+						{
+							"y": -77,
+							"pic": "188aaa4562f820976b7b77d804c460f1",
+							"wait": 5,
+							"x": 2,
+							"category": "Sprite"
+						},
+						{
+							"y": -78,
+							"pic": "d2b8d637aec64b6e0353bc0b95d548d2",
+							"wait": 5,
+							"x": 3,
+							"category": "Sprite"
+						},
+						{
+							"y": -79,
+							"pic": "06a07ab8c1d79eaa28cb20ae753357bb",
+							"wait": 5,
+							"x": -7,
+							"category": "Sprite"
+						},
+						{
+							"y": -78,
+							"pic": "5e113fc5b6ac61f8c8ba0aceda89581f",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "punching_f_h"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -74,
+							"pic": "0c47f2e4d5c2d0cc41f1fba67b4ae9a1",
+							"wait": 5,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"y": -64,
+							"pic": "e71d93ad4762b84ff24ec18c9e23f822",
+							"wait": 5,
+							"x": -12,
+							"category": "Sprite"
+						},
+						{
+							"y": -56,
+							"pic": "57b4d17f68875747c9b3dd72012a90c1",
+							"wait": 5,
+							"x": -12,
+							"category": "Sprite"
+						},
+						{
+							"y": -60,
+							"pic": "48cf4d5acc1ee70d9c8a2cd3058cf35c",
+							"wait": 5,
+							"x": -11,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "punch",
+							"category": "Sound"
+						},
+						{
+							"compute": 1,
+							"layers": "0",
+							"category": "Move",
+							"directionX": 3.5
+						},
+						{
+							"directionY": -3,
+							"id": 1,
+							"defence": 70,
+							"category": "Attack",
+							"frequency": 10,
+							"y": -58,
+							"fall": 70,
+							"directionX": 10,
+							"height": 12,
+							"damage": 100,
+							"width": 43,
+							"x": 9,
+							"var": "HP"
+						},
+						{
+							"y": -63,
+							"pic": "aeb23298c5e85005b28ba6d97d0530fa",
+							"wait": 5,
+							"x": -10,
+							"category": "Sprite"
+						},
+						{
+							"directionY": 0,
+							"id": 1,
+							"defence": 0,
+							"category": "Attack",
+							"frequency": 0,
+							"y": 0,
+							"fall": 0,
+							"directionX": 0,
+							"height": 0,
+							"damage": 0,
+							"width": 0,
+							"x": 0
+						},
+						{
+							"y": -64,
+							"pic": "70beabe77a6e760407247ba0f169f5ea",
+							"wait": 5,
+							"x": -8,
+							"category": "Sprite"
+						},
+						{
+							"y": -64,
+							"pic": "143fe0800eb3f66d2d47befad0157a3b",
+							"wait": 5,
+							"x": -8,
+							"category": "Sprite"
+						},
+						{
+							"y": -64,
+							"pic": "25c1dfa0c9113dc7c4b0cde0f2beb463",
+							"wait": 5,
+							"x": -8,
+							"category": "Sprite"
+						},
+						{
+							"y": -73,
+							"pic": "d8d715f2cfbf5f0e5d9649113835ac70",
+							"wait": 5,
+							"x": -12,
+							"category": "Sprite"
+						},
+						{
+							"y": -78,
+							"pic": "a021429a00c0872ca726f00c83fc6d51",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "punching_f_h_2"
+				},
+				{
+					"frames": [
+						{
+							"sfx": "crouch",
+							"category": "Sound"
+						},
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 23,
+							"y": -40,
+							"height": 40,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -10,
+							"category": "Body"
+						},
+						{
+							"y": -57,
+							"pic": "47d1e2471a2243a86d9d033f83168f7b",
+							"wait": 5,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"y": -54,
+							"pic": "754686d9584d2b782e29b9868f5d802f",
+							"wait": 5,
+							"x": -23,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "landing"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 23,
+							"y": -40,
+							"height": 40,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -10,
+							"category": "Body"
+						},
+						{
+							"actFlag": 0,
+							"layers": "2",
+							"command": "jumpDown",
+							"category": "Command"
+						},
+						{
+							"actFlag": 2,
+							"layers": "4",
+							"command": "climbLadderDown",
+							"category": "Command"
+						},
+						{
+							"y": -84,
+							"pic": "bc0e9d2bae642fba77e55137b8d4f05b",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"width": 23,
+							"y": -26,
+							"height": 26,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -11,
+							"category": "Body"
+						},
+						{
+							"y": -84,
+							"pic": "330bbb35a6f44c9a16fd84977ac2ec3b",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "369cd7ba79caf2a5b3042a718c216ccb",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "4b95dbd9266a97c1438b3ad8303fd476",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "1e7612b8d5b49cba98dc33bf5b4086d7",
+							"wait": 20,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "766d8ec78103d1548304fb0ae9b177c7",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "1de8cc17d9c82e09f30f476476702a2f",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "1e7612b8d5b49cba98dc33bf5b4086d7",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "fb54cfc715369c77867d4b74af998e0e",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"width": 18,
+							"y": -37,
+							"height": 37,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -6,
+							"category": "Body"
+						},
+						{
+							"y": -84,
+							"pic": "173179276b4688400f346e9cc981b640",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "fb2aa10a6700449b7fd555a69e3ad127",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "f145a115d844d796e7ae0ee32f313937",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"width": 20,
+							"y": -40,
+							"height": 40,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -8,
+							"category": "Body"
+						},
+						{
+							"y": -84,
+							"pic": "fc445615e65ff1aee0bd942defce3f39",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -84,
+							"pic": "184cc24940c000be11541069ac35b302",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "7233f93352b741b6c9724f200ca16ed7",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "e637ebe560f83c25bd2108df536b3a3a",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "2409bdd2a80df17b6f4ccfcee7d9fe90",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "6029e261f6a3e85dffc96bc4a008761c",
+							"wait": 5,
+							"x": -30,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "crouch"
+				},
+				{
+					"frames": [
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -73,
+							"pic": "04404dc183e5036a45a678e71996cc28",
+							"wait": 5,
+							"x": -16,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "jump",
+							"category": "Sound"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0,2",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"command": "jumpx2",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"y": -77,
+							"pic": "ed2ecdc2de3dc873eb41a50db677042b",
+							"wait": 25,
+							"x": -20,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "jumping_flying",
+							"category": "Warp"
+						}
+					],
+					"name": "jumping_down"
+				},
+				{
+					"frames": [
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0,1,2",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionY": -3,
+							"directionX": 0
+						},
+						{
+							"actFlag": 2,
+							"layers": "0",
+							"category": "Act"
+						},
+						{
+							"command": "jump",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"y": -84,
+							"pic": "cd36f167a4a393fe549ff3a294b4a068",
+							"wait": 10,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionY": -3,
+							"directionX": 0
+						},
+						{
+							"y": -84,
+							"pic": "8fbd2bbe8b0213fb1b6bfaff632068e4",
+							"wait": 10,
+							"x": -15,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "climb_ladder_up",
+							"category": "Warp"
+						}
+					],
+					"name": "climb_ladder_up"
+				},
+				{
+					"frames": [
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0,2",
+							"x": -18,
+							"category": "Body"
+						},
+						{
+							"actFlag": 2,
+							"layers": "4",
+							"compute": 2,
+							"category": "Move"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionY": 2,
+							"directionX": 0
+						},
+						{
+							"command": "jump",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"y": -84,
+							"pic": "16887bdf6963b272f3fe492b56f410c4",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "d3d5b2172d7e1b67b4f82e0d2c26736a",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "2597fe2cf7a319a8133a0848b74290fe",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "94b596bf9688c8b9bb8b36511cbf9d48",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionY": 0,
+							"directionX": 0
+						},
+						{
+							"y": -84,
+							"pic": "f70f2650f81356a89d242df3f1b46b2e",
+							"wait": 15,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "climb_ladder_downing",
+							"category": "Warp"
+						}
+					],
+					"name": "climb_ladder_down"
+				},
+				{
+					"frames": [
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0,2",
+							"x": -18,
+							"category": "Body"
+						},
+						{
+							"command": "jump",
+							"wait": 0,
+							"category": "Command"
+						},
+						{
+							"actFlag": 0,
+							"category": "Act"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionY": 4,
+							"directionX": 0
+						},
+						{
+							"y": -84,
+							"pic": "050054151b163c2ac2713867cc7a3a9e",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "fb4d626009da212c3b2a599c44efab2a",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "5ca30d5db4b6f71dbd5fb81f36df5efc",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionY": 0,
+							"directionX": 0
+						},
+						{
+							"y": -84,
+							"pic": "14770e8f3bdad7d260b94834c580f69c",
+							"wait": 15,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionY": 4,
+							"directionX": 0
+						},
+						{
+							"y": -84,
+							"pic": "1d28cb3eb7943f9ef7131f99c5739c5e",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "17cfd4651cd074b2ae5b1b505a11428d",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"y": -84,
+							"pic": "94b596bf9688c8b9bb8b36511cbf9d48",
+							"wait": 5,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"compute": 0,
+							"category": "Move",
+							"directionY": 0,
+							"directionX": 0
+						},
+						{
+							"y": -84,
+							"pic": "f70f2650f81356a89d242df3f1b46b2e",
+							"wait": 15,
+							"x": -26,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "climb_ladder_downing",
+							"category": "Warp"
+						}
+					],
+					"name": "climb_ladder_downing"
+				},
+				{
+					"frames": [
+						{
+							"wait": 1,
+							"value": [
+								{
+									"index": 50,
+									"color": {
+										"b": 14,
+										"a": 255,
+										"r": 255,
+										"g": 202
+									}
+								}
+							],
+							"category": "Palette"
+						},
+						{
+							"sfx": "hit_l",
+							"category": "Sound"
+						},
+						{
+							"y": -10,
+							"pic": "9b9c7e294403e51d4d64ee0a45b6c49f",
+							"wait": 5,
+							"x": -9,
+							"category": "Sprite"
+						},
+						{
+							"y": -13,
+							"pic": "685b7bd4b38d9a08e4859a74134498ae",
+							"wait": 5,
+							"x": -11,
+							"category": "Sprite"
+						},
+						{
+							"y": -14,
+							"pic": "3d1b2478fa01fc4cd011e430c9040d9b",
+							"wait": 5,
+							"x": -12,
+							"category": "Sprite"
+						},
+						{
+							"y": -18,
+							"pic": "380abb0876f0cf87705f13e12320f946",
+							"wait": 5,
+							"x": -13,
+							"category": "Sprite"
+						},
+						{
+							"category": "End"
+						}
+					],
+					"name": "spark"
+				},
+				{
+					"frames": [
+						{
+							"wait": 1,
+							"value": [
+								{
+									"index": 50,
+									"color": {
+										"b": 14,
+										"a": 255,
+										"r": 255,
+										"g": 202
+									}
+								}
+							],
+							"category": "Palette"
+						},
+						{
+							"sfx": "hit_h",
+							"category": "Sound"
+						},
+						{
+							"y": -14,
+							"pic": "9d3fefafbbf76cb10e76bde43a86d0ea",
+							"wait": 5,
+							"x": -11,
+							"category": "Sprite"
+						},
+						{
+							"y": -23,
+							"pic": "87643990d2e45f0a887bf843a3a5377d",
+							"wait": 5,
+							"x": -18,
+							"category": "Sprite"
+						},
+						{
+							"y": -25,
+							"pic": "06d56746e414616846adc97d6f3a2fde",
+							"wait": 5,
+							"x": -20,
+							"category": "Sprite"
+						},
+						{
+							"y": -26,
+							"pic": "957046aadadc21ec090444d8891a4a45",
+							"wait": 5,
+							"x": -18,
+							"category": "Sprite"
+						},
+						{
+							"category": "End"
+						}
+					],
+					"name": "spark_b"
+				},
+				{
+					"frames": [
+						{
+							"compute": 0,
+							"category": "Move"
+						},
+						{
+							"width": 18,
+							"y": -60,
+							"height": 60,
+							"bodyFlags": 7,
+							"id": 0,
+							"layers": "0",
+							"x": -9,
+							"category": "Body"
+						},
+						{
+							"y": -66,
+							"pic": "526a3fb2aac661d9af22a7b6851c0629",
+							"wait": 5,
+							"x": -22,
+							"category": "Sprite"
+						},
+						{
+							"sfx": "punch",
+							"category": "Sound"
+						},
+						{
+							"directionY": -3,
+							"id": 1,
+							"defence": 10,
+							"category": "Attack",
+							"frequency": 1,
+							"y": -50,
+							"fall": 5,
+							"directionX": 1.5,
+							"height": 10,
+							"damage": 10,
+							"width": 43,
+							"x": 10,
+							"var": "HP"
+						},
+						{
+							"y": -70,
+							"pic": "229ec152dc718a68f19cec5ec96ba1a0",
+							"wait": 5,
+							"x": -24,
+							"category": "Sprite"
+						},
+						{
+							"directionY": 0,
+							"id": 1,
+							"defence": 0,
+							"category": "Attack",
+							"frequency": 0,
+							"y": 0,
+							"fall": 0,
+							"directionX": 0,
+							"height": 0,
+							"damage": 0,
+							"width": 0,
+							"x": 0
+						},
+						{
+							"y": -65,
+							"pic": "941974a127cb6cd29beef3a0cebb89aa",
+							"wait": 5,
+							"x": -23,
+							"category": "Sprite"
+						},
+						{
+							"frame": 0,
+							"action": "standing",
+							"category": "Warp"
+						}
+					],
+					"name": "nekoPunching_l"
+				}
+			],
+			"name": "actions",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "action",
+					"typeStr": "6:actions"
+				},
+				{
+					"name": "frame",
+					"typeStr": "3"
+				},
+				{
+					"name": "fallingRange",
+					"typeStr": "1"
+				},
+				{
+					"name": "sparkFrame",
+					"typeStr": "1"
+				},
+				{
+					"name": "direction",
+					"typeStr": "10:1,-1"
+				}
+			],
+			"lines": [
+				{
+					"fallingRange": "1~69",
+					"direction": 1,
+					"frame": 0,
+					"sparkFrame": "spark-0",
+					"action": "injured_f"
+				},
+				{
+					"fallingRange": "1~69",
+					"direction": 1,
+					"frame": 0,
+					"sparkFrame": "spark-0",
+					"action": "injured_f"
+				},
+				{
+					"fallingRange": "1~69",
+					"direction": 2,
+					"frame": 0,
+					"sparkFrame": "spark-0",
+					"action": "injured_b"
+				},
+				{
+					"fallingRange": "1~69",
+					"direction": 2,
+					"frame": 0,
+					"sparkFrame": "spark-0",
+					"action": "injured_b"
+				},
+				{
+					"fallingRange": "70~100",
+					"direction": 1,
+					"frame": 0,
+					"sparkFrame": "spark_b-0",
+					"action": "falling_f"
+				},
+				{
+					"fallingRange": "70~100",
+					"direction": 2,
+					"frame": 0,
+					"sparkFrame": "spark_b-0",
+					"action": "falling_b"
+				}
+			],
+			"name": "reactions",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "name",
+					"typeStr": "0"
+				},
+				{
+					"name": "command",
+					"typeStr": "8"
+				},
+				{
+					"name": "time",
+					"typeStr": "3"
+				},
+				{
+					"name": "action",
+					"typeStr": "6:actions"
+				},
+				{
+					"name": "frame",
+					"typeStr": "3"
+				},
+				{
+					"name": "level",
+					"typeStr": "3"
+				},
+				{
+					"typeStr": "3",
+					"name": "mp",
+					"display": null
+				},
+				{
+					"name": "active",
+					"typeStr": "2"
+				}
+			],
+			"lines": [
+				{
+					"frame": 0,
+					"name": "walk",
+					"active": true,
+					"action": "walking",
+					"command": [
+						{
+							"key": "F",
+							"kind": "/"
+						}
+					],
+					"time": 120,
+					"level": 0,
+					"mp": 0
+				},
+				{
+					"frame": 0,
+					"name": "walk2idle",
+					"active": true,
+					"action": "standing",
+					"command": [
+						{
+							"key": "F",
+							"kind": "~"
+						}
+					],
+					"time": 20,
+					"level": -1,
+					"mp": 0
+				},
+				{
+					"frame": 0,
+					"name": "jump",
+					"active": true,
+					"action": "jumping",
+					"command": [
+						{
+							"key": "j",
+							"kind": "/"
+						}
+					],
+					"time": 120,
+					"level": 1,
+					"mp": 0
+				},
+				{
+					"frame": 0,
+					"name": "defence",
+					"active": true,
+					"action": "defence",
+					"command": [
+						{
+							"key": "c",
+							"kind": ""
+						}
+					],
+					"time": 5,
+					"level": 1,
+					"mp": 50
+				},
+				{
+					"frame": 0,
+					"name": "run",
+					"active": false,
+					"action": "standing",
+					"command": [],
+					"time": 20,
+					"level": 1,
+					"mp": 0
+				},
+				{
+					"frame": 0,
+					"name": "punch_l",
+					"active": true,
+					"action": "punching_l",
+					"command": [
+						{
+							"kind": "",
+							"key": "a"
+						}
+					],
+					"time": 5,
+					"level": 30,
+					"mp": 25
+				},
+				{
+					"frame": 0,
+					"name": "punch_h",
+					"active": true,
+					"action": "punching_h",
+					"command": [
+						{
+							"kind": "",
+							"key": "b"
+						}
+					],
+					"time": 5,
+					"level": 30,
+					"mp": 50
+				},
+				{
+					"frame": 0,
+					"name": "punch_f_h",
+					"active": true,
+					"action": "punching_f_h",
+					"command": [
+						{
+							"key": "U",
+							"kind": "/"
+						},
+						{
+							"kind": "",
+							"key": "b"
+						}
+					],
+					"time": 5,
+					"level": 31,
+					"mp": 200
+				},
+				{
+					"frame": 0,
+					"name": "punch_f_h_2",
+					"active": true,
+					"action": "punching_f_h_2",
+					"command": [
+						{
+							"key": "F",
+							"kind": "/"
+						},
+						{
+							"kind": "",
+							"key": "b"
+						}
+					],
+					"time": 5,
+					"level": 31,
+					"mp": 100
+				},
+				{
+					"frame": 0,
+					"name": "crouch",
+					"active": true,
+					"action": "crouch",
+					"command": [
+						{
+							"key": "D",
+							"kind": "/"
+						}
+					],
+					"time": 120,
+					"level": 1,
+					"mp": 0
+				},
+				{
+					"frame": 0,
+					"name": "jumpx2",
+					"active": true,
+					"action": "jumping",
+					"command": [
+						{
+							"kind": "",
+							"key": "j"
+						}
+					],
+					"time": 120,
+					"level": 150,
+					"mp": 0
+				},
+				{
+					"frame": 0,
+					"name": "jumpDown",
+					"active": true,
+					"action": "jumping_down",
+					"command": [
+						{
+							"key": "D",
+							"kind": "/"
+						},
+						{
+							"kind": "",
+							"key": "j"
+						}
+					],
+					"time": 120,
+					"level": 150,
+					"mp": 0
+				},
+				{
+					"frame": 0,
+					"name": "climbLadderUP",
+					"active": false,
+					"action": "climb_ladder_up",
+					"command": [
+						{
+							"key": "U",
+							"kind": "/"
+						}
+					],
+					"time": 120,
+					"level": 150,
+					"mp": 0
+				},
+				{
+					"frame": 0,
+					"name": "climbLadderDown",
+					"active": false,
+					"action": "climb_ladder_down",
+					"command": [
+						{
+							"key": "D",
+							"kind": "/"
+						}
+					],
+					"time": 120,
+					"level": 150,
+					"mp": 0
+				},
+				{
+					"frame": 0,
+					"name": "defence2",
+					"active": true,
+					"action": "defence2",
+					"command": [
+						{
+							"key": "c",
+							"kind": ""
+						}
+					],
+					"time": 5,
+					"level": 301,
+					"mp": 0
+				},
+				{
+					"name": "nekoPunch_l",
+					"command": [
+						{
+							"kind": "",
+							"key": "a"
+						}
+					],
+					"time": 5,
+					"action": "nekoPunching_l",
+					"frame": 0,
+					"level": 330,
+					"active": true,
+					"mp": 50
+				}
+			],
+			"name": "commands",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "name",
+					"typeStr": "0"
+				},
+				{
+					"name": "level",
+					"typeStr": "3"
+				},
+				{
+					"typeStr": "6:commands",
+					"name": "command"
+				},
+				{
+					"name": "distanceRange",
+					"typeStr": "1"
+				},
+				{
+					"display": 1,
+					"name": "probability",
+					"typeStr": "4"
+				},
+				{
+					"name": "canTurnAround",
+					"typeStr": "2"
+				},
+				{
+					"name": "active",
+					"typeStr": "2"
+				}
+			],
+			"lines": [
+				{
+					"name": "punch_l",
+					"distanceRange": "0~90",
+					"canTurnAround": true,
+					"active": true,
+					"level": 30,
+					"probability": 0.15,
+					"command": "punch_l"
+				},
+				{
+					"name": "punch_h",
+					"distanceRange": "0~110",
+					"canTurnAround": true,
+					"active": true,
+					"level": 30,
+					"probability": 0.075,
+					"command": "punch_h"
+				},
+				{
+					"name": "punch_f_h",
+					"distanceRange": "0~100",
+					"canTurnAround": true,
+					"active": true,
+					"level": 31,
+					"probability": 0.15,
+					"command": "punch_f_h"
+				},
+				{
+					"name": "punch_f_h_2",
+					"distanceRange": "0~120",
+					"canTurnAround": true,
+					"active": true,
+					"level": 31,
+					"probability": 0.05,
+					"command": "punch_f_h_2"
+				},
+				{
+					"name": "walk",
+					"distanceRange": "120~1500",
+					"canTurnAround": true,
+					"active": true,
+					"level": 0,
+					"probability": 1,
+					"command": "walk"
+				},
+				{
+					"name": "walk2idle",
+					"distanceRange": "-1500~120",
+					"canTurnAround": false,
+					"active": true,
+					"level": -1,
+					"probability": 1,
+					"command": "walk2idle"
+				},
+				{
+					"name": "jump",
+					"distanceRange": "120~1500",
+					"canTurnAround": true,
+					"active": true,
+					"level": 1,
+					"probability": 0.01,
+					"command": "jump"
+				},
+				{
+					"name": "d",
+					"distanceRange": "0~1500",
+					"canTurnAround": true,
+					"active": true,
+					"probability": 0.01,
+					"level": 1,
+					"command": "defence"
+				},
+				{
+					"name": "d2",
+					"distanceRange": "0~1500",
+					"canTurnAround": true,
+					"active": true,
+					"probability": 0.01,
+					"level": 301,
+					"command": "defence2"
+				},
+				{
+					"name": "nekoPunch_l",
+					"level": 330,
+					"distanceRange": "0~120",
+					"probability": 0.15,
+					"canTurnAround": true,
+					"active": true,
+					"command": "nekoPunch_l"
+				}
+			],
+			"name": "AI",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "id",
+					"typeStr": "0"
+				},
+				{
+					"name": "color",
+					"typeStr": "11"
+				},
+				{
+					"name": "comment",
+					"typeStr": "1"
+				},
+				{
+					"name": "necessary",
+					"typeStr": "8"
+				},
+				{
+					"name": "optional",
+					"typeStr": "8"
+				}
+			],
+			"lines": [
+				{
+					"necessary": [
+						{
+							"name": "pic",
+							"default": 0
+						},
+						{
+							"name": "wait",
+							"default": 0
+						},
+						{
+							"name": "x",
+							"default": 0
+						},
+						{
+							"name": "y",
+							"default": 0
+						}
+					],
+					" optional ": [],
+					"optional": [],
+					"id": "Sprite",
+					"color": 15728895,
+					"comment": ""
+				},
+				{
+					"necessary": [
+						{
+							"name": "x",
+							"default": 0
+						},
+						{
+							"name": "y",
+							"default": 0
+						},
+						{
+							"name": "directionX",
+							"default": 0
+						},
+						{
+							"name": "directionY",
+							"default": 0
+						},
+						{
+							"name": "wait",
+							"default": 0
+						}
+					],
+					" optional ": [],
+					"optional": [],
+					"id": "Move",
+					"color": 16772096,
+					"comment": ""
+				},
+				{
+					"necessary": [
+						{
+							"name": "id",
+							"default": 0
+						},
+						{
+							"name": "x",
+							"default": 0
+						},
+						{
+							"name": "y",
+							"default": 0
+						},
+						{
+							"name": "w",
+							"default": 0
+						},
+						{
+							"name": "h",
+							"default": 0
+						},
+						{
+							"name": "damage",
+							"default": 0
+						},
+						{
+							"name": "frequency",
+							"default": 0
+						}
+					],
+					" optional ": [],
+					"optional": [],
+					"id": "Attack",
+					"color": 16711680,
+					"comment": ""
+				},
+				{
+					"necessary": [
+						{
+							"name": "id",
+							"default": 0
+						},
+						{
+							"name": "x",
+							"default": 0
+						},
+						{
+							"name": "y",
+							"default": 0
+						},
+						{
+							"name": "w",
+							"default": 0
+						},
+						{
+							"name": "h",
+							"default": 0
+						},
+						{
+							"name": "flags",
+							"default": 0
+						}
+					],
+					" optional ": [],
+					"optional": [],
+					"id": "Body",
+					"color": 65287,
+					"comment": ""
+				},
+				{
+					"necessary": [
+						{
+							"name": "file",
+							"default": 0
+						}
+					],
+					" optional ": [],
+					"optional": [],
+					"id": "Sound",
+					"color": 16740352,
+					"comment": ""
+				},
+				{
+					"necessary": [
+						{
+							"name": "x",
+							"default": 0
+						},
+						{
+							"name": "y",
+							"default": 0
+						},
+						{
+							"name": "id",
+							"default": 0
+						},
+						{
+							"name": "action",
+							"default": "which action?"
+						},
+						{
+							"name": "frame",
+							"default": 0
+						}
+					],
+					" optional ": [],
+					"optional": [],
+					"id": "Object",
+					"color": 8257536,
+					"comment": ""
+				},
+				{
+					"necessary": [
+						{
+							"name": "wait",
+							"default": 0
+						},
+						{
+							"name": "command",
+							"default": "hissatsu"
+						}
+					],
+					" optional ": [],
+					"optional": [],
+					"id": "Command",
+					"color": 0,
+					"comment": ""
+				},
+				{
+					"necessary": [
+						{
+							"name": "nextAction",
+							"default": "which action?"
+						},
+						{
+							"name": "nextFrame",
+							"default": 0
+						}
+					],
+					" optional ": [],
+					"optional": [],
+					"id": "Warp",
+					"color": 65490,
+					"comment": ""
+				},
+				{
+					"necessary": [],
+					" optional ": [],
+					"optional": [],
+					"id": "End",
+					"color": 0,
+					"comment": ""
+				},
+				{
+					"necessary": [],
+					" optional ": [],
+					"optional": [],
+					"id": "Cancel",
+					"color": 0,
+					"comment": ""
+				},
+				{
+					"necessary": [],
+					" optional ": [],
+					"optional": [],
+					"id": "Act",
+					"color": 0,
+					"comment": ""
+				},
+				{
+					"necessary": [],
+					"optional": [],
+					"id": "Set",
+					"color": 0,
+					"comment": ""
+				},
+				{
+					"necessary": [],
+					"optional": [],
+					"id": "Palette",
+					"color": 0,
+					"comment": ""
+				}
+			],
+			"name": "frameType",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "name",
+					"typeStr": "1"
+				},
+				{
+					"name": "default",
+					"typeStr": "16"
+				}
+			],
+			"lines": [],
+			"name": "frameType@necessary",
+			"props": {
+				"hide": true
+			},
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "id",
+					"typeStr": "0"
+				},
+				{
+					"name": "kind",
+					"typeStr": "1"
+				}
+			],
+			"lines": [
+				{
+					"id": "Idle",
+					"kind": "<>"
+				},
+				{
+					"id": "Walk",
+					"kind": "~"
+				},
+				{
+					"id": "Run",
+					"kind": "~"
+				},
+				{
+					"id": "Jump",
+					"kind": "~"
+				},
+				{
+					"id": "Dash",
+					"kind": ""
+				},
+				{
+					"id": "Injured",
+					"kind": ""
+				},
+				{
+					"id": "hissatsu",
+					"kind": ""
+				},
+				{
+					"id": "XaxisMove",
+					"kind": ""
+				},
+				{
+					"id": "YaxisMove",
+					"kind": ""
+				}
+			],
+			"name": "actionType",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"display": 1,
+					"name": "id",
+					"typeStr": "0"
+				},
+				{
+					"name": "effect",
+					"typeStr": "3"
+				}
+			],
+			"lines": [
+				{
+					"id": "Limb",
+					"effect": 0
+				},
+				{
+					"id": "Sharp",
+					"effect": 2
+				},
+				{
+					"id": "Mace",
+					"effect": 1
+				},
+				{
+					"id": "Gun",
+					"effect": 3
+				},
+				{
+					"id": "Magic",
+					"effect": 4
+				},
+				{
+					"id": "Weapon",
+					"effect": 5
+				}
+			],
+			"name": "AttackType",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "name",
+					"typeStr": "1"
+				}
+			],
+			"lines": [],
+			"name": "frameType@optional",
+			"props": {
+				"hide": true
+			},
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "id",
+					"typeStr": "0"
+				},
+				{
+					"name": "file",
+					"typeStr": "13"
+				}
+			],
+			"lines": [
+				{
+					"id": "jump",
+					"file": "sounds/Jump.wav"
+				},
+				{
+					"id": "hit_l",
+					"file": "sounds/hit_l.wav"
+				},
+				{
+					"id": "hit_h",
+					"file": "sounds/hit_h.wav"
+				},
+				{
+					"id": "fire",
+					"file": "sounds/fire.wav"
+				},
+				{
+					"id": "crouch",
+					"file": "sounds/crouch.wav"
+				},
+				{
+					"id": "punch",
+					"file": "sounds/punch.wav"
+				},
+				{
+					"id": "fall",
+					"file": "sounds/fall.wav"
+				}
+			],
+			"name": "sounds",
+			"props": [],
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"opt": true,
+					"name": "category",
+					"typeStr": "6:frameType"
+				},
+				{
+					"opt": true,
+					"name": "pic",
+					"typeStr": "7"
+				},
+				{
+					"opt": true,
+					"name": "wait",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "x",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "y",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "width",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "height",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "id",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "directionX",
+					"typeStr": "4"
+				},
+				{
+					"opt": true,
+					"name": "directionY",
+					"typeStr": "4"
+				},
+				{
+					"opt": true,
+					"name": "accelerationX",
+					"typeStr": "4"
+				},
+				{
+					"opt": true,
+					"name": "accelerationY",
+					"typeStr": "4"
+				},
+				{
+					"opt": true,
+					"name": "damage",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "fall",
+					"typeStr": "4"
+				},
+				{
+					"opt": true,
+					"name": "defence",
+					"typeStr": "4"
+				},
+				{
+					"opt": true,
+					"name": "frequency",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "compute",
+					"typeStr": "5:Equal,Plus,Position"
+				},
+				{
+					"opt": true,
+					"name": "bodyFlags",
+					"typeStr": "10:Collide,Injury,Catch"
+				},
+				{
+					"opt": true,
+					"name": "actFlag",
+					"typeStr": "5:OnGround,OnWall,OnTrigger"
+				},
+				{
+					"opt": true,
+					"name": "layers",
+					"typeStr": "1"
+				},
+				{
+					"opt": true,
+					"name": "range",
+					"typeStr": "1"
+				},
+				{
+					"opt": true,
+					"name": "command",
+					"typeStr": "1"
+				},
+				{
+					"opt": true,
+					"name": "action",
+					"typeStr": "6:actions"
+				},
+				{
+					"opt": true,
+					"name": "frame",
+					"typeStr": "3"
+				},
+				{
+					"opt": true,
+					"name": "sfx",
+					"typeStr": "6:sounds"
+				},
+				{
+					"opt": true,
+					"name": "var",
+					"typeStr": "6:vars"
+				},
+				{
+					"opt": true,
+					"name": "operator",
+					"typeStr": "10:+,-,*,/,=,==,!=,>,<,>=,<="
+				},
+				{
+					"opt": true,
+					"name": "value",
+					"typeStr": "16"
+				}
+			],
+			"lines": [],
+			"name": "actions@frames",
+			"props": {
+				"hide": true
+			},
+			"separators": []
+		},
+		{
+			"columns": [
+				{
+					"name": "key",
+					"typeStr": "1"
+				},
+				{
+					"name": "kind",
+					"typeStr": "1"
+				}
+			],
+			"lines": [],
+			"name": "commands@command",
+			"props": {
+				"hide": true
+			},
+			"separators": []
+		}
+	],
+	"compress": false,
+	"customTypes": []
+}

@@ -6,7 +6,15 @@
 
 local utils = {}
 
+local LDatas = {}
 local objects = {}
+
+local hp = nil
+local mp = nil
+local black = nil
+local white = nil
+local yellow = nil
+local gray = nil
 
 local idLoop
 
@@ -108,13 +116,31 @@ function utils.getFrame(str)
 	return action, tonumber(frame) + 1
 end
 
-function utils.createObject(db, p, m, ac, id, f, x, y, dx, dy, k)
-	local character = CS.UnityEngine.GameObject(id)
-	character.transform.position = CS.UnityEngine.Vector3(x, y, 0)
-	o = LObject:new(db, p, m, ac, id, f, character, dx, dy, k)
+function utils.GetLDatas()
+	return LDatas
+end
 
-	utils.addObject(character:GetInstanceID(), o)
-	return o
+function utils.getIDData(id)
+	return LDatas[id]
+end
+
+function utils.setIDData(id, data)
+	LDatas[id] = data
+end
+
+function utils.createObject(id, a, f, x, y, dx, dy, k)
+	local character = CS.UnityEngine.GameObject(LDatas[id].name)
+	character.transform.position = CS.UnityEngine.Vector3(x, y, 0)
+	o = LObject:new(LDatas[id].db, LDatas[id].pics, LDatas[id].palettes[1], 1, LDatas[id].audioClips, id, a, f, character, dx, dy, k)
+
+	local IID = character:GetInstanceID()
+	utils.addObject(IID, o)
+	return o, IID
+end
+
+function utils.setPalette(o, n)
+	o.palette = n
+	o.spriteRenderer.material = LDatas[o.id].palettes[n]
 end
 
 function utils.getObjects()
@@ -139,6 +165,82 @@ function utils.destroyObject(id)
 	end
 end
 
+function utils.createHPMP()
+
+	hp = CS.UnityEngine.Texture2D(1, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+	hp.filterMode = CS.UnityEngine.FilterMode.Point
+	hp:SetPixel(0, 0, CS.UnityEngine.Color(1, 0, 0))
+	hp:Apply()
+
+	mp = CS.UnityEngine.Texture2D(1, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+	mp.filterMode = CS.UnityEngine.FilterMode.Point
+	mp:SetPixel(0, 0, CS.UnityEngine.Color(0, 0, 1))
+	mp:Apply()
+
+	black = CS.UnityEngine.Texture2D(1, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+	black.filterMode = CS.UnityEngine.FilterMode.Point
+	black:SetPixel(0, 0, CS.UnityEngine.Color(0, 0, 0))
+	black:Apply()
+
+	white = CS.UnityEngine.Texture2D(1, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+	white.filterMode = CS.UnityEngine.FilterMode.Point
+	white:SetPixel(0, 0, CS.UnityEngine.Color(1, 1, 1))
+	white:Apply()
+
+	yellow = CS.UnityEngine.Texture2D(1, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+	yellow.filterMode = CS.UnityEngine.FilterMode.Point
+	yellow:SetPixel(0, 0, CS.UnityEngine.Color(1, 1, 0))
+	yellow:Apply()
+
+	gray = CS.UnityEngine.Texture2D(1, 1, CS.UnityEngine.TextureFormat.RGBA32, false, false)
+	gray.filterMode = CS.UnityEngine.FilterMode.Point
+	gray:SetPixel(0, 0, CS.UnityEngine.Color(0.5, 0.5, 0.5))
+	gray:Apply()
+end
+
+function utils.drawHPMP(x, y, h, m, f, d)
+	local width = 50
+	local height = 3
+	local offset = 0
+	if h > 0 and h < 1 then
+		CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2 - 1, y - 1, width + 2, height + 2), white)
+		CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2, y, width, height), black)
+		CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2, y, width * h, height), hp)
+
+		offset = offset + 6
+	end
+
+	if h > 0 then
+		if m > 0 and m < 1 then
+			CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2 - 1, y - 1 + offset, width + 2, height + 2), white)
+			CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2, y + offset, width, height), black)
+			CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2, y + offset, width * m, height), mp)
+
+			offset = offset + 6
+		end
+
+		if f > 0.01 then
+			CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2 - 1, y - 1 + offset, width + 2, height + 2), white)
+			CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2, y + offset, width, height), black)
+			if f >= 0.7 then
+				CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2, y + offset, width * f, height), hp)
+			else
+				CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2, y + offset, width * f, height), yellow)
+			end
+
+			offset = offset + 6
+		end
+
+
+		if d > 0.01 then
+			CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2 - 1, y - 1 + offset, width + 2, height + 2), white)
+			CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2, y + offset, width, height), black)
+			CS.UnityEngine.GUI.DrawTexture(CS.UnityEngine.Rect(x - width / 2, y + offset, width * d, height), gray)
+		end
+	end
+
+end
+
 function utils.displayObjectsInfo()
     for i, v in pairs(objects) do
 		v:displayInfo()
@@ -147,8 +249,8 @@ end
 
 function utils.runObjectsFrame()
 	for i, v in pairs(objects) do
-		if v.AI ~= nil then
-			v.AI:judgeAI()
+		if v.AI then
+			v.database.AI:judgeAI(v)
 		end
 		v:runFrame()
 	end

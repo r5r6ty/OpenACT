@@ -1,16 +1,15 @@
 local utils = require "tool1_utils"
 
-LAI = {object = nil, strategys = nil, commands = nil}
+LAI = {db = nil, strategys = nil, commands = nil}
 LAI.__index = LAI
-function LAI:new(o)
+function LAI:new(db)
 	local self = {}
 	setmetatable(self, LAI)
-
-	self.object = o
 	
+	self.db = db
 	self.strategys = {}
 
-	self:createStrategys(self.object.database[self.object.id].char.AI)
+	self:createStrategys(self.db:getLines("AI"))
 
 	
 
@@ -18,11 +17,18 @@ function LAI:new(o)
 end
 
 function LAI:createStrategys(ai)
+	local commands = {}
+	for i, v in ipairs(self.db:getLines("commands")) do
+		commands[v.name] = {action = v.action, frame = v.frame, level = v.level, mp = v.mp}
+	end
 	for i, v in ipairs(ai) do
+		local c = commands[v.command]
 		local strategy = {}
-		strategy.name = v.name
-		strategy.command = v.command
-		strategy.level = v.level
+		strategy.name = v.command
+		strategy.action = c.action
+		strategy.frame = c.frame
+		strategy.level = c.level
+		strategy.mp = c.mp
 		strategy.distanceA, strategy.distanceB = utils.getRangeAB(v.distanceRange)
 		strategy.probability = v.probability
 		strategy.active = v.active
@@ -32,15 +38,15 @@ function LAI:createStrategys(ai)
 	end
 end
 
-function LAI:judgeAI()
-	if self.object.target ~= nil and self.object.HP > 0 then
+function LAI:judgeAI(o)
+	if o.target ~= nil and o.vars["HP"] > 0 then
 		for i, v in pairs(self.strategys) do
-			if v.active then
+			if v.active and o.vars["MP"] >= v.mp then
 				local r = CS.Tools.Instance:RandomRangeInt(1, 101)
 				if r <= v.probability * 100 then
-					local pos = self.object.target.gameObject.transform.position - self.object.gameObject.transform.position
+					local pos = o.target.gameObject.transform.position - o.gameObject.transform.position
 					
-					local dx = self.object.direction.x
+					local dx = o.direction.x
 					local r = false
 					if v.canTurnAround then
 						if dx == 1 then
@@ -64,7 +70,7 @@ function LAI:judgeAI()
 								dx = dx * -1
 							end
 						end
-						self.object:addEvent("Input", 0, 1, {level = v.level, name = v.name, direction = dx, frame = v.command})
+						o:addEvent("Input", 0, 1, {level = v.level, name = v.name, direction = dx, action = v.action, frame = v.frame, mp = v.mp})
 					end
 				end
 			end
