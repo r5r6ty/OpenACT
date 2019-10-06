@@ -29,11 +29,11 @@ local gray = nil
 
 local idLoop
 
-utils.downloadText = coroutine.create(function(path)
+utils.download = coroutine.create(function(path)
 	local www = CS.UnityEngine.Networking.UnityWebRequest.Get(path)
-	coroutine.yield(versionW:SendWebRequest())
+	coroutine.yield(www:SendWebRequest())
 	if www.isNetworkError then
-		print(versionW.error)
+		print(www.error)
 	end
 	coroutine.yield(www)
 end)
@@ -46,8 +46,8 @@ function utils.openFileText(path)
 		str = io.read("*a")
 		io.close(file)
 	else
-		local stat, mainre = coroutine.resume(utils.downloadText, path)
-		str = mainre.text
+		local stat, mainre = coroutine.resume(utils.download, path)
+		str = mainre.downloadHandler.text
 
 		-- local www = CS.UnityEngine.WWW(path)
 		-- while not www.isDone do
@@ -69,8 +69,8 @@ function utils.openFileBytes(path)
 		bytes = io.read("*a")
 		io.close(file)
 	else
-		local stat, mainre = coroutine.resume(utils.downloadText, path)
-		str = mainre.bytes
+		local stat, mainre = coroutine.resume(utils.download, path)
+		bytes = mainre.downloadHandler.data
 		-- local www = CS.UnityEngine.WWW(path)
 		-- while not www.isDone do
 		-- 	if www.error ~= nil and www.error ~= "" then
