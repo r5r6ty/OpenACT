@@ -18,19 +18,8 @@ namespace WWUtils.Audio
 
         static float byteToFloat(byte _Byte)
         {
-            //short s = (short)((_Byte << 8));
-            //Debug.Log(s / 32768.0F + "," + _Byte + "," + s);
-            //return s / 32768.0F;
-
-            char s = (char)((_Byte));
-            //Debug.Log(s / (32768.0F / 256.0F) + "," + _Byte + "," + s);
-            //float s2 = s / (32768.0F / 256.0F);
-            //if (s2 > 1)
-            //    return -(2 - s2);
-            //else
-            //    return s2;
-
-            return 1 - (s / (32768.0F / 256.0F));
+            // 8-bit PCM 是 0~255 的无符号采样，128 为 0 点（原公式 1 - s/128 会把波形上下反相）
+            return (_Byte - 128) / 128f;
         }
 
         static int bytesToInt(byte[] bytes, int offset = 0)
@@ -110,11 +99,8 @@ namespace WWUtils.Audio
             //Debug.Log(pos);
             //SampleCount = (wav.Length - pos + 1);     // 2 bytes per sample (16 bit sound mono)
  
+            // data 子块大小 / blockAlign（每采样帧字节数，已含声道数）= 帧数
             SampleCount = bytesToInt(wav, pos - 4) / size;
-            //Debug.Log(pos - 4);
-            //Debug.Log(SampleCount);
-            //Debug.Log(pos - 4);
-            if (ChannelCount == 2) SampleCount /= 2;        // 4 bytes per sample (16 bit stereo)
 
             // Allocate memory (right will be null if only mono sound)
             LeftChannel = new float[SampleCount];

@@ -67,37 +67,39 @@ namespace XLuaTest
 
         private byte[] CustomLoaderMethod(ref string fileName)
         {
+            // GameLoader 预载过的脚本直接从缓存拿原始字节（WebGL 没有同步文件 IO，只能走这条；
+            // 存字节不存 text 是因为部分 lua 是 GBK 编码，按 UTF-8 解码会喂成乱码）
+            byte[] cached = LuaManager.Instance.GetScriptBytes(fileName);
+            if (cached != null)
+            {
+                return cached;
+            }
+
+#if UNITY_WEBGL
+            Debug.LogError("CustomLoader: WebGL 下找不到未预载的脚本：" + fileName);
+            return null;
+#else
             // 找到指定文件
             fileName = GameLoader.Getluapath() + fileName.Replace('.', '/') + ".lua";
-            print(fileName);
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
             if (File.Exists(fileName))
             {
                 return File.ReadAllBytes(fileName);
             }
-            else
-            {
-                return null;
-            }
-#else
-            WWW www = new WWW(fileName);
-            while (!www.isDone)
-            {
-                if (www.error != null && www.error != "")
-                {
-                    print(www.error);
-                    return null;
-                }
-            }
-            return www.bytes;
+            return null;
 #endif
         }
 
+        // AddLoader 只要加一次，加多了每条 require 都会白走一遍全部 loader
+        internal static bool loaderAdded = false;
+
         void Awake()
         {
-            LuaEnv.CustomLoader method = CustomLoaderMethod; // 自定义加载方法
-            // 添加自定义装载机Loader  
-            luaEnv.AddLoader(method);
+            if (!loaderAdded)
+            {
+                LuaEnv.CustomLoader method = CustomLoaderMethod; // 自定义加载方法
+                luaEnv.AddLoader(method); // 添加自定义装载机Loader
+                loaderAdded = true;
+            }
 
             scriptEnv = luaEnv.NewTable();
 
@@ -120,8 +122,19 @@ namespace XLuaTest
             //luaEnv.DoString(luaScript.text, "LuaTestScript", scriptEnv);
 
             // 通过gameobject的名字来获取对应的lua脚本
-            // 为了能够给gameobject挂上想要的lua，必须在awake之前就让他知道要哪个lua脚本，目前用gameobject的name取，不知道有没有更好的方法
-            string scripts = LuaManager.Instance.GetScripts(gameObject.name.ToLower());
+            // 为了能够给gameobject挂上想要的lua，必须在awake之前就让他知道要哪个lua脚本，目前用gameobject的name取
+            // Instantiate 出来的物体名字带 " (Clone)" 后缀，剥掉再查
+            string objName = gameObject.name.ToLower();
+            if (objName.EndsWith("(clone)"))
+            {
+                objName = objName.Substring(0, objName.Length - "(clone)".Length).Trim();
+            }
+            string scripts = LuaManager.Instance.GetScripts(objName);
+            if (scripts == null)
+            {
+                Debug.LogError("LuaBehaviour: LuaManager 里没有预载物体 " + gameObject.name + " 对应的 lua 脚本（" + objName + "）");
+                return;
+            }
             luaEnv.DoString(scripts, gameObject.name, scriptEnv);
 
             //luaEnv.DoString(@"require('test')");
@@ -139,14 +152,14 @@ namespace XLuaTest
             scriptEnv.Get("onTriggerStay2D", out luaOnTriggerStay2D);
             scriptEnv.Get("onCollisionEnter2D", out luaOnCollisionEnter2D);
             scriptEnv.Get("onCollisionExit2D", out luaOnCollisionExit2D);
-            scriptEnv.Get("onCollisionEnter2D", out luaOnCollisionStay2D);
+            scriptEnv.Get("onCollisionStay2D", out luaOnCollisionStay2D);
 
             scriptEnv.Get("onTriggerEnter", out luaOnTriggerEnter);
             scriptEnv.Get("onTriggerExit", out luaOnTriggerExit);
             scriptEnv.Get("onTriggerStay", out luaOnTriggerStay);
             scriptEnv.Get("onCollisionEnter", out luaOnCollisionEnter);
             scriptEnv.Get("onCollisionExit", out luaOnCollisionExit);
-            scriptEnv.Get("onCollisionEnter", out luaOnCollisionStay);
+            scriptEnv.Get("onCollisionStay", out luaOnCollisionStay);
 
             if (luaAwake != null)
             {
@@ -157,7 +170,7 @@ namespace XLuaTest
         // Use this for initialization
         void Start()
         {
-            UpdateInterval = Time.realtimeSinceStartup;
+            _lastInterval = Time.realtimeSinceStartup;
             _frames = 0;
             if (luaStart != null)
             {
@@ -200,9 +213,24 @@ namespace XLuaTest
             {
                 luaOnDestroy();
             }
-            luaOnDestroy = null;
-            luaUpdate = null;
             luaStart = null;
+            luaUpdate = null;
+            luaFixedUpdate = null;
+            luaOnDestroy = null;
+            luaOnGui = null;
+            luaOnDrawGizmos = null;
+            luaOnTriggerEnter2D = null;
+            luaOnTriggerExit2D = null;
+            luaOnTriggerStay2D = null;
+            luaOnCollisionEnter2D = null;
+            luaOnCollisionExit2D = null;
+            luaOnCollisionStay2D = null;
+            luaOnTriggerEnter = null;
+            luaOnTriggerExit = null;
+            luaOnTriggerStay = null;
+            luaOnCollisionEnter = null;
+            luaOnCollisionExit = null;
+            luaOnCollisionStay = null;
             scriptEnv.Dispose();
             injections = null;
         }

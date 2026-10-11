@@ -34,3 +34,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Unity Logs
+[Ll]ogs/
+
+# Unity崩溃报告已有一行 sysinfo，补 MemoryLogs
+[Mm]emoryCaptures/

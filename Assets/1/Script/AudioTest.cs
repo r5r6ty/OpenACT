@@ -26,24 +26,26 @@ public class AudioTest : MonoBehaviour
 
         for (int i = 0; i < files.Length; i++)
         {
-            FileStream fs = new FileStream(path + files[i], FileMode.Open);
-            byte[] bt = new byte[fs.Length];
-            fs.Read(bt, 0, bt.Length);
-            fs.Close();
+            byte[] bt = File.ReadAllBytes(path + files[i]);
 
             WWUtils.Audio.WAV wav = new WWUtils.Audio.WAV(bt);
             Debug.Log(files[i] + wav);
             ac[i] = AudioClip.Create("testSound", wav.SampleCount, wav.ChannelCount, wav.Frequency, false);
-            ac[i].SetData(wav.LeftChannel, 0);
-            //Debug.Log(files[i] + ac[i].length + wav);
-
-            //string a = "";
-            //for (int i2 = 0; i2 < wav.LeftChannel.Length; i2++)
-            //{
-            //    a += wav.LeftChannel[i2].ToString() + "\n";
-            //}
-
-            //File.WriteAllText(@"D:\unityproject\OpenACT\Assets\StreamingAssets\1\Resource\wocao2.txt", a);
+            if (wav.ChannelCount == 2 && wav.RightChannel != null)
+            {
+                // Unity 的 SetData 要左右声道交错存放
+                float[] stereo = new float[wav.SampleCount * 2];
+                for (int j = 0; j < wav.SampleCount; j++)
+                {
+                    stereo[j * 2] = wav.LeftChannel[j];
+                    stereo[j * 2 + 1] = wav.RightChannel[j];
+                }
+                ac[i].SetData(stereo, 0);
+            }
+            else
+            {
+                ac[i].SetData(wav.LeftChannel, 0);
+            }
         }
 
         //music.clip = ac;
